@@ -1,15 +1,19 @@
-<template>
+<template class="h-full">
+  <nav-bar></nav-bar>
   <router-view v-slot="slotProps">
-    <component :is="slotProps.Component">
-    </component>
+    <component :is="slotProps.Component"></component>
   </router-view>
 </template>
 
 <script>
+import NavBar from "./components/layouts/NavBar.vue";
 
 export default {
-  name: 'App',
-}
+  name: "App",
+  components: {
+    NavBar,
+  },
+};
 </script>
 
 <style>
