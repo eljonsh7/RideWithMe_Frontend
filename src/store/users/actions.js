@@ -26,4 +26,26 @@ export default {
             return false;
         }
     },
+    async register(context, object) {
+        let config = {
+            method: "post",
+            maxBodyLength: Infinity,
+            url: `${apiPath}/v1/register`,
+            headers: {
+                Accept: "application/json, text/plain, */*",
+            },
+            data: object,
+        };
+        try {
+            const response = await axios.request(config);
+            sessionStorage.setItem("isLoggedIn", true);
+            sessionStorage.setItem("token", response.data.token);
+            sessionStorage.setItem("userId", response.data.user.id);
+            context.commit("setUser", response.data.user);
+            return response;
+        } catch (error) {
+            console.log("🚀 ~ file: actions.js:48 ~ login ~ error:", error);
+            return false;
+        }
+    },
 }
