@@ -15,7 +15,7 @@ const router = createRouter({
         { path: "/login", component: LogIn },
         { path: "/register", component: RegisterPage},
         { path: "/:notFound(.*)", component: NotFound },
-        { path: "/AboutUs", component: AboutUs},    
+        { path: "/aboutUs", component: AboutUs},    
     ],
 });
 

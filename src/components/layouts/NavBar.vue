@@ -61,7 +61,7 @@ export default {
   data() {
     return {
       showProfileOptions: false,
-      routes: ["routes", "reservations", "chat", "about us"],
+      routes: ["routes", "reservations", "chat", "aboutUs"],
     };
   },
 };
