@@ -4,7 +4,7 @@ import HomePage from "../views/HomePage.vue";
 import NotFound from "../views/NotFound.vue";
 import LogIn from "@/views/LogIn.vue";
 import RegisterPage from "@/views/RegisterPage.vue";
-import AboutUs from "../views/AboutUs.vue";
+import AboutUs from "@/views/AboutUs.vue";
 
 const router = createRouter({
     history: createWebHistory(),
@@ -15,7 +15,7 @@ const router = createRouter({
         { path: "/login", component: LogIn },
         { path: "/register", component: RegisterPage},
         { path: "/:notFound(.*)", component: NotFound },
-        { path: "/AboutUs", component: AboutUs},
+        { path: "/AboutUs", component: AboutUs},    
     ],
 });
 

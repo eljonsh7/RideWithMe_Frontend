@@ -40,11 +40,11 @@
   </template>
   
   <script>
-  export default {
-    name: 'AboutUs'
-  }
+ // export default {
+ // name: 'AboutUs'
+ // }
   </script>
   
   <style scoped>
-  /* Add your scoped styles here */
+  
   </style>
