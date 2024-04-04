@@ -1,15 +1,13 @@
 <template>
   <nav-bar></nav-bar>
-  <div>
-    <h1>Welcome to Home</h1>
-  </div>
+  <div>dashboard</div>
 </template>
 
 <script>
 import NavBar from "../layouts/NavBar.vue";
 
 export default {
-  name: "HomePage",
+  name: "AdminHomePage",
   components: {
     NavBar,
   },
