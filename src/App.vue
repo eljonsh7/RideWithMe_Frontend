@@ -1,27 +1,21 @@
 <template class="h-full">
-  <nav-bar v-if="!this.$route.path.includes('login') && !this.$route.path.includes('register')"></nav-bar>
-  <router-view v-slot="slotProps">
-    <component :is="slotProps.Component"></component>
-  </router-view>
+  <router-view></router-view>
 </template>
 
 <script>
-import NavBar from "./components/layouts/NavBar.vue";
-
 export default {
   name: "App",
-  components: {
-    NavBar,
-  },
 };
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+@font-face {
+  font-family: "SFPro";
+  src: url("assets/fonts/regularSfPro.OTF") format("opentype");
+}
+
+* {
+  font-family: "SFPro", "Franklin Gothic Book", serif;
+  letter-spacing: 0.025em;
 }
 </style>

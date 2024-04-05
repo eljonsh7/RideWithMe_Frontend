@@ -8,7 +8,7 @@
         <img
           alt="Not Found!"
           class="w-12 h-12 my-2"
-          src="../../assets/logo.png"
+          src="../assets/images/logo.png"
         />
       </router-link>
       <div class="flex gap-x-4 items-center text-black">
@@ -20,7 +20,7 @@
         <img
           alt="Not Found!"
           class="w-10 h-10 border border-black rounded-full bg-white cursor-pointer"
-          src="../../assets/default-user-pic.png"
+          src="../assets/images/default-user-pic.png"
           @click.stop="showProfileOptions = !showProfileOptions"
         />
       </div>
@@ -52,7 +52,7 @@
 </template>
 
 <script>
-import NavLink from "../common/NavLink.vue";
+import NavLink from "../components/NavLink.vue";
 
 export default {
   components: {
