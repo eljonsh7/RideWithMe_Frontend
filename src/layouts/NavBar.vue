@@ -1,6 +1,6 @@
 <template>
   <div
-    class="w-full h-auto px-10 flex justify-between"
+    class="w-full h-fit px-10 flex justify-between"
     @click="this.showProfileOptions = false"
   >
     <div class="flex gap-10">
@@ -42,27 +42,50 @@
       </p>
       <p
         class="hover:bg-white/10 h-full w-full rounded-b-lg text-center items-center flex justify-center text-xs cursor-pointer"
-        @click="logOutModal = true"
+        @click="this.logOutModal = true"
       >
         Log Out
       </p>
     </div>
   </div>
   <hr />
+  <custom-modal v-if="this.logOutModal" @closeModal="this.logOutModal = false">
+    <div class="flex flex-col gap-10">
+      <div>Are you sure you want to log out?</div>
+      <div class="flex w-full justify-between">
+        <custom-button :fill="false" @click="this.logOutModal = false"
+          >No
+        </custom-button>
+        <custom-button :fill="true" @click="logOut">Yes</custom-button>
+      </div>
+    </div>
+  </custom-modal>
 </template>
 
 <script>
 import NavLink from "../components/NavLink.vue";
+import CustomModal from "./CustomModal.vue";
+import CustomButton from "../components/CustomButton.vue";
 
 export default {
   components: {
+    CustomButton,
     NavLink,
+    CustomModal,
   },
   data() {
     return {
+      logOutModal: false,
       showProfileOptions: false,
       routes: ["routes", "reservations", "chat", "about us"],
     };
+  },
+  methods: {
+    async logOut() {
+      await this.$store.dispatch("users/logOut");
+      this.logOutModal = false;
+      this.$router.push("/login");
+    },
   },
 };
 </script>

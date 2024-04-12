@@ -3,13 +3,14 @@ import getters from "./getters.js";
 import mutations from "./mutations.js";
 
 export default {
-    namespaced: true,
-    state() {
-        return {
-            user: null,
-        };
-    },
-    mutations,
-    getters,
-    actions,
+  namespaced: true,
+  state() {
+    return {
+      user: null,
+      token: null,
+    };
+  },
+  mutations,
+  getters,
+  actions,
 };

@@ -1,9 +1,11 @@
 import { createRouter, createWebHistory } from "vue-router";
 
 // Admin Routes
-import AdminLoginPage from "./admin/views/LoginPage.vue";
-import AdminHomePage from "./admin/views/HomePage.vue";
-import AdminUsersPage from "./admin/views/UsersPage.vue";
+import AdminLoginPage from "./admin/views/AdminLoginPage.vue";
+import AdminHomePage from "./admin/views/AdminHomePage.vue";
+import AdminUsersPage from "./admin/views/AdminUsersPage.vue";
+import AdminCarsPage from "./admin/views/AdminCarsPage.vue";
+import AdminCitiesPage from "./admin/views/AdminCitiesPage.vue";
 
 // User Routes
 import HomePage from "./views/HomePage.vue";
@@ -21,6 +23,8 @@ const router = createRouter({
     { path: "/admin/login", component: AdminLoginPage, name: "adminLogin" },
     { path: "/admin/home", component: AdminHomePage, name: "adminHome" },
     { path: "/admin/users", component: AdminUsersPage, name: "adminUsers" },
+    { path: "/admin/cars", component: AdminCarsPage, name: "adminCars" },
+    { path: "/admin/cities", component: AdminCitiesPage, name: "adminCities" },
     { path: "/:notFound(.*)", component: NotFound },
   ],
 });

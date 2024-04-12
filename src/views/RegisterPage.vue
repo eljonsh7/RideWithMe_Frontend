@@ -19,23 +19,23 @@
         <div class="flex flex-col gap-5 w-full items-center mb-12">
           <div class="flex gap-5 w-full">
             <input
-              id="name"
-              v-model.trim="name.val"
-              :class="{ 'border-red-600': !name.isValid }"
+              id="firstName"
+              v-model.trim="firstName.val"
+              :class="{ 'border-red-600': !firstName.isValid }"
               class="w-full rounded-full py-2 px-3 border border-gray-300 outline-none"
-              placeholder="Name"
+              placeholder="First name"
               type="text"
-              @blur="clearValidity('name')"
+              @blur="clearValidity('firstName')"
             />
             <input
-              id="surname"
-              v-model.trim="surname.val"
-              :class="{ 'border-red-600': !surname.isValid }"
-              autocomplete="surname"
+              id="lastName"
+              v-model.trim="lastName.val"
+              :class="{ 'border-red-600': !lastName.isValid }"
+              autocomplete="lastName"
               class="w-full rounded-full py-2 px-3 border border-gray-300 outline-none"
               placeholder="Last Name"
               type="text"
-              @blur="clearValidity('surname')"
+              @blur="clearValidity('lastName')"
             />
           </div>
           <div class="w-full">
@@ -89,7 +89,7 @@
               id="password"
               v-model.trim="password.val"
               :class="{ 'border-red-600': !password.isValid }"
-              :type="passVisible ? 'text' : 'password'"
+              :type="passRVisible ? 'text' : 'password'"
               autocomplete="current-password"
               class="w-full rounded-full py-2 px-3 border border-gray-300 outline-none"
               inputmode="password"
@@ -98,10 +98,10 @@
             />
             <span
               class="absolute inset-y-0 right-0 px-2 flex items-center h-full w-5 text-gray-400 focus:outline-none"
-              @click="togglePasswordVisibility"
+              @click="togglePasswordRVisibility"
             >
               <i
-                :class="['far', passVisible ? 'fa-eye-slash' : 'fa-eye']"
+                :class="['far', passRVisible ? 'fa-eye-slash' : 'fa-eye']"
                 class="w-5 h-5 relative right-5 cursor-pointer text-black/50"
               ></i>
             </span>
@@ -149,15 +149,16 @@ export default {
   data() {
     return {
       passVisible: false,
+      passRVisible: false,
       email: {
         val: "",
         isValid: true,
       },
-      name: {
+      firstName: {
         val: "",
         isValid: true,
       },
-      surname: {
+      lastName: {
         val: "",
         isValid: true,
       },
@@ -188,6 +189,9 @@ export default {
     togglePasswordVisibility() {
       this.passVisible = !this.passVisible;
     },
+    togglePasswordRVisibility() {
+      this.passRVisible = !this.passRVisible;
+    },
     clearValidity(input) {
       this[input].isValid = true;
       this.incorrect = false;
@@ -203,7 +207,7 @@ export default {
         this.password.isValid = false;
         this.formIsValid = false;
       }
-      if (this.password != this.passwordR) {
+      if (this.password.val !== this.passwordR.val) {
         this.password.isValid = false;
         this.passwordR.isValid = false;
         this.formIsValid = false;
@@ -220,8 +224,8 @@ export default {
       const formData = {
         email: this.email.val,
         password: this.password.val,
-        name: this.name.val,
-        surname: this.surname.val,
+        firstName: this.firstName.val,
+        lastName: this.lastName.val,
         role: this.role.val,
       };
 

@@ -1,10 +1,6 @@
 <template>
   <div
-    :class="{
-      'mb-20 md:w-3/4 lg:w-5/6 md:mb-0 2xl:mt-16': isLoggedIn,
-      'md:w-full': !isLoggedIn,
-    }"
-    class="md:flex md:justify-center md:items-center md:h-screen md:text-center h-full flex-col bg-black/60"
+    class="md:flex md:justify-center md:items-center md:h-screen md:text-center h-full flex-col bg-black/60 mb-20 w-full md:mb-0 2xl:mt-16"
   >
     <div
       class="card bg-black px-8 pt-20 md:py-10 shadow-lg text-center w-full md:w-2/5 h-screen md:h-1/3 justify-evenly flex flex-col rounded-xl border-4 border-sky-500"

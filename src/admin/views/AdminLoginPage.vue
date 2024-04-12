@@ -35,10 +35,10 @@
           <custom-button
             id="password"
             placeholder="Password"
-            text="Login"
             type="submit"
             @click="submit"
-          ></custom-button>
+            >Login
+          </custom-button>
         </div>
       </div>
       <div class="w-full h-auto py-4 flex justify-evenly text-black/70">
@@ -54,13 +54,13 @@
 </template>
 
 <script>
-import CustomButton from "../components/CustomButton.vue";
-import CustomError from "../components/CustomError.vue";
+import CustomButton from "../../components/CustomButton.vue";
+import CustomError from "../../components/CustomError.vue";
 
 import UserService from "../services/user.js";
 
 export default {
-  name: "LogIn",
+  name: "AdminLoginPage",
   components: {
     CustomButton,
     CustomError,
@@ -117,5 +117,3 @@ export default {
   },
 };
 </script>
-
-<style scoped></style>
