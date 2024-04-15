@@ -66,10 +66,10 @@
             class="text-center text-black/50"
           >
             <td>{{ user.id }}</td>
-            <td>{{ user.first_name }}</td>
-            <td>{{ user.last_name }}</td>
+            <td>{{ user.firstName }}</td>
+            <td>{{ user.lastName }}</td>
             <td>{{ user.email }}</td>
-            <td>{{ user.reports_number }}</td>
+            <td>{{ user.reportsNumber }}</td>
             <td class="flex justify-center">
               <trash-icon
                 class="cursor-pointer"
@@ -92,13 +92,15 @@
   </div>
   <custom-modal v-if="this.selectedUser" @closeModal="this.selectedUser = null">
     <h1>Edit user</h1>
-    <input
-      v-for="item in users[0]"
-      :key="item"
-      class="w-96 outline-none border-2 border-black/50 rounded-lg py-2 px-3"
-      placeholder="item"
-      type="text"
-    />
+    <div v-for="(key, index) in filteredKeys" :key="index">
+      <p>{{ key }}</p>
+      <input
+        v-model="selectedUser[key]"
+        :placeholder="key"
+        class="w-96 outline-none border-2 border-black/50 rounded-lg py-2 px-3"
+        type="text"
+      />
+    </div>
   </custom-modal>
 </template>
 
@@ -117,23 +119,30 @@ export default {
     TrashIcon,
     EditIcon,
   },
+  computed: {
+    filteredKeys() {
+      return Object.keys(this.users[0]).filter(
+        (key) => !["id", "reportsNumber"].includes(key)
+      );
+    },
+  },
   data() {
     return {
       selectedUser: null,
       users: [
         {
           id: "000000000",
-          first_name: "Eljon",
-          last_name: "Shala",
+          firstName: "Eljon",
+          lastName: "Shala",
           email: "eljonSh@gmail.com",
-          reports_number: 0,
+          reportsNumber: 0,
         },
         {
           id: "000000001",
-          first_name: "Endrit",
-          last_name: "Gjoka",
+          firstName: "Endrit",
+          lastName: "Gjoka",
           email: "endritGj@gmail.com",
-          reports_number: 0,
+          reportsNumber: 0,
         },
       ],
       deleteUserModal: false,

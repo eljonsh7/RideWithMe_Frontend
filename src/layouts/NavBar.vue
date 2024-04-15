@@ -52,7 +52,7 @@
   <custom-modal v-if="this.logOutModal" @closeModal="this.logOutModal = false">
     <div class="flex flex-col gap-10">
       <div>Are you sure you want to log out?</div>
-      <div class="flex w-full justify-between">
+      <div class="flex w-full justify-between gap-2 sm:flex-row flex-col">
         <custom-button :fill="false" @click="this.logOutModal = false"
           >No
         </custom-button>

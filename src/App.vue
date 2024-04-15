@@ -11,12 +11,15 @@
     <router-view></router-view>
   </div>
   <div
-    v-if="
+    v-else-if="
       this.$route.path.includes('admin') && !this.$route.path.includes('login')
     "
-    class="w-full h-full flex"
+    class="w-full h-full flex flex-col md:flex-row"
   >
     <admin-nav-bar></admin-nav-bar>
+    <router-view></router-view>
+  </div>
+  <div v-else>
     <router-view></router-view>
   </div>
 </template>
