@@ -20,7 +20,7 @@
           <div class="flex gap-5 w-full">
             <input
               id="firstName"
-              v-model.trim="firstName.val"
+              v-model.trim="firstName.value"
               :class="{ 'border-red-600': !firstName.isValid }"
               class="w-full rounded-full py-2 px-3 border border-gray-300 outline-none"
               placeholder="First name"
@@ -29,7 +29,7 @@
             />
             <input
               id="lastName"
-              v-model.trim="lastName.val"
+              v-model.trim="lastName.value"
               :class="{ 'border-red-600': !lastName.isValid }"
               autocomplete="lastName"
               class="w-full rounded-full py-2 px-3 border border-gray-300 outline-none"
@@ -42,7 +42,7 @@
             <div class="w-full relative">
               <select
                 id="role"
-                v-model="role.val"
+                v-model="role.value"
                 class="mt-1 block w-full rounded-full py-2 px-3 border border-gray-300 outline-none shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50"
               >
                 <option disabled value="">Role</option>
@@ -53,7 +53,7 @@
           </div>
           <input
             id="email"
-            v-model.trim="email.val"
+            v-model.trim="email.value"
             :class="{ 'border-red-600': !email.isValid }"
             autocomplete="email"
             class="w-full rounded-full py-2 px-3 border border-gray-300 outline-none"
@@ -65,7 +65,7 @@
           <div class="w-full relative">
             <input
               id="passwordR"
-              v-model.trim="passwordR.val"
+              v-model.trim="passwordR.value"
               :class="{ 'border-red-600': !passwordR.isValid }"
               :type="passVisible ? 'text' : 'password'"
               autocomplete="current-password"
@@ -87,7 +87,7 @@
           <div class="w-full relative">
             <input
               id="password"
-              v-model.trim="password.val"
+              v-model.trim="password.value"
               :class="{ 'border-red-600': !password.isValid }"
               :type="passRVisible ? 'text' : 'password'"
               autocomplete="current-password"
@@ -109,10 +109,10 @@
           <button
             :class="{
               'bg-gray-600':
-                this.email.val.length > 0 && this.password.val.length > 0,
+                this.email.value.length > 0 && this.password.value.length > 0,
             }"
             :disabled="
-              !(this.email.val.length > 0 && this.password.val.length > 0)
+              !(this.email.value.length > 0 && this.password.value.length > 0)
             "
             class="w-full rounded-full p-2 text-white font-normal bg-gray-400"
           >
@@ -151,27 +151,27 @@ export default {
       passVisible: false,
       passRVisible: false,
       email: {
-        val: "",
+        value: "",
         isValid: true,
       },
       firstName: {
-        val: "",
+        value: "",
         isValid: true,
       },
       lastName: {
-        val: "",
+        value: "",
         isValid: true,
       },
       password: {
-        val: "",
+        value: "",
         isValid: true,
       },
       passwordR: {
-        val: "",
+        value: "",
         isValid: true,
       },
       role: {
-        val: "",
+        value: "",
         isValid: true,
       },
       formIsValid: true,
@@ -199,15 +199,15 @@ export default {
     validateForm() {
       this.formIsValid = true;
       this.incorrect = false;
-      if (!this.email.val.includes("@")) {
+      if (!this.email.value.includes("@")) {
         this.email.isValid = false;
         this.formIsValid = false;
       }
-      if (this.password.val.length === 0) {
+      if (this.password.value.length === 0) {
         this.password.isValid = false;
         this.formIsValid = false;
       }
-      if (this.password.val !== this.passwordR.val) {
+      if (this.password.value !== this.passwordR.value) {
         this.password.isValid = false;
         this.passwordR.isValid = false;
         this.formIsValid = false;
@@ -222,24 +222,17 @@ export default {
       }
 
       const formData = {
-        email: this.email.val,
-        password: this.password.val,
-        firstName: this.firstName.val,
-        lastName: this.lastName.val,
-        role: this.role.val,
+        email: this.email.value,
+        password: this.password.value,
+        firstName: this.firstName.value,
+        lastName: this.lastName.value,
+        role: this.role.value,
       };
 
       try {
         const response = await this.$store.dispatch("users/register", formData);
         if (response) {
-          this.$emit("auth-in", sessionStorage.getItem("token"));
-          const expirationDate = new Date();
-          expirationDate.setDate(expirationDate.getDate() + 30);
-          const cookieValue = `token=${
-            response.data.token
-          };expires=${expirationDate.toUTCString()};path=/`;
-          document.cookie = cookieValue;
-          this.$router.push("./home");
+          this.$router.push("/home");
         } else {
           this.incorrect = true;
         }

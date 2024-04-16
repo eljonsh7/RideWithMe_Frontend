@@ -4,7 +4,7 @@
     @click="this.$emit('closeModal')"
   >
     <div
-      class="w-auto h-auto p-5 rounded-lg border-2 border-black bg-white flex flex-col gap-2"
+      class="md:w-auto h-auto w-5/6 p-5 rounded-lg border-2 border-black bg-white flex flex-col gap-2"
       @click.stop
     >
       <slot></slot>
