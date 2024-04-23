@@ -1,5 +1,3 @@
-<script setup></script>
-
 <template>
   <div
     :style="{
@@ -19,7 +17,7 @@
         <div class="flex flex-col gap-5 w-full items-center mb-12">
           <input
             id="email"
-            v-model.trim="email.val"
+            v-model.trim="email.value"
             :class="{ 'border-red-600': !email.isValid }"
             autocomplete="email"
             class="w-full rounded-full py-2 px-3 border border-gray-300 outline-none"
@@ -31,7 +29,7 @@
           <div class="w-full relative">
             <input
               id="password"
-              v-model.trim="password.val"
+              v-model.trim="password.value"
               :class="{ 'border-red-600': !password.isValid }"
               :type="passVisible ? 'text' : 'password'"
               autocomplete="current-password"
@@ -53,10 +51,10 @@
           <button
             :class="{
               'bg-gray-600':
-                this.email.val.length > 0 && this.password.val.length > 0,
+                this.email.value.length > 0 && this.password.value.length > 0,
             }"
             :disabled="
-              !(this.email.val.length > 0 && this.password.val.length > 0)
+              !(this.email.value.length > 0 && this.password.value.length > 0)
             "
             class="w-full rounded-full p-2 text-white font-normal bg-gray-400"
           >
@@ -83,8 +81,6 @@
   </div>
 </template>
 
-<style scoped></style>
-
 <script>
 export default {
   props: [],
@@ -94,11 +90,11 @@ export default {
     return {
       passVisible: false,
       email: {
-        val: "",
+        value: "",
         isValid: true,
       },
       password: {
-        val: "",
+        value: "",
         isValid: true,
       },
       formIsValid: true,
@@ -123,11 +119,11 @@ export default {
     validateForm() {
       this.formIsValid = true;
       this.incorrect = false;
-      if (!this.email.val.includes("@")) {
+      if (!this.email.value.includes("@")) {
         this.email.isValid = false;
         this.formIsValid = false;
       }
-      if (this.password.val.length === 0) {
+      if (this.password.value.length === 0) {
         this.password.isValid = false;
         this.formIsValid = false;
       }
@@ -141,8 +137,8 @@ export default {
       }
 
       const formData = {
-        email: this.email.val,
-        password: this.password.val,
+        email: this.email.value,
+        password: this.password.value,
       };
 
       try {

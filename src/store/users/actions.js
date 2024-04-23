@@ -18,11 +18,12 @@ export default {
       sessionStorage.setItem("isLoggedIn", true);
       sessionStorage.setItem("token", response.data.token);
       sessionStorage.setItem("userId", response.data.user.id);
+      sessionStorage.setItem("isAdmin", response.data.user.role == "admin");
       context.commit("setUser", response.data.user);
       context.commit("setToken", response.data.token);
       return response;
     } catch (error) {
-      console.log("🚀 ~ file: actions.js:48 ~ login ~ error:", error);
+      console.log(error);
       return false;
     }
   },
@@ -42,10 +43,11 @@ export default {
       sessionStorage.setItem("isLoggedIn", true);
       sessionStorage.setItem("token", response.data.token);
       sessionStorage.setItem("userId", response.data.user.id);
+      sessionStorage.setItem("isAdmin", false);
       context.commit("setUser", response.data.user);
       return response;
     } catch (error) {
-      console.log("🚀 ~ file: actions.js:48 ~ login ~ error:", error);
+      console.log(error);
       return false;
     }
   },

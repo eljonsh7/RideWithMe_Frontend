@@ -8,15 +8,15 @@
           <h1 class="text-3xl font-semibold mb-3">Login</h1>
           <div class="flex flex-col w-full">
             <input
-              id="username"
-              v-model="username.value"
+              id="email"
+              v-model="email.value"
               class="py-2 px-3 border-2 focus:outline-black rounded-lg"
-              placeholder="Username"
-              type="text"
+              placeholder="Email"
+              type="email"
             />
             <custom-error
-              v-if="!username.isValid"
-              text="Username is required"
+              v-if="!email.isValid"
+              text="Email is required"
             ></custom-error>
           </div>
           <div class="flex flex-col w-full">
@@ -32,13 +32,7 @@
               text="Password is required"
             ></custom-error>
           </div>
-          <custom-button
-            id="password"
-            placeholder="Password"
-            type="submit"
-            @click="submit"
-            >Login
-          </custom-button>
+          <custom-button type="button" @click="submit">Login</custom-button>
         </div>
       </div>
       <div class="w-full h-auto py-4 flex justify-evenly text-black/70">
@@ -57,7 +51,7 @@
 import CustomButton from "../../components/CustomButton.vue";
 import CustomError from "../../components/CustomError.vue";
 
-import UserService from "../services/user.js";
+// import UserService from "../services/user.js";
 
 export default {
   name: "AdminLoginPage",
@@ -65,9 +59,14 @@ export default {
     CustomButton,
     CustomError,
   },
+  beforeMount() {
+    if (sessionStorage.getItem("isLoggedIn")) {
+      this.$store.dispatch("users/logOut");
+    }
+  },
   data() {
     return {
-      username: {
+      email: {
         value: "",
         isValid: true,
       },
@@ -78,7 +77,7 @@ export default {
     };
   },
   methods: {
-    submit() {
+    async submit() {
       this.reset();
 
       if (!this.checkValidity()) {
@@ -86,17 +85,20 @@ export default {
       }
 
       const user = {
-        username: this.username.value,
+        email: this.email.value,
         password: this.password.value,
       };
 
-      if (UserService.login(user)) {
+      const response = await this.$store.dispatch("users/login", user);
+      if (response) {
         this.$router.push("/admin/home");
+      } else {
+        console.log("Something went wrong!");
       }
     },
     checkValidity() {
-      if (this.username.value === "") {
-        this.username.isValid = false;
+      if (this.email.value === "") {
+        this.email.isValid = false;
         if (this.password.value === "") {
           this.password.isValid = false;
         }
@@ -111,7 +113,7 @@ export default {
       return true;
     },
     reset() {
-      this.username.isValid = true;
+      this.email.isValid = true;
       this.password.isValid = true;
     },
   },
