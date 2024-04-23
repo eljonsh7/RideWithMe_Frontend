@@ -7,7 +7,7 @@ export default {
     let config = {
       method: "post",
       maxBodyLength: Infinity,
-      url: `${apiPath}/v1/login`,
+      url: `${apiPath}/login`,
       headers: {
         Accept: "application/json, text/plain, */*",
       },
@@ -30,7 +30,7 @@ export default {
     let config = {
       method: "post",
       maxBodyLength: Infinity,
-      url: `${apiPath}/v1/signup`,
+      url: `${apiPath}/signup`,
       headers: {
         Accept: "application/json, text/plain, */*",
       },
@@ -54,5 +54,6 @@ export default {
     sessionStorage.removeItem("token");
     sessionStorage.removeItem("userId");
     context.commit("logOut");
-  },
+  }
+  ,
 };
