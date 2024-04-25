@@ -49,29 +49,23 @@
     </div>
   </div>
   <hr />
-  <custom-modal v-if="this.logOutModal" @closeModal="this.logOutModal = false">
-    <div class="flex flex-col gap-10">
-      <div>Are you sure you want to log out?</div>
-      <div class="flex w-full justify-between gap-2 sm:flex-row flex-col">
-        <custom-button :fill="false" @click="this.logOutModal = false"
-          >No
-        </custom-button>
-        <custom-button :fill="true" @click="logOut">Yes</custom-button>
-      </div>
-    </div>
-  </custom-modal>
+  <confirm-box
+    v-if="this.logOutModal"
+    @closeModal="this.logOutModal = false"
+    @confirm-action="logOut"
+  >
+    Are you sure you want to log out?
+  </confirm-box>
 </template>
 
 <script>
 import NavLink from "../components/NavLink.vue";
-import CustomModal from "./CustomModal.vue";
-import CustomButton from "../components/CustomButton.vue";
+import ConfirmBox from "@/layouts/ConfirmBox.vue";
 
 export default {
   components: {
-    CustomButton,
+    ConfirmBox,
     NavLink,
-    CustomModal,
   },
   data() {
     return {

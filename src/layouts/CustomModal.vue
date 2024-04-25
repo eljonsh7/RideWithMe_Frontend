@@ -1,10 +1,10 @@
 <template>
   <div
     class="w-screen h-screen top-0 right-0 flex justify-center items-center bg-black/40 absolute"
-    @click="this.$emit('closeModal')"
+    @click="this.$emit('close-modal')"
   >
     <div
-      class="md:w-auto h-auto w-5/6 p-5 rounded-lg border-2 border-black bg-white flex flex-col gap-2"
+      class="h-auto w-5/6 md:w-1/2 p-6 md:p-10 rounded-lg border-2 border-black bg-white flex flex-col gap-2"
       @click.stop
     >
       <slot></slot>
@@ -15,6 +15,6 @@
 <script>
 export default {
   name: "CustomModal",
-  emits: ["closeModal"],
+  emits: ["close-modal"],
 };
 </script>
