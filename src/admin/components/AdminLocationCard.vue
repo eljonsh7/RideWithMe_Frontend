@@ -1,11 +1,7 @@
 <template>
   <div
-    :class="{
-      'bg-gray-400': this.selectedCityId === this.id,
-      'bg-gray-200 hover:bg-gray-300': this.selectedCityId !== this.id,
-    }"
-    class="flex w-full justify-between px-5 py-8 border-b border-gray-200 rounded-lg shadow-lg cursor-pointer"
-    @click="this.$emit('select-city', this.id)"
+    class="flex w-full justify-between px-5 py-8 bg-gray-200 hover:bg-gray-300 border-b border-gray-200 rounded-lg shadow-lg cursor-pointer"
+    @click="this.$emit('select-location', this.id)"
   >
     <div>{{ this.nameValue }}</div>
     <div class="cursor-pointer flex gap-2">
@@ -21,19 +17,10 @@
   </div>
   <custom-modal v-if="this.isModalOpen" @close-modal="this.isModalOpen = false">
     <div class="w-full flex flex-col gap-5">
-      <div>Edit city name:</div>
+      <div>Edit location name:</div>
       <div class="flex gap-2 md:flex-row flex-col">
         <div class="flex flex-col w-full">
-          <div class="text-sm text-black/40">Country:</div>
-          <input
-            v-model="this.newCountryValue"
-            class="px-4 py-3 rounded-lg outline-none border-2 border-gray-300 w-full"
-            placeholder="Country"
-            type="text"
-          />
-        </div>
-        <div class="flex flex-col w-full">
-          <div class="text-sm text-black/40">City:</div>
+          <div class="text-sm text-black/40">Location:</div>
           <input
             v-model="this.newNameValue"
             autofocus
@@ -44,23 +31,18 @@
         </div>
       </div>
       <div class="flex justify-end">
-        <custom-button :fill="true" @click="updateCity">Save</custom-button>
+        <custom-button :fill="true" @click="updateLocation">Save</custom-button>
       </div>
     </div>
   </custom-modal>
   <custom-modal v-if="this.deleteModal" @close-modal="this.deleteModal = false">
-    <div class="flex flex-col w-full gap-10">
+    <div class="flex flex-col gap-10">
       <div>Do you want to delete this city?</div>
       <div class="flex w-full justify-between gap-2 sm:flex-row flex-col">
         <custom-button :fill="false" @click="this.deleteModal = false"
           >Cancel
         </custom-button>
-        <custom-button
-          :fill="true"
-          @click="
-            this.$emit('delete-city', { id: this.id, index: this.index });
-            this.deleteModal = false;
-          "
+        <custom-button :fill="true" @click="deleteLocation"
           >Delete
         </custom-button>
       </div>
@@ -74,12 +56,12 @@ import TrashIcon from "../../components/icons/TrashIcon.vue";
 import CustomModal from "../../layouts/CustomModal.vue";
 import CustomButton from "../../components/CustomButton.vue";
 
-import City from "../services/city";
+import Location from "../services/location.js";
 
 export default {
-  name: "AdminCityCard",
-  props: ["id", "index", "name", "country", "selectedCityId"],
-  emits: ["update-city", "delete-city", "select-city"],
+  name: "AdminLocationCard",
+  props: ["id", "index", "name", "cityId"],
+  emits: ["delete-location"],
   components: {
     EditIcon,
     TrashIcon,
@@ -91,26 +73,32 @@ export default {
       isModalOpen: false,
       deleteModal: false,
       nameValue: this.name,
-      countryValue: this.country,
       newNameValue: this.name,
-      newCountryValue: this.country,
     };
   },
   methods: {
-    async updateCity() {
+    async deleteLocation() {
+      const response = await Location.deleteLocation(
+        this.id,
+        sessionStorage.getItem("token")
+      );
+      if (response) {
+        this.isModalOpen = false;
+        this.$emit("delete-location", this.index);
+      }
+    },
+    updateLocation() {
       const object = {
-        id: this.id,
-        country: this.newCountryValue,
-        name: this.newNameValue,
+        locationId: this.id,
+        name: this.nameValue,
       };
 
-      const response = await City.updateCity(
+      const response = Location.updateLocation(
         object,
         sessionStorage.getItem("token")
       );
       if (response) {
         this.nameValue = this.newNameValue;
-        this.countryValue = this.newCountryValue;
         this.isModalOpen = false;
       }
     },
