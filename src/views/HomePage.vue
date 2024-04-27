@@ -2,7 +2,7 @@
   <div class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-6 p-5 text-white gap-4 mv-auto mx-auto lg:mx-32">
     <div>
         <label for="fromRoute" class="text-center text-black" style="display: block;">From:</label>
-        <select v-model="from.val" id="fromRoute" class="w-full border border-gray-500 p-2 rounded-3xl bg-white text-black text-center">
+        <select v-model="fromCity.val" id="fromRoute" class="w-full border border-gray-500 p-2 rounded-3xl bg-white text-black text-center">
           <option v-for="city in cities" :key="city.id" :value="city.id">{{ city.name }}</option>
         </select>
     </div>
@@ -11,7 +11,7 @@
     </div>
     <div>
         <label for="toRoute" class="text-center text-black" style="display: block;">To:</label>
-        <select v-model="to.val" id="toRoute" class="w-full border border-gray-500 p-2 rounded-3xl bg-white text-black text-center">
+        <select v-model="toCity.val" id="toRoute" class="w-full border border-gray-500 p-2 rounded-3xl bg-white text-black text-center">
           <option v-for="city in cities" :key="city.id" :value="city.id">{{ city.name }}</option>
         </select>
     </div>
@@ -39,7 +39,7 @@
     </div>
     <div class="lg:ml-10">
         <label for="buttonSearch" class="text-center text-black" style="display:block;visibility: hidden;">Search</label>
-        <button id="buttonSearch" class="bg-white border border-gray-500 text-black px-3 py-2 rounded-custom w-full lg:w-auto" @click="submitFilter">
+        <button id="buttonSearch" class="bg-white border border-gray-500 text-black px-3 py-2 rounded-custom w-full lg:w-auto" @click="currentPage = 1;submitFilter();">
             <i class="fas fa-search"></i>
         </button>
       </div>  
@@ -110,11 +110,11 @@ export default {
     return{
       cities:[],
       Routes: [],
-      from: {
+      fromCity: {
         val: "",
         isValid: true,
       },
-      to: {
+      toCity: {
         val: "",
         isValid: true,
       },
@@ -147,11 +147,28 @@ export default {
     } catch (error) {
       console.error("Error fetching cities:", error);
     }
+    try {
+      const response = await routeService.getRoutes({pageSize:this.pageSize,page:this.currentPage});
+      this.Routes = response.data.data;
+      this.lastPage = response.data.last_page;
+    } catch (error) {
+      console.error("Error fetching cities:", error);
+    }
   },
   methods: {
     async goToPage(pageNumber) {
       this.currentPage = pageNumber;
-      await this.submitFilter();
+      if(this.fromCity.val){
+        await this.submitFilter();
+      }else{
+        try {
+          const response = await routeService.getRoutes({pageSize:this.pageSize,page:this.currentPage});
+          this.Routes = response.data.data;
+          this.lastPage = response.data.last_page;
+        } catch (error) {
+          console.error("Error fetching cities:", error);
+        }
+      }
     },
     resetTimeFilter(){
       this.time.val='';
@@ -160,17 +177,17 @@ export default {
       this.isTimeRange=false;
     },
     async submitFilter() {
-    if (!this.from.val) {
-        this.from.isValid = false;
+    if (!this.fromCity.val) {
+        this.fromCity.isValid = false;
         return;
     }
-    if (!this.to.val) {
-        this.to.isValid = false;
+    if (!this.toCity.val) {
+        this.toCity.isValid = false;
         return;
     }
     let filterData = {
-        cityFromId: this.from.val,
-        cityToId: this.to.val,
+        cityFromId: this.fromCity.val,
+        cityToId: this.toCity.val,
         page: this.currentPage,
         pageSize: this.pageSize
     };
@@ -184,8 +201,8 @@ export default {
     if(this.date.val && this.time.val){
       this.dateTime.val = this.date.val + " " +  this.time.val;
       filterData = {
-        cityFromId: this.from.val,
-        cityToId: this.to.val,
+        cityFromId: this.fromCity.val,
+        cityToId: this.toCity.val,
         datetime: this.dateTime.val,
         page: this.currentPage,
         pageSize: this.pageSize,
