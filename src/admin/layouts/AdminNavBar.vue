@@ -38,31 +38,30 @@
       </div>
     </div>
   </div>
-  <custom-modal v-if="this.logOutModal" @close-modal="this.logOutModal = false">
-    <div class="flex flex-col gap-10">
-      <div>Are you sure you want to log out?</div>
-      <div class="flex w-full justify-between gap-2 sm:flex-row flex-col">
-        <custom-button :fill="false" @click="this.logOutModal = false"
-          >No
-        </custom-button>
-        <custom-button :fill="true" @click="logOut">Yes</custom-button>
-      </div>
-    </div>
-  </custom-modal>
+  <confirm-box
+    v-if="this.logOutModal"
+    @close-modal="this.logOutModal = false"
+    @confirm-action="logOut"
+  >
+    Are you sure you want to log out?
+  </confirm-box>
 </template>
 
 <script>
 import AdminNavLink from "../components/AdminNavLink.vue";
 
-import CustomModal from "../../layouts/CustomModal.vue";
-import CustomButton from "../../components/CustomButton.vue";
-
-import BarsIcon from "../../assets/svg/BarsIcon.vue";
-import xMark from "../../assets/svg/xMark.vue";
+import BarsIcon from "../../components/icons/BarsIcon.vue";
+import xMark from "../../components/icons/xMark.vue";
+import ConfirmBox from "@/layouts/ConfirmBox.vue";
 
 export default {
   name: "NavBar",
-  components: { CustomButton, AdminNavLink, CustomModal, BarsIcon, xMark },
+  components: {
+    ConfirmBox,
+    AdminNavLink,
+    BarsIcon,
+    xMark,
+  },
   beforeMount() {
     if (!sessionStorage.getItem("isLoggedIn")) {
       this.$router.push("/admin/login");

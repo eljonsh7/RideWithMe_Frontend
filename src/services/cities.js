@@ -3,16 +3,16 @@ import axios from "axios";
 const apiPath = process.env.VUE_APP_SERVICE_URL;
 
 export default {
-    async search(object) {
+    async getCities(object) {
         let config = {
-          method: "post",
+          method: "get",
           maxBodyLength: Infinity,
-          url: `${apiPath}/routes/search`,
+          url: `${apiPath}/cities/get`,
           headers: {
             Accept: "application/json, text/plain, */*",
             Authorization: `Bearer 8|XHNXbVwCXy3T1XYXjtGKiyTjR634nuUEsuA3mgFi1a373b6c`,
           },
-          data: object,
+          data: object
         };
         try {
           const response = await axios.request(config);
@@ -22,16 +22,15 @@ export default {
           return false;
         }
     },
-    async getRoutes(object) {
+    async getCityByID(id) {
         let config = {
           method: "get",
           maxBodyLength: Infinity,
-          url: `${apiPath}/routes/get`,
+          url: `${apiPath}/cities/${id}`,
           headers: {
             Accept: "application/json, text/plain, */*",
             Authorization: `Bearer 8|XHNXbVwCXy3T1XYXjtGKiyTjR634nuUEsuA3mgFi1a373b6c`,
           },
-          params:object,
         };
         try {
           const response = await axios.request(config);

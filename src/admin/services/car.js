@@ -3,11 +3,11 @@ import axios from "axios";
 const apiPath = process.env.VUE_APP_SERVICE_URL;
 
 export default {
-  async addCity(object, token) {
+  async addCar(object, token) {
     let config = {
       method: "post",
       maxBodyLength: Infinity,
-      url: `${apiPath}/cities/store`,
+      url: `${apiPath}/cars/store`,
       headers: {
         Accept: "application/json, text/plain, */*",
         Authorization: `Bearer ${token}`,
@@ -21,11 +21,11 @@ export default {
       return false;
     }
   },
-  async deleteCity(id, token) {
+  async deleteCar(id, token) {
     let config = {
       method: "delete",
       maxBodyLength: Infinity,
-      url: `${apiPath}/cities/delete/${id}`,
+      url: `${apiPath}/cars/delete/${id}`,
       headers: {
         Accept: "application/json, text/plain, */*",
         Authorization: `Bearer ${token}`,
@@ -38,11 +38,11 @@ export default {
       return false;
     }
   },
-  async getCities(token) {
+  async getCars(token) {
     let config = {
       method: "get",
       maxBodyLength: Infinity,
-      url: `${apiPath}/cities/get`,
+      url: `${apiPath}/cars/get`,
       headers: {
         Accept: "application/json, text/plain, */*",
         Authorization: `Bearer ${token}`,
@@ -55,11 +55,11 @@ export default {
       return false;
     }
   },
-  async updateCity(object, token) {
+  async updateCar(object, token) {
     let config = {
       method: "put",
       maxBodyLength: Infinity,
-      url: `${apiPath}/cities/update/${object.id}`,
+      url: `${apiPath}/cars/update/${object.id}`,
       headers: {
         Accept: "application/json, text/plain, */*",
         Authorization: `Bearer ${token}`,

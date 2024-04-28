@@ -56,5 +56,6 @@ export default {
     sessionStorage.removeItem("token");
     sessionStorage.removeItem("userId");
     context.commit("logOut");
-  },
+  }
+  ,
 };
