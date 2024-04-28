@@ -1,6 +1,6 @@
 <template>
   <div
-    class="w-screen h-screen top-0 right-0 flex justify-center items-center bg-black/40 absolute"
+    class="w-screen h-screen top-0 right-0 flex justify-center items-center bg-black/40 fixed z-50"
     @click="this.$emit('close-modal')"
   >
     <div

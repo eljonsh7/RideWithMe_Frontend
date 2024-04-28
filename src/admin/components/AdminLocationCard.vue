@@ -1,7 +1,6 @@
 <template>
   <div
     class="flex w-full justify-between px-5 py-8 bg-gray-200 hover:bg-gray-300 border-b border-gray-200 rounded-lg shadow-lg cursor-pointer"
-    @click="this.$emit('select-location', this.id)"
   >
     <div>{{ this.nameValue }}</div>
     <div class="cursor-pointer flex gap-2">

@@ -63,66 +63,25 @@
       </div>
     </div>
   </div>
-  <custom-modal
+  <admin-city-form
     v-if="this.isAddCityModalOpen"
-    @close-modal="
-      this.isAddCityModalOpen = false;
-      this.cityValue = '';
-    "
+    @close-form="this.closeCityForm"
   >
-    <div class="w-full flex flex-col gap-5">
-      <div>Add city:</div>
-      <div class="flex gap-2 md:flex-row flex-col">
-        <input
-          v-model="this.countryValue"
-          class="px-4 py-3 rounded-lg outline-none border-2 border-gray-300 w-full"
-          placeholder="Country"
-          type="text"
-          value="Kosova"
-        />
-        <input
-          v-model="this.cityValue"
-          autofocus
-          class="px-4 py-3 rounded-lg outline-none border-2 border-gray-300 w-full"
-          placeholder="City name"
-          type="text"
-        />
-      </div>
-      <div class="flex justify-end">
-        <custom-button :fill="true" @click="addCity">Add</custom-button>
-      </div>
-    </div>
-  </custom-modal>
-  <custom-modal
+  </admin-city-form>
+  <admin-location-form
     v-if="this.isAddLocationModalOpen"
-    @close-modal="
-      this.isAddLocationModalOpen = false;
-      this.locationValue = '';
-    "
+    :selectedCityId="this.selectedCityId"
+    @close-form="this.closeLocationForm"
   >
-    <div class="w-full flex flex-col gap-5">
-      <div>Add city:</div>
-      <div class="flex gap-2 md:flex-row flex-col">
-        <input
-          v-model="this.locationValue"
-          autofocus
-          class="px-4 py-3 rounded-lg outline-none border-2 border-gray-300 w-full"
-          placeholder="City name"
-          type="text"
-        />
-      </div>
-      <div class="flex justify-end">
-        <custom-button :fill="true" @click="addLocation">Add</custom-button>
-      </div>
-    </div>
-  </custom-modal>
+  </admin-location-form>
 </template>
 
 <script>
 import AdminCityCard from "../components/AdminCityCard.vue";
 import AdminLocationCard from "../components/AdminLocationCard.vue";
+import AdminCityForm from "../layouts/AdminCityForm.vue";
+import AdminLocationForm from "../layouts/AdminLocationForm.vue";
 import CustomButton from "../../components/CustomButton.vue";
-import CustomModal from "../../layouts/CustomModal.vue";
 
 import City from "../services/city.js";
 import Location from "../services/location.js";
@@ -130,10 +89,11 @@ import Location from "../services/location.js";
 export default {
   name: "AdminCitiesPage",
   components: {
+    AdminLocationForm,
+    AdminCityForm,
     AdminCityCard,
     AdminLocationCard,
     CustomButton,
-    CustomModal,
   },
   data() {
     return {
@@ -142,8 +102,6 @@ export default {
       locationValue: "",
       cities: [],
       locations: [],
-      cityValue: "",
-      countryValue: "Kosovë",
       selectedCityId: null,
     };
   },
@@ -158,22 +116,15 @@ export default {
     },
   },
   methods: {
-    async addCity() {
-      if (this.cityValue !== "" && this.countryValue !== "") {
-        const obj = {
-          name: this.cityValue,
-          country: this.countryValue,
-        };
-        this.isAddCityModalOpen = false;
-        this.cityValue = "";
-        const response = await City.addCity(
-          obj,
-          sessionStorage.getItem("token")
-        );
-        if (response) {
-          this.getCities();
-        }
-      }
+    async closeCityForm(arg) {
+      if (arg) await this.getCities();
+
+      this.isAddCityModalOpen = false;
+    },
+    async closeLocationForm(arg) {
+      if (arg) await this.getLocations();
+
+      this.isAddLocationModalOpen = false;
     },
     async getCities() {
       const cities = await City.getCities(sessionStorage.getItem("token"));
@@ -194,24 +145,6 @@ export default {
         sessionStorage.getItem("token")
       );
       if (locations) this.locations = locations.data.locations;
-    },
-    async addLocation() {
-      if (this.locationValue !== "" && this.selectedCityId !== null) {
-        const obj = {
-          cityId: this.selectedCityId,
-          name: this.locationValue,
-          googleMapsLink: "https://maps.googleapis.com/maps/api/geocode/json",
-        };
-        this.isAddLocationModalOpen = false;
-        this.locationValue = "";
-        const response = await Location.addLocation(
-          obj,
-          sessionStorage.getItem("token")
-        );
-        if (response) {
-          this.getLocations();
-        }
-      }
     },
     async deleteLocation(index) {
       this.locations.splice(index, 1);
