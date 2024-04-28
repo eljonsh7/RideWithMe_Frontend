@@ -31,7 +31,6 @@
               id="lastName"
               v-model.trim="lastName.value"
               :class="{ 'border-red-600': !lastName.isValid }"
-              autocomplete="lastName"
               class="w-full rounded-full py-2 px-3 border border-gray-300 outline-none"
               placeholder="Last Name"
               type="text"

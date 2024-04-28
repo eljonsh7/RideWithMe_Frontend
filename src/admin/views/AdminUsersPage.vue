@@ -1,13 +1,13 @@
 <template>
   <div class="flex w-full">
     <div class="overflow-x-auto flex flex-col gap-4 w-full p-5">
-      <table class="divide-y divide-gray-200 w-full border-2 border-black/30">
-        <thead class="bg-gray-50">
+      <table class="divide-y divide-gray-200 w-full border-black/30">
+        <thead class="bg-gray-50 border">
           <tr>
             <th
               v-for="column in this.columns"
               :key="column"
-              class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider"
+              class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-200"
               scope="col"
             >
               {{ column }}
@@ -24,6 +24,7 @@
             :index="index"
             :user="user"
             @delete-user="deleteUser"
+            @user-ban-status-changed="changeUserBanStatus"
           >
           </admin-user-table-row>
         </tbody>
@@ -53,26 +54,23 @@ export default {
   data() {
     return {
       selectedUser: null,
-      columns: [
-        "First name",
-        "Last name",
-        "Email",
-        "Role",
-        "Reports number",
-        "-",
-      ],
+      columns: ["Full name", "Email", "Role", "Reports number", "-"],
       users: [],
       deleteUserModal: false,
+      sortedColumn: "",
+      desc: false,
     };
   },
   methods: {
     async getUsers() {
       const users = await User.getUsers(sessionStorage.getItem("token"));
-      console.log(users);
-      this.users = users.data.users;
+      if (users) this.users = users.data.users;
     },
     deleteUser(index) {
       this.users.splice(index, 1);
+    },
+    changeUserBanStatus(index, status) {
+      this.users[index].is_banned = status;
     },
   },
 };

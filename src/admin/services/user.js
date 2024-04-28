@@ -55,16 +55,15 @@ export default {
       return false;
     }
   },
-  async banUser(object, token) {
+  async banUser(userId, token) {
     let config = {
       method: "post",
       maxBodyLength: Infinity,
-      url: `${apiPath}/users/ban/${object.userId}`,
+      url: `${apiPath}/users/ban/${userId}`,
       headers: {
         Accept: "application/json, text/plain, */*",
         Authorization: `Bearer ${token}`,
       },
-      data: object.data,
     };
     try {
       return await axios.request(config);
