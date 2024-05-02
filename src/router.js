@@ -9,6 +9,9 @@ import AdminCitiesPage from "./admin/views/AdminCitiesPage.vue";
 
 // User Routes
 import HomePage from "./views/HomePage.vue";
+import ProfilePage from "./views/ProfilePage.vue";
+import ChatPage from "./views/ChatPage.vue";
+import ReservationsPage from "./views/ReservationsPage.vue";
 import NotFound from "./views/NotFound.vue";
 import LogIn from "./views/LogIn.vue";
 import RegisterPage from "./views/RegisterPage.vue";
@@ -18,6 +21,13 @@ const router = createRouter({
   routes: [
     { path: "/", redirect: "/home" },
     { path: "/home", component: HomePage, name: "home" },
+    { path: "/profile", component: ProfilePage, name: "profile" },
+    {
+      path: "/reservations",
+      component: ReservationsPage,
+      name: "reservations",
+    },
+    { path: "/chat", component: ChatPage, name: "chat" },
     { path: "/login", component: LogIn, name: "login" },
     { path: "/register", component: RegisterPage, name: "register" },
     { path: "/admin/login", component: AdminLoginPage, name: "adminLogin" },

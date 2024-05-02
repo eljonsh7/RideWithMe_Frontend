@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full text-center p-4 flex flex-col gap-3">
+  <div class="w-full text-center p-5 flex flex-col gap-3">
     <div class="flex justify-center text-3xl font-extrabold">Cities</div>
     <div class="w-full justify-end flex">
       <custom-button :fill="true" @click="isAddCarModalOpen = true"

@@ -10,7 +10,9 @@
     >
       <div class="w-full justify-center flex items-center mb-8 md:mb-12">
         <p class="text-black font-bold">Login to</p>
-        <img :src="require('@/assets/images/rwm.png')" alt="rwm" />
+        <a href="/home">
+          <img :src="require('@/assets/images/rwm.png')" alt="rwm" />
+        </a>
       </div>
 
       <form id="signInForm" class="w-full" @submit.prevent="submitForm">

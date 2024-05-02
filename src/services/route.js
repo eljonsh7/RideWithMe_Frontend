@@ -3,11 +3,11 @@ import axios from "axios";
 const apiPath = process.env.VUE_APP_SERVICE_URL;
 
 export default {
-  async addLocation(object, token) {
+  async getFilteredRoutes(object, token) {
     let config = {
       method: "post",
       maxBodyLength: Infinity,
-      url: `${apiPath}/locations/store`,
+      url: `${apiPath}/routes/search`,
       headers: {
         Accept: "application/json, text/plain, */*",
         Authorization: `Bearer ${token}`,
@@ -15,61 +15,65 @@ export default {
       data: object,
     };
     try {
-      return await axios.request(config);
+      const response = await axios.request(config);
+      return response.data;
     } catch (error) {
-      console.log(error);
+      console.error("Error fetching routes:", error);
       return false;
     }
   },
-  async deleteLocation(locationId, token) {
+  async addRoute(object, token) {
     let config = {
-      method: "delete",
+      method: "post",
       maxBodyLength: Infinity,
-      url: `${apiPath}/locations/delete/${locationId}`,
+      url: `${apiPath}/routes/add`,
       headers: {
         Accept: "application/json, text/plain, */*",
         Authorization: `Bearer ${token}`,
       },
+      data: object,
     };
     try {
-      return await axios.request(config);
+      const response = await axios.request(config);
+      return response.data;
     } catch (error) {
-      console.log(error);
+      console.error("Error fetching routes:", error);
       return false;
     }
   },
-  async getLocations(cityId, token) {
+  async getRoutes(object) {
     let config = {
       method: "get",
       maxBodyLength: Infinity,
-      url: `${apiPath}/locations/get/${cityId}`,
+      url: `${apiPath}/routes/get`,
       headers: {
         Accept: "application/json, text/plain, */*",
-        Authorization: `Bearer ${token}`,
       },
+      params: object,
     };
     try {
-      return await axios.request(config);
+      const response = await axios.request(config);
+      return response.data;
     } catch (error) {
-      console.log(error);
+      console.error("Error fetching routes:", error);
       return false;
     }
   },
-  async updateLocation(object, token) {
+  async getUserRoutes(userId, token) {
     let config = {
-      method: "put",
+      method: "get",
       maxBodyLength: Infinity,
-      url: `${apiPath}/locations/update/${object.locationId}`,
+      url: `${apiPath}/routes/user/${userId}`,
       headers: {
         Accept: "application/json, text/plain, */*",
         Authorization: `Bearer ${token}`,
       },
-      data: object,
     };
     try {
-      return await axios.request(config);
+      const response = await axios.request(config);
+      return response.data;
     } catch (error) {
-      console.log(error);
+      console.error("Error fetching routes:", error);
       return false;
     }
   },

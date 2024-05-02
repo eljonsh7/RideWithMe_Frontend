@@ -2,7 +2,9 @@
   <div
     class="flex md:hidden w-full h-auto px-4 py-3 justify-between border-b-2 border-black/20 items-center"
   >
-    <img class="w-16 h-16" src="../assets/images/logo.png" />
+    <a href="/home">
+      <img class="w-16 h-16" src="../assets/images/logo.png" />
+    </a>
     <bars-icon
       class="cursor-pointer"
       @click="this.isShown = !this.isShown"
@@ -13,7 +15,12 @@
     class="h-screen md:w-64 w-full flex flex-col justify-between gap-2 border-r border-black/40 pb-20 bg-white"
   >
     <div class="flex md:justify-center justify-between px-4 py-3 items-center">
-      <img class="w-16 h-16 md:w-28 md:h-28" src="../assets/images/logo.png" />
+      <a href="/home">
+        <img
+          class="w-16 h-16 md:w-28 md:h-28"
+          src="../assets/images/logo.png"
+        />
+      </a>
       <x-mark
         class="cursor-pointer md:hidden flex"
         @click="this.isShown = !this.isShown"

@@ -34,16 +34,33 @@ export default {
     NavBar,
     AdminNavBar,
   },
+  created() {
+    this.getUser();
+  },
   data() {
     return {
       currentComponent: "",
+      user: null,
     };
+  },
+  watch: {
+    $route() {
+      this.getUser();
+    },
   },
   beforeRouteEnter(to, from, next) {
     console.log(to);
     this.currentComponent = to.matched[0].components.default.name;
     console.log(this.currentComponent);
     next();
+  },
+  methods: {
+    getUser() {
+      this.user = this.$store.dispatch(
+        "users/getUserByToken",
+        sessionStorage.getItem("token")
+      );
+    },
   },
 };
 </script>
