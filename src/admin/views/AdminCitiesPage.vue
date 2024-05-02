@@ -13,11 +13,9 @@
       <div class="flex flex-col gap-2">
         <admin-city-card
           v-for="(city, index) in cities"
-          :id="city.id"
           :key="city.id"
-          :country="city.country"
+          :city="city"
           :index="index"
-          :name="city.name"
           :selectedCityId="this.selectedCityId"
           @select-city="(id) => (this.selectedCityId = id)"
           @delete-city="deleteCity"
@@ -44,10 +42,10 @@
       <div class="flex flex-col gap-2">
         <admin-location-card
           v-for="(location, index) in locations"
-          :id="location.id"
           :key="location.id"
+          :cityId="this.selectedCityId"
           :index="index"
-          :name="location.name"
+          :location="location"
           @delete-location="deleteLocation"
         ></admin-location-card>
       </div>
@@ -118,7 +116,6 @@ export default {
   methods: {
     async closeCityForm(arg) {
       if (arg) await this.getCities();
-
       this.isAddCityModalOpen = false;
     },
     async closeLocationForm(arg) {

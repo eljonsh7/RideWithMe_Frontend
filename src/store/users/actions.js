@@ -56,6 +56,23 @@ export default {
     sessionStorage.removeItem("token");
     sessionStorage.removeItem("userId");
     context.commit("logOut");
-  }
-  ,
+  },
+  async getUserByToken(context, token) {
+    let config = {
+      method: "get",
+      url: `${apiPath}/users/getByToken`,
+      headers: {
+        Accept: "application/json, text/plain, */*",
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    try {
+      const response = await axios.request(config);
+      context.commit("setUser", response.data);
+      return response;
+    } catch (error) {
+      console.log(error);
+      return false;
+    }
+  },
 };

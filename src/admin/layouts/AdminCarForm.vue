@@ -1,7 +1,7 @@
 <template>
   <custom-modal @close-modal="this.$emit('close-form')">
     <div class="w-full flex flex-col gap-5">
-      <div>Add car:</div>
+      <div>{{ this.car ? "Update" : "Add" }} car:</div>
       <div class="flex gap-2 flex-col">
         <input
           v-model="this.brand.value"
@@ -29,12 +29,12 @@
           type="number"
         />
         <div class="flex gap-3">
-          <div class="w-full aspect-square p-2">
+          <div class="w-full aspect-square pt-2">
             <div class="w-full h-full rounded-lg border">
               <img
                 :src="imageSource"
                 alt="."
-                class="w-full h-full object-cover"
+                class="w-full h-full object-cover rounded-lg"
               />
             </div>
           </div>
