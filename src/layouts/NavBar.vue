@@ -1,6 +1,6 @@
 <template>
   <div
-    class="w-full h-auto px-10 flex justify-between"
+    class="w-full h-fit px-10 flex justify-between"
     @click="this.showProfileOptions = false"
   >
     <div class="flex gap-10">
@@ -8,7 +8,7 @@
         <img
           alt="Not Found!"
           class="w-12 h-12 my-2"
-          src="../../assets/logo.png"
+          src="../assets/images/logo.png"
         />
       </router-link>
       <div class="flex gap-x-4 items-center text-black">
@@ -20,7 +20,7 @@
         <img
           alt="Not Found!"
           class="w-10 h-10 border border-black rounded-full bg-white cursor-pointer"
-          src="../../assets/default-user-pic.png"
+          src="../assets/images/default-user-pic.png"
           @click.stop="showProfileOptions = !showProfileOptions"
         />
       </div>
@@ -42,27 +42,44 @@
       </p>
       <p
         class="hover:bg-white/10 h-full w-full rounded-b-lg text-center items-center flex justify-center text-xs cursor-pointer"
-        @click="logOutModal = true"
+        @click="this.logOutModal = true"
       >
         Log Out
       </p>
     </div>
   </div>
   <hr />
+  <confirm-box
+    v-if="this.logOutModal"
+    @closeModal="this.logOutModal = false"
+    @confirm-action="logOut"
+  >
+    Are you sure you want to log out?
+  </confirm-box>
 </template>
 
 <script>
-import NavLink from "../common/NavLink.vue";
+import NavLink from "../components/NavLink.vue";
+import ConfirmBox from "@/layouts/ConfirmBox.vue";
 
 export default {
   components: {
+    ConfirmBox,
     NavLink,
   },
   data() {
     return {
+      logOutModal: false,
       showProfileOptions: false,
       routes: ["routes", "reservations", "chat", "about us"],
     };
+  },
+  methods: {
+    async logOut() {
+      await this.$store.dispatch("users/logOut");
+      this.logOutModal = false;
+      this.$router.push("/login");
+    },
   },
 };
 </script>
