@@ -60,6 +60,14 @@
         type="number"
       />
     </div>
+    <div>
+      <div>Price:</div>
+      <input
+        v-model="this.routePrice"
+        class="w-full border border-gray-500 p-2 rounded-lg bg-white text-black text-center"
+        type="text"
+      />
+    </div>
     <div class="flex justify-between">
       <custom-button @click="this.$emit('close-form')">Cancel</custom-button>
       <custom-button :fill="true" @click="addRoute">Submit</custom-button>
@@ -95,6 +103,7 @@ export default {
       locations: [],
       passengersNumber: 4,
       datetime: null,
+      routePrice: 1.5,
       fromCityId: "",
     };
   },
@@ -123,7 +132,8 @@ export default {
         this.toCity &&
         this.datetime &&
         this.location &&
-        this.passengersNumber
+        this.passengersNumber &&
+        this.routePrice
       ) {
         const object = {
           driver_id: this.$store.getters["users/getUser"].id,
@@ -132,6 +142,7 @@ export default {
           location_id: this.location,
           datetime: Date.formatDateTime(this.datetime),
           passengers_number: this.passengersNumber,
+          price: this.routePrice,
         };
         const response = Route.addRoute(
           object,

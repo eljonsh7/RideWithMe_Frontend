@@ -1,7 +1,7 @@
 <template>
   <div class="w-full flex flex-col gap-3">
     <div>My Routes</div>
-    <div class="flex justify-end w-full">
+    <div class="flex justify-end w-full" v-if="isUserDriver()">
       <custom-button @click="this.addRouteModal = true"
         >Add route
       </custom-button>
@@ -40,7 +40,7 @@ export default {
   data() {
     return {
       addRouteModal: false,
-      user: this.$store.getters["users/getUser"],
+      user: this.user = this.$store.getters["users/getUser"],
       routes: [],
       cities: [],
     };
@@ -61,6 +61,9 @@ export default {
     closeForm(object) {
       if (object) this.getMyRoutes();
       this.addRouteModal = false;
+    },
+    isUserDriver(){
+      return this.user && this.user.role == "driver";
     },
   },
 };
