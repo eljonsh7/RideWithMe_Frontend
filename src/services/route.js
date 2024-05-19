@@ -77,4 +77,22 @@ export default {
       return false;
     }
   },
+  async getRouteByID(routeId, token) {
+    let config = {
+      method: "get",
+      maxBodyLength: Infinity,
+      url: `${apiPath}/routes/${routeId}`,
+      headers: {
+        Accept: "application/json, text/plain, */*",
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    try {
+      const response = await axios.request(config);
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching routes:", error);
+      return false;
+    }
+  },
 };
