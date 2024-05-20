@@ -15,6 +15,7 @@ import ReservationsPage from "./views/ReservationsPage.vue";
 import NotFound from "./views/NotFound.vue";
 import LogIn from "./views/LogIn.vue";
 import RegisterPage from "./views/RegisterPage.vue";
+import RouteDetails from "./views/RouteDetails.vue";
 
 const router = createRouter({
   history: createWebHistory(),
@@ -36,6 +37,7 @@ const router = createRouter({
     { path: "/admin/cars", component: AdminCarsPage, name: "adminCars" },
     { path: "/admin/cities", component: AdminCitiesPage, name: "adminCities" },
     { path: "/:notFound(.*)", component: NotFound },
+    { path: "/route/:route_id", component: RouteDetails, name: "RouteDetails", props:true}
   ],
 });
 

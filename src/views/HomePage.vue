@@ -53,7 +53,6 @@ export default {
         page: this.currentPage,
         pageSize: this.pageSize,
       });
-      console.log(response);
       if (response) {
         this.routes = response.data;
         this.totalRoutes = response.total;
