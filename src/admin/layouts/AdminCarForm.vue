@@ -45,11 +45,12 @@
             <span
               class="flex flex-col justify-center text-sm leading-6 text-gray-600"
             >
-              <image-icon></image-icon>
+              <image-icon />
               <span>Upload a file here</span>
               <input
                 id="fileInput"
                 ref="fileInput"
+                accept="image/png, image/jpeg"
                 class="sr-only"
                 name="fileInput"
                 type="file"
@@ -74,7 +75,7 @@ import CustomButton from "../../components/CustomButton.vue";
 import ImageIcon from "../../components/icons/ImageIcon.vue";
 
 import Car from "../services/car.js";
-import Media from "../services/media.js";
+import Media from "../../services/media.js";
 
 export default {
   name: "AdminAddCarForm",
@@ -160,7 +161,7 @@ export default {
         sessionStorage.getItem("token")
       );
 
-      return media.data.file_path;
+      return media.file_path;
     },
     async checkValidity() {
       if (this.brand.value === "") {

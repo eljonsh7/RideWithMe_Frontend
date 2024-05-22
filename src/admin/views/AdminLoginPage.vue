@@ -51,8 +51,6 @@
 import CustomButton from "../../components/CustomButton.vue";
 import CustomError from "../../components/CustomError.vue";
 
-// import UserService from "../services/user.js";
-
 export default {
   name: "AdminLoginPage",
   components: {

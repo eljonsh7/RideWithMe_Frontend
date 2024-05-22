@@ -1,4 +1,5 @@
 import axios from "axios";
+import Toast from "@/utils/toast";
 
 const apiPath = process.env.VUE_APP_SERVICE_URL;
 
@@ -17,7 +18,7 @@ export default {
       const response = await axios.request(config);
       return response.data;
     } catch (error) {
-      console.log(error);
+      Toast.showError(error.response.data.message);
       return false;
     }
   },

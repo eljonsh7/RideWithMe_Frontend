@@ -1,4 +1,5 @@
 import axios from "axios";
+import Toast from "../../utils/toast.js";
 
 const apiPath = process.env.VUE_APP_SERVICE_URL;
 
@@ -14,9 +15,10 @@ export default {
       },
     };
     try {
-      return await axios.request(config);
+      const response = await axios.request(config);
+      return response.data;
     } catch (error) {
-      console.log(error);
+      Toast.showError(error.response.data.message);
       return false;
     }
   },
@@ -31,9 +33,10 @@ export default {
       },
     };
     try {
-      return await axios.request(config);
+      const response = await axios.request(config);
+      return response.data;
     } catch (error) {
-      console.log(error);
+      Toast.showError(error.response.data.message);
       return false;
     }
   },
@@ -49,9 +52,10 @@ export default {
       data: object.data,
     };
     try {
-      return await axios.request(config);
+      const response = await axios.request(config);
+      return response.data;
     } catch (error) {
-      console.log(error);
+      Toast.showError(error.response.data.message);
       return false;
     }
   },
@@ -66,9 +70,10 @@ export default {
       },
     };
     try {
-      return await axios.request(config);
+      const response = await axios.request(config);
+      return response.data;
     } catch (error) {
-      console.log(error);
+      Toast.showError(error.response.data.message);
       return false;
     }
   },
@@ -83,9 +88,10 @@ export default {
       },
     };
     try {
-      return await axios.request(config);
+      const response = await axios.request(config);
+      return response.data;
     } catch (error) {
-      console.log(error);
+      Toast.showError(error.response.data.message);
       return false;
     }
   },

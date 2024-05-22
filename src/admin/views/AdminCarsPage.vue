@@ -60,7 +60,7 @@ export default {
     },
     async getCars() {
       const response = await Car.getCars(sessionStorage.getItem("token"));
-      if (response) this.cars = response.data.cars;
+      if (response) this.cars = response.cars;
     },
     removeCar(index) {
       this.cars.splice(index, 1);

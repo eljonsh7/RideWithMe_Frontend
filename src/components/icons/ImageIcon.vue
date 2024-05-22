@@ -1,7 +1,7 @@
 <template>
   <svg
     aria-hidden="true"
-    class="mx-auto h-12 w-12 text-gray-300"
+    class="mx-auto h-12 w-12"
     fill="currentColor"
     viewBox="0 0 24 24"
   >

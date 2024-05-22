@@ -65,7 +65,7 @@ export default {
   methods: {
     async getUsers() {
       const users = await User.getUsers(sessionStorage.getItem("token"));
-      if (users) this.users = users.data.users;
+      if (users) this.users = users.users;
     },
     deleteUser(index) {
       this.users.splice(index, 1);

@@ -1,10 +1,8 @@
 <template>
   <div class="w-full flex flex-col gap-3">
     <div>My Routes</div>
-    <div class="flex justify-end w-full" v-if="isUserDriver()">
-      <custom-button @click="this.addRouteModal = true"
-        >Add route
-      </custom-button>
+    <div class="flex justify-end w-full">
+      <custom-button @click="checkDriver">Add route</custom-button>
     </div>
     <div class="flex flex-col gap-4">
       <route-banner
@@ -18,7 +16,11 @@
   <route-form
     v-if="this.addRouteModal"
     :cities="this.cities"
-    @close-form="closeForm"
+    @close-form="closeRouteForm"
+  />
+  <select-car-form
+    v-if="this.chooseCarModal"
+    @close-form="this.chooseCarModal = false"
   />
 </template>
 
@@ -29,10 +31,13 @@ import RouteBanner from "../../components/RouteBanner.vue";
 import Route from "../../services/route.js";
 import RouteForm from "../../layouts/RouteForm.vue";
 import City from "../../services/city.js";
+import SelectCarForm from "@/layouts/private/SelectCarForm.vue";
+import Toast from "@/utils/toast";
 
 export default {
   name: "MyRoutes",
-  components: { RouteForm, CustomButton, RouteBanner },
+  components: { SelectCarForm, RouteForm, CustomButton, RouteBanner },
+  props: ["user"],
   beforeMount() {
     this.getMyRoutes();
     this.getCities();
@@ -40,7 +45,7 @@ export default {
   data() {
     return {
       addRouteModal: false,
-      user: this.user = this.$store.getters["users/getUser"],
+      chooseCarModal: false,
       routes: [],
       cities: [],
     };
@@ -51,19 +56,31 @@ export default {
         this.user ? this.user.id : "2e1ba8c7-5871-441f-8909-f78103cb3c1d",
         sessionStorage.getItem("token")
       );
-      console.log(response);
       this.routes = response.data;
     },
     async getCities() {
       const response = await City.getCities();
       this.cities = response.cities;
     },
-    closeForm(object) {
+    closeRouteForm(object) {
       if (object) this.getMyRoutes();
       this.addRouteModal = false;
     },
-    isUserDriver(){
-      return this.user && this.user.role == "driver";
+    checkDriver() {
+      if (!this.user || this.user.role !== "driver") {
+        Toast.showWarning(
+          "You should update you profile and make yourself a driver."
+        );
+        return;
+      }
+
+      if (!this.user.car_id) {
+        Toast.showWarning("Please add your car infos first.");
+        this.chooseCarModal = true;
+        return;
+      }
+
+      this.addRouteModal = true;
     },
   },
 };

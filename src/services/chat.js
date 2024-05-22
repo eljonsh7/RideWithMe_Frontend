@@ -1,51 +1,14 @@
 import axios from "axios";
-import Toast from "../../utils/toast.js";
+import Toast from "../utils/toast";
 
 const apiPath = process.env.VUE_APP_SERVICE_URL;
 
 export default {
-  async addLocation(object, token) {
-    let config = {
-      method: "post",
-      maxBodyLength: Infinity,
-      url: `${apiPath}/locations/store`,
-      headers: {
-        Accept: "application/json, text/plain, */*",
-        Authorization: `Bearer ${token}`,
-      },
-      data: object,
-    };
-    try {
-      const response = await axios.request(config);
-      return response.data;
-    } catch (error) {
-      Toast.showError(error.response.data.message);
-      return false;
-    }
-  },
-  async deleteLocation(locationId, token) {
-    let config = {
-      method: "delete",
-      maxBodyLength: Infinity,
-      url: `${apiPath}/locations/delete/${locationId}`,
-      headers: {
-        Accept: "application/json, text/plain, */*",
-        Authorization: `Bearer ${token}`,
-      },
-    };
-    try {
-      const response = await axios.request(config);
-      return response.data;
-    } catch (error) {
-      Toast.showError(error.response.data.message);
-      return false;
-    }
-  },
-  async getLocations(cityId, token) {
+  async getMessages(recipient, type, token) {
     let config = {
       method: "get",
       maxBodyLength: Infinity,
-      url: `${apiPath}/locations/get/${cityId}`,
+      url: `${apiPath}/messages/get/${recipient}/${type}`,
       headers: {
         Accept: "application/json, text/plain, */*",
         Authorization: `Bearer ${token}`,
@@ -59,16 +22,70 @@ export default {
       return false;
     }
   },
-  async updateLocation(object, token) {
+  async sendMessage(recipient, token, data) {
     let config = {
-      method: "put",
+      method: "post",
       maxBodyLength: Infinity,
-      url: `${apiPath}/locations/update/${object.locationId}`,
+      url: `${apiPath}/messages/send/${recipient}`,
       headers: {
         Accept: "application/json, text/plain, */*",
         Authorization: `Bearer ${token}`,
       },
-      data: object,
+      data,
+    };
+    try {
+      const response = await axios.request(config);
+      return response.data;
+    } catch (error) {
+      Toast.showError(error.response.data.message);
+      return false;
+    }
+  },
+  async readMessages(recipient, token) {
+    let config = {
+      method: "put",
+      maxBodyLength: Infinity,
+      url: `${apiPath}/messages/read/${recipient}`,
+      headers: {
+        Accept: "application/json, text/plain, */*",
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    try {
+      const response = await axios.request(config);
+      return response.data;
+    } catch (error) {
+      Toast.showError(error.response.data.message);
+      return false;
+    }
+  },
+  async deleteMessages(recipient, token) {
+    let config = {
+      method: "delete",
+      maxBodyLength: Infinity,
+      url: `${apiPath}/messages/delete/${recipient}`,
+      headers: {
+        Accept: "application/json, text/plain, */*",
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    try {
+      const response = await axios.request(config);
+      return response.data;
+    } catch (error) {
+      Toast.showError(error.response.data.message);
+      return false;
+    }
+  },
+  async getChats(token) {
+    let config = {
+      method: "get",
+      maxBodyLength: Infinity,
+      url: `${apiPath}/messages/get/last`,
+      headers: {
+        Accept: "application/json, text/plain, */*",
+        Authorization: `Bearer ${token}`,
+      },
     };
     try {
       const response = await axios.request(config);
