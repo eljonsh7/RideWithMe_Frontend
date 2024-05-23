@@ -56,10 +56,12 @@ export default {
   },
   methods: {
     getUser() {
-      this.user = this.$store.dispatch(
-        "users/getUserByToken",
-        sessionStorage.getItem("token")
-      );
+      if (sessionStorage.getItem("isLoggedIn")) {
+        this.user = this.$store.dispatch(
+          "users/getUserByToken",
+          sessionStorage.getItem("token")
+        );
+      }
     },
   },
 };

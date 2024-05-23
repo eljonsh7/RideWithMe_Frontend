@@ -51,6 +51,13 @@
         Profile
       </p>
       <p
+        v-if="isAdmin"
+        class="hover:bg-white/30 py-2 w-full text-center items-center flex justify-center text-xs cursor-pointer"
+        @click="this.$router.push('/admin/home')"
+      >
+        Admin
+      </p>
+      <p
         class="hover:bg-white/30 py-2 w-full rounded-b-lg text-center items-center flex justify-center text-xs cursor-pointer"
         @click="this.logOutModal = true"
       >
@@ -94,6 +101,13 @@ export default {
       await this.$store.dispatch("users/logOut");
       this.logOutModal = false;
       this.$router.push("/login");
+    },
+    isAdmin() {
+      try {
+        return this.$store.getters["users/getUser"].is_admin;
+      } catch (e) {
+        return false;
+      }
     },
   },
 };

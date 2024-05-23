@@ -125,7 +125,7 @@ export default {
     },
     async getCities() {
       const cities = await City.getCities(sessionStorage.getItem("token"));
-      if (cities) this.cities = cities.data.cities;
+      if (cities) this.cities = cities.cities;
     },
     async deleteCity(obj) {
       const response = await City.deleteCity(
@@ -141,7 +141,7 @@ export default {
         this.selectedCityId,
         sessionStorage.getItem("token")
       );
-      if (locations) this.locations = locations.data.locations;
+      if (locations) this.locations = locations.locations;
     },
     async deleteLocation(index) {
       this.locations.splice(index, 1);

@@ -5,7 +5,7 @@
     <div class="w-full h-52">
       <img
         v-if="this.car.thumbnail"
-        :src="`http://127.0.0.1:8000/storage/${this.car.thumbnail}`"
+        :src="`${storageLink}/${this.car.thumbnail}`"
         alt="."
         class="w-full h-full object-cover rounded-t-lg"
       />
@@ -56,6 +56,7 @@ export default {
       deleteCarModal: false,
       updateCarModal: false,
       car: this.carObject,
+      storageLink: process.env.VUE_APP_STORAGE_URL,
     };
   },
   computed: {
