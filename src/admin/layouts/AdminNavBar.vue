@@ -107,7 +107,7 @@ export default {
     async logOut() {
       await this.$store.dispatch("users/logOut");
       this.logOutModal = false;
-      this.$router.push("/admin/login");
+      this.$router.push("/login");
     },
   },
 };

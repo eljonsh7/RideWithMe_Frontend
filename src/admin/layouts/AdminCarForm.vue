@@ -3,28 +3,24 @@
     <div class="w-full flex flex-col gap-5">
       <div>{{ this.car ? "Update" : "Add" }} car:</div>
       <div class="flex gap-2 flex-col">
-        <input
+        <custom-input
           v-model="this.brand.value"
           autofocus
-          class="px-4 py-3 rounded-lg outline-none border-2 border-gray-300 w-full"
           placeholder="Car brand"
           type="text"
         />
-        <input
+        <custom-input
           v-model="this.serie.value"
-          class="px-4 py-3 rounded-lg outline-none border-2 border-gray-300 w-full"
           placeholder="Car serie"
           type="text"
-        />
-        <input
+        ></custom-input>
+        <custom-input
           v-model="this.type.value"
-          class="px-4 py-3 rounded-lg outline-none border-2 border-gray-300 w-full"
           placeholder="Car type"
           type="text"
         />
-        <input
+        <custom-input
           v-model="this.seats_number.value"
-          class="px-4 py-3 rounded-lg outline-none border-2 border-gray-300 w-full"
           placeholder="Number of seats"
           type="number"
         />
@@ -72,6 +68,7 @@
 <script>
 import CustomModal from "../../layouts/CustomModal.vue";
 import CustomButton from "../../components/CustomButton.vue";
+import CustomInput from "@/components/CustomInput.vue";
 import ImageIcon from "../../components/icons/ImageIcon.vue";
 
 import Car from "../services/car.js";
@@ -80,7 +77,7 @@ import Media from "../../services/media.js";
 export default {
   name: "AdminAddCarForm",
   emits: ["close-form"],
-  components: { ImageIcon, CustomButton, CustomModal },
+  components: { CustomInput, ImageIcon, CustomButton, CustomModal },
   props: ["car"],
   computed: {
     imageSource() {

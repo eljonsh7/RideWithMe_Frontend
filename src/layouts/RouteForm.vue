@@ -46,27 +46,15 @@
     </div>
     <div>
       <div>Date and time:</div>
-      <input
-        v-model="this.datetime"
-        class="w-full border border-gray-500 p-2 rounded-lg bg-white text-black text-center"
-        type="datetime-local"
-      />
+      <custom-input v-model="this.datetime" type="datetime-local" />
     </div>
     <div>
       <div>Passengers number:</div>
-      <input
-        v-model="this.passengersNumber"
-        class="w-full border border-gray-500 p-2 rounded-lg bg-white text-black text-center"
-        type="number"
-      />
+      <custom-input v-model="this.passengersNumber" type="number" />
     </div>
     <div>
       <div>Price:</div>
-      <input
-        v-model="this.routePrice"
-        class="w-full border border-gray-500 p-2 rounded-lg bg-white text-black text-center"
-        type="text"
-      />
+      <custom-input v-model="this.routePrice" type="text" />
     </div>
     <div class="flex justify-between">
       <custom-button @click="this.$emit('close-form')">Cancel</custom-button>
@@ -78,6 +66,7 @@
 <script>
 import CustomModal from "./CustomModal.vue";
 import CustomButton from "../components/CustomButton.vue";
+import CustomInput from "@/components/CustomInput.vue";
 
 import Location from "../services/location.js";
 import Route from "../services/route.js";
@@ -86,7 +75,7 @@ import Date from "../utils/date.js";
 
 export default {
   name: "RouteForm",
-  components: { CustomButton, CustomModal },
+  components: { CustomInput, CustomButton, CustomModal },
   props: ["cities"],
   emits: ["close-form"],
   watch: {

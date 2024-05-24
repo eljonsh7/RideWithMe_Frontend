@@ -3,10 +3,9 @@
     <div class="w-full flex flex-col gap-5">
       <div>{{ this.location ? "Update" : "Add" }} location:</div>
       <div class="flex gap-2 md:flex-row flex-col">
-        <input
+        <custom-input
           v-model="this.locationName"
           autofocus
-          class="px-4 py-3 rounded-lg outline-none border-2 border-gray-300 w-full"
           placeholder="Location name"
           type="text"
         />
@@ -21,13 +20,14 @@
 <script>
 import CustomModal from "../../layouts/CustomModal.vue";
 import CustomButton from "../../components/CustomButton.vue";
+import CustomInput from "@/components/CustomInput.vue";
 
 import Location from "../services/location.js";
 
 export default {
   name: "AdminLocationForm",
   props: ["selectedCityId", "location"],
-  components: { CustomButton, CustomModal },
+  components: { CustomInput, CustomButton, CustomModal },
   data() {
     return {
       locationName: this.location ? this.location.name : "",
