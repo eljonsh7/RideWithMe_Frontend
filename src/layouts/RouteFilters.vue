@@ -4,19 +4,11 @@
   >
     <div class="w-full md:w-auto">
       <label class="text-center text-black block" for="fromRoute">From:</label>
-      <select
-        id="toRoute"
+      <custom-select
+        id="fromRoute"
         v-model="fromCity"
-        class="md:w-40 w-full border border-gray-500 p-2 rounded-lg bg-white text-black text-center"
-      >
-        <option
-          v-for="city in this.filteredCities('from')"
-          :key="city.id"
-          :value="city.id"
-        >
-          {{ city.name }}
-        </option>
-      </select>
+        :options="this.filteredCities('from')"
+      ></custom-select>
     </div>
     <div class="w-auto flex justify-center items-center">
       <arrows-horizontal-icon
@@ -30,37 +22,19 @@
     </div>
     <div class="w-full md:w-auto">
       <label class="text-center text-black block" for="toRoute">To:</label>
-      <select
+      <custom-select
         id="toRoute"
         v-model="toCity"
-        class="md:w-40 w-full border border-gray-500 p-2 rounded-lg bg-white text-black text-center"
-      >
-        <option
-          v-for="city in filteredCities('to')"
-          :key="city.id"
-          :value="city.id"
-        >
-          {{ city.name }}
-        </option>
-      </select>
+        :options="this.filteredCities('to')"
+      ></custom-select>
     </div>
     <div class="w-full md:w-auto">
       <label class="text-center text-black block" for="dateRoute">Date:</label>
-      <input
-        id="dateRoute"
-        v-model="date"
-        class="md:w-40 w-full border border-gray-500 p-2 rounded-lg bg-white text-black text-center"
-        type="date"
-      />
+      <custom-input id="dateRoute" v-model="date" type="date" />
     </div>
     <div v-if="this.date" class="w-full md:w-auto">
       <label class="text-center text-black block" for="timeRoute">Time:</label>
-      <input
-        id="timeRoute"
-        v-model="time"
-        class="md:w-40 w-full border border-gray-500 p-2 rounded-lg bg-white text-black text-center"
-        type="time"
-      />
+      <custom-input id="timeRoute" v-model="time" type="time" />
     </div>
     <div class="mt-6 flex gap-2">
       <div
@@ -89,10 +63,19 @@ import SearchIcon from "../components/icons/SearchIcon.vue";
 import ArrowsVerticalIcon from "../components/icons/ArrowsVerticalIcon.vue";
 import xMark from "../components/icons/xMark.vue";
 import City from "../services/city";
+import CustomSelect from "@/components/CustomSelect.vue";
+import CustomInput from "@/components/CustomInput.vue";
 
 export default {
   name: "RouteFilters",
-  components: { xMark, ArrowsVerticalIcon, SearchIcon, ArrowsHorizontalIcon },
+  components: {
+    CustomInput,
+    CustomSelect,
+    xMark,
+    ArrowsVerticalIcon,
+    SearchIcon,
+    ArrowsHorizontalIcon,
+  },
   emits: ["filter-routes"],
   beforeMount() {
     this.getCities();

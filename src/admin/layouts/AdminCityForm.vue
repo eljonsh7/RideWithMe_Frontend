@@ -3,16 +3,14 @@
     <div class="w-full flex flex-col gap-5">
       <div>{{ this.city ? "Update" : "Add" }} city:</div>
       <div class="flex gap-2 md:flex-row flex-col">
-        <input
+        <custom-input
           v-model="this.countryValue"
-          class="px-4 py-3 rounded-lg outline-none border-2 border-gray-300 w-full"
           placeholder="Country"
           type="text"
         />
-        <input
+        <custom-input
           v-model="this.cityValue"
           autofocus
-          class="px-4 py-3 rounded-lg outline-none border-2 border-gray-300 w-full"
           placeholder="City name"
           type="text"
         />
@@ -27,12 +25,13 @@
 <script>
 import CustomButton from "../../components/CustomButton.vue";
 import CustomModal from "../../layouts/CustomModal.vue";
+import CustomInput from "@/components/CustomInput.vue";
 
 import City from "../services/city.js";
 
 export default {
   name: "AdminCityForm",
-  components: { CustomButton, CustomModal },
+  components: { CustomInput, CustomButton, CustomModal },
   props: ["city"],
   emits: ["close-form"],
   data() {
