@@ -2,10 +2,10 @@
   <div class="w-full flex flex-col gap-3">
     <div>My Routes</div>
     <div class="flex justify-end w-full">
-      <custom-button @click="checkDriver">Add route</custom-button>
+      <CustomButton @click="checkDriver">Add route</CustomButton>
     </div>
     <div class="flex flex-col gap-4">
-      <route-banner
+      <RouteBanner
         v-for="(route, index) in routes"
         :key="index"
         :index="index"
@@ -13,15 +13,13 @@
       />
     </div>
   </div>
-  <route-form
+  <RouteForm
     v-if="this.addRouteModal"
     :cities="this.cities"
+    :maxSeats="this.user.car.seats_number - 1"
     @close-form="closeRouteForm"
   />
-  <select-car-form
-    v-if="this.chooseCarModal"
-    @close-form="this.chooseCarModal = false"
-  />
+  <SelectCarForm v-if="this.chooseCarModal" @close-form="closeSelectCarForm" />
 </template>
 
 <script>
@@ -31,13 +29,14 @@ import RouteBanner from "../../components/RouteBanner.vue";
 import Route from "../../services/route.js";
 import RouteForm from "../../layouts/RouteForm.vue";
 import City from "../../services/city.js";
-import SelectCarForm from "@/layouts/private/SelectCarForm.vue";
+import SelectCarForm from "@/layouts/profile/SelectCarForm.vue";
 import Toast from "@/utils/toast";
 
 export default {
   name: "MyRoutes",
   components: { SelectCarForm, RouteForm, CustomButton, RouteBanner },
   props: ["user"],
+  emits: ["get-user"],
   beforeMount() {
     this.getMyRoutes();
     this.getCities();
@@ -53,8 +52,8 @@ export default {
   methods: {
     async getMyRoutes() {
       const response = await Route.getUserRoutes(
-        this.user ? this.user.id : "2e1ba8c7-5871-441f-8909-f78103cb3c1d",
-        sessionStorage.getItem("token")
+        this.user.id,
+        this.$store.getters["users/getToken"]
       );
       this.routes = response.data;
     },
@@ -74,13 +73,17 @@ export default {
         return;
       }
 
-      if (!this.user.car_id) {
+      if (!this.user.car) {
         Toast.showWarning("Please add your car infos first.");
         this.chooseCarModal = true;
         return;
       }
 
       this.addRouteModal = true;
+    },
+    closeSelectCarForm(value = false) {
+      if (value) this.$emit("get-user");
+      this.chooseCarModal = false;
     },
   },
 };

@@ -21,11 +21,11 @@ export default {
       return false;
     }
   },
-  async getCityByID(id, token) {
+  async getCityByID(cityId, token) {
     let config = {
       method: "get",
       maxBodyLength: Infinity,
-      url: `${apiPath}/cities/${id}`,
+      url: `${apiPath}/cities/${cityId}`,
       headers: {
         Accept: "application/json, text/plain, */*",
         Authorization: `Bearer ${token}`,

@@ -9,27 +9,24 @@
   >
     <div>{{ this.nameValue }}</div>
     <div class="cursor-pointer flex gap-2">
-      <edit-icon
+      <EditIcon
         class="text-black-600"
         @click.stop="this.isUpdateModalOpen = true"
-      ></edit-icon>
-      <trash-icon
-        class="text-red-600"
-        @click.stop="this.deleteModal = true"
-      ></trash-icon>
+      />
+      <TrashIcon class="text-red-600" @click.stop="this.deleteModal = true" />
     </div>
   </div>
-  <admin-city-form
+  <AdminCityForm
     v-if="this.isUpdateModalOpen"
     :city="this.city"
     @close-form="updateCity"
   />
-  <confirm-box
+  <ConfirmBox
     v-if="this.deleteModal"
     @close-modal="this.deleteModal = false"
     @confirm-action="deleteCity"
     >Are you sure you want to delete location: '{{ this.city.name }}'?
-  </confirm-box>
+  </ConfirmBox>
 </template>
 
 <script>
@@ -71,7 +68,7 @@ export default {
     async deleteCity() {
       const response = await City.deleteCity(
         this.city.id,
-        sessionStorage.getItem("token")
+        this.$store.getters["users/getToken"]
       );
       if (response) {
         this.isUpdateModalOpen = false;

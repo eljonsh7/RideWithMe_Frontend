@@ -15,7 +15,8 @@
     </div>
     <div class="w-auto h-auto flex justify-center items-center mb-5">
       <img
-        class="w-10 h-10 rounded-full"
+        alt=""
+        class="w-10 h-10 rounded-full border border-white/50"
         src="../assets/images/default-user-pic.png"
       />
       <div class="ml-2">
@@ -27,6 +28,10 @@
           <span class="text-yellow-500 mr-1">★★★★★</span>
         </div>
       </div>
+    </div>
+
+    <div class="flex justify-center text-white">
+      Price: {{ this.route.price ?? "" }}€
     </div>
 
     <div class="w-auto h-auto flex justify-center routes-center mt-16">

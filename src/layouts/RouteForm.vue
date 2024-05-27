@@ -1,5 +1,5 @@
 <template>
-  <custom-modal class="text-left" @close-modal="this.$emit('close-form')">
+  <CustomModal class="text-left" @close-modal="this.$emit('close-form')">
     <div>
       <div>Going from:</div>
       <select
@@ -46,21 +46,26 @@
     </div>
     <div>
       <div>Date and time:</div>
-      <custom-input v-model="this.datetime" type="datetime-local" />
+      <CustomInput v-model="this.datetime" type="datetime-local" />
     </div>
     <div>
       <div>Passengers number:</div>
-      <custom-input v-model="this.passengersNumber" type="number" />
+      <CustomInput
+        v-model="this.passengersNumber"
+        :max="this.maxSeats"
+        min="1"
+        type="number"
+      />
     </div>
     <div>
       <div>Price:</div>
-      <custom-input v-model="this.routePrice" type="text" />
+      <CustomInput v-model="this.routePrice" type="text" />
     </div>
     <div class="flex justify-between">
-      <custom-button @click="this.$emit('close-form')">Cancel</custom-button>
-      <custom-button :fill="true" @click="addRoute">Submit</custom-button>
+      <CustomButton @click="this.$emit('close-form')">Cancel</CustomButton>
+      <CustomButton :fill="true" @click="addRoute">Submit</CustomButton>
     </div>
-  </custom-modal>
+  </CustomModal>
 </template>
 
 <script>
@@ -76,7 +81,7 @@ import Date from "../utils/date.js";
 export default {
   name: "RouteForm",
   components: { CustomInput, CustomButton, CustomModal },
-  props: ["cities"],
+  props: ["cities", "maxSeats"],
   emits: ["close-form"],
   watch: {
     fromCity(newValue) {
@@ -100,7 +105,7 @@ export default {
     async getLocations() {
       const locations = await Location.getLocations(
         this.fromCityId,
-        sessionStorage.getItem("token")
+        this.$store.getters["users/getToken"]
       );
       if (locations) this.locations = locations.locations;
     },
@@ -135,7 +140,7 @@ export default {
         };
         const response = Route.addRoute(
           object,
-          sessionStorage.getItem("token")
+          this.$store.getters["users/getToken"]
         );
 
         if (response) this.$emit("close-form", true);

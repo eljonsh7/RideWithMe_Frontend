@@ -40,25 +40,6 @@ export default {
       return false;
     }
   },
-  async updateUser(object, token) {
-    let config = {
-      method: "put",
-      maxBodyLength: Infinity,
-      url: `${apiPath}/users/update/${object.userId}`,
-      headers: {
-        Accept: "application/json, text/plain, */*",
-        Authorization: `Bearer ${token}`,
-      },
-      data: object.data,
-    };
-    try {
-      const response = await axios.request(config);
-      return response.data;
-    } catch (error) {
-      Toast.showError(error.response.data.message);
-      return false;
-    }
-  },
   async banUser(userId, token) {
     let config = {
       method: "post",

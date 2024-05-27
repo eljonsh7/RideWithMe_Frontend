@@ -4,7 +4,7 @@ import Toast from "../../utils/toast.js";
 const apiPath = process.env.VUE_APP_SERVICE_URL;
 
 export default {
-  async addLocation(object, token) {
+  async addLocation(data, token) {
     let config = {
       method: "post",
       maxBodyLength: Infinity,
@@ -13,7 +13,26 @@ export default {
         Accept: "application/json, text/plain, */*",
         Authorization: `Bearer ${token}`,
       },
-      data: object,
+      data,
+    };
+    try {
+      const response = await axios.request(config);
+      return response.data;
+    } catch (error) {
+      Toast.showError(error.response.data.message);
+      return false;
+    }
+  },
+  async updateLocation(data, token) {
+    let config = {
+      method: "put",
+      maxBodyLength: Infinity,
+      url: `${apiPath}/locations/update/${data.locationId}`,
+      headers: {
+        Accept: "application/json, text/plain, */*",
+        Authorization: `Bearer ${token}`,
+      },
+      data,
     };
     try {
       const response = await axios.request(config);
@@ -50,25 +69,6 @@ export default {
         Accept: "application/json, text/plain, */*",
         Authorization: `Bearer ${token}`,
       },
-    };
-    try {
-      const response = await axios.request(config);
-      return response.data;
-    } catch (error) {
-      Toast.showError(error.response.data.message);
-      return false;
-    }
-  },
-  async updateLocation(object, token) {
-    let config = {
-      method: "put",
-      maxBodyLength: Infinity,
-      url: `${apiPath}/locations/update/${object.locationId}`,
-      headers: {
-        Accept: "application/json, text/plain, */*",
-        Authorization: `Bearer ${token}`,
-      },
-      data: object,
     };
     try {
       const response = await axios.request(config);

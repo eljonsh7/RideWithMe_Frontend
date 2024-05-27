@@ -7,7 +7,7 @@
       class="p-1 w-8 aspect-square rounded-full light semibold border border-black/70"
       @click="pageChange(currentPage - 1)"
     >
-      <chevron-left />
+      <ChevronLeft />
     </button>
     <button
       v-if="shouldShowStartEllipsis"
@@ -53,7 +53,7 @@
       class="p-1 w-8 aspect-square rounded-full light semibold border border-black/70"
       @click="pageChange(currentPage + 1)"
     >
-      <chevron-right />
+      <ChevronRight />
     </button>
   </div>
 </template>
@@ -68,9 +68,6 @@ export default {
   props: ["totalRoutes", "currentPage", "limitPerPage"],
   emits: ["change-page"],
   computed: {
-    isLoggedIn() {
-      return JSON.parse(sessionStorage.getItem("isLoggedIn"));
-    },
     totalPages() {
       return Math.ceil(this.totalRoutes / this.limitPerPage);
     },

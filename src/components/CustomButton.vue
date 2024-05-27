@@ -5,7 +5,7 @@
     }"
     class="py-2 px-5 rounded-lg border-black/90 border-2"
   >
-    <slot></slot>
+    <slot />
   </button>
 </template>
 

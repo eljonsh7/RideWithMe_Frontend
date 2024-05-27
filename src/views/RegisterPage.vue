@@ -124,18 +124,18 @@
 
       <div class="w-full justify-center flex items-center mb-4">
         <p class="text-black mr-1">Already have an account?</p>
-        <router-link
+        <RouterLink
           class="text-gray-600 hover:underline cursor-pointer"
           to="/login"
         >
           Log In
-        </router-link>
+        </RouterLink>
       </div>
-      <router-link
+      <RouterLink
         class="text-gray-600 hover:underline cursor-pointer"
         to="/home"
         >Continue Without Account
-      </router-link>
+      </RouterLink>
     </div>
   </div>
 </template>
@@ -183,8 +183,7 @@ export default {
   },
   beforeCreate() {
     this.isLoading = true;
-    if (JSON.parse(sessionStorage.getItem("isLoggedIn")))
-      this.$router.push("/home");
+    if (sessionStorage.getItem("token")) this.$router.push("/home");
   },
   methods: {
     togglePasswordVisibility() {

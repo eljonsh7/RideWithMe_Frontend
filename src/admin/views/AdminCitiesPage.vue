@@ -3,15 +3,15 @@
     <div class="flex flex-col gap-3">
       <div class="flex justify-center text-3xl font-extrabold">Cities</div>
       <div class="flex w-full justify-end">
-        <custom-button
+        <CustomButton
           :fill="true"
           class="w-full"
           @click="isAddCityModalOpen = true"
           >Add city
-        </custom-button>
+        </CustomButton>
       </div>
       <div class="flex flex-col gap-2">
-        <admin-city-card
+        <AdminCityCard
           v-for="(city, index) in cities"
           :key="city.id"
           :city="city"
@@ -19,7 +19,7 @@
           :selectedCityId="this.selectedCityId"
           @select-city="(id) => (this.selectedCityId = id)"
           @delete-city="deleteCity"
-        ></admin-city-card>
+        />
       </div>
 
       <div
@@ -32,22 +32,22 @@
     <div class="flex flex-col gap-3">
       <div class="flex justify-center text-3xl font-extrabold">Locations</div>
       <div v-if="this.selectedCityId !== null" class="flex w-full justify-end">
-        <custom-button
+        <CustomButton
           :fill="true"
           class="w-full"
           @click="isAddLocationModalOpen = true"
           >Add location
-        </custom-button>
+        </CustomButton>
       </div>
       <div class="flex flex-col gap-2">
-        <admin-location-card
+        <AdminLocationCard
           v-for="(location, index) in locations"
           :key="location.id"
           :cityId="this.selectedCityId"
           :index="index"
           :location="location"
           @delete-location="deleteLocation"
-        ></admin-location-card>
+        />
       </div>
       <div
         v-if="this.locations.length === 0"
@@ -61,17 +61,15 @@
       </div>
     </div>
   </div>
-  <admin-city-form
+  <AdminCityForm
     v-if="this.isAddCityModalOpen"
     @close-form="this.closeCityForm"
-  >
-  </admin-city-form>
-  <admin-location-form
+  />
+  <AdminLocationForm
     v-if="this.isAddLocationModalOpen"
     :selectedCityId="this.selectedCityId"
     @close-form="this.closeLocationForm"
-  >
-  </admin-location-form>
+  />
 </template>
 
 <script>
@@ -104,7 +102,12 @@ export default {
     };
   },
   beforeMount() {
-    this.getCities();
+    if (
+      !this.$store.getters["users/getUser"] ||
+      this.$store.getters["users/getUser"].is_admin === 0
+    )
+      this.$router.push("/");
+    else this.getCities();
   },
   watch: {
     selectedCityId(newValue) {
@@ -124,22 +127,18 @@ export default {
       this.isAddLocationModalOpen = false;
     },
     async getCities() {
-      const cities = await City.getCities(sessionStorage.getItem("token"));
+      const cities = await City.getCities(
+        this.$store.getters["users/getToken"]
+      );
       if (cities) this.cities = cities.cities;
     },
     async deleteCity(obj) {
-      const response = await City.deleteCity(
-        obj.id,
-        sessionStorage.getItem("token")
-      );
-      if (response) {
-        this.cities.splice(obj.index, 1);
-      }
+      this.cities.splice(obj.index, 1);
     },
     async getLocations() {
       const locations = await Location.getLocations(
         this.selectedCityId,
-        sessionStorage.getItem("token")
+        this.$store.getters["users/getToken"]
       );
       if (locations) this.locations = locations.locations;
     },

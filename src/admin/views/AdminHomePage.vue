@@ -12,5 +12,12 @@ export default {
       isModalOpen: false,
     };
   },
+  beforeMount() {
+    if (
+      !this.$store.getters["users/getUser"] ||
+      this.$store.getters["users/getUser"].is_admin === 0
+    )
+      this.$router.push("/");
+  },
 };
 </script>

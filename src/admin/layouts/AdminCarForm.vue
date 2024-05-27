@@ -1,25 +1,25 @@
 <template>
-  <custom-modal @close-modal="this.$emit('close-form')">
+  <CustomModal @close-modal="this.$emit('close-form')">
     <div class="w-full flex flex-col gap-5">
       <div>{{ this.car ? "Update" : "Add" }} car:</div>
       <div class="flex gap-2 flex-col">
-        <custom-input
+        <CustomInput
           v-model="this.brand.value"
           autofocus
           placeholder="Car brand"
           type="text"
         />
-        <custom-input
+        <CustomInput
           v-model="this.serie.value"
           placeholder="Car serie"
           type="text"
-        ></custom-input>
-        <custom-input
+        />
+        <CustomInput
           v-model="this.type.value"
           placeholder="Car type"
           type="text"
         />
-        <custom-input
+        <CustomInput
           v-model="this.seats_number.value"
           placeholder="Number of seats"
           type="number"
@@ -41,7 +41,7 @@
             <span
               class="flex flex-col justify-center text-sm leading-6 text-gray-600"
             >
-              <image-icon />
+              <ImageIcon />
               <span>Upload a file here</span>
               <input
                 id="fileInput"
@@ -57,12 +57,12 @@
         </div>
       </div>
       <div class="flex justify-end">
-        <custom-button :fill="true" class="w-full" @click="submit"
+        <CustomButton :fill="true" class="w-full" @click="submit"
           >Submit
-        </custom-button>
+        </CustomButton>
       </div>
     </div>
-  </custom-modal>
+  </CustomModal>
 </template>
 
 <script>
@@ -122,12 +122,11 @@ export default {
         seats_number: this.seats_number.value,
       };
 
-      console.log(carObject);
       const response = await Car.addCar(
         carObject,
-        sessionStorage.getItem("token")
+        this.$store.getters["users/getToken"]
       );
-      if (response) this.$emit("close-form", response);
+      if (response) this.$emit("close-form", true);
     },
     async updateCar() {
       const carObject = {
@@ -148,14 +147,14 @@ export default {
 
       const response = await Car.updateCar(
         carObject,
-        sessionStorage.getItem("token")
+        this.$store.getters["users/getToken"]
       );
-      if (response) this.$emit("close-form", carObject);
+      if (response) this.$emit("close-form", true);
     },
     async getMediaLink(file) {
       const media = await Media.storeMedia(
-        { media: file },
-        sessionStorage.getItem("token")
+        { media: file, folder: "cars" },
+        this.$store.getters["users/getToken"]
       );
 
       return media.file_path;

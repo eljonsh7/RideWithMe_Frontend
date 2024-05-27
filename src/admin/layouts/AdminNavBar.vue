@@ -5,10 +5,7 @@
     <a href="/home">
       <img class="w-16 h-16" src="../assets/images/logo.png" />
     </a>
-    <bars-icon
-      class="cursor-pointer"
-      @click="this.isShown = !this.isShown"
-    ></bars-icon>
+    <BarsIcon class="cursor-pointer" @click="this.isShown = !this.isShown" />
   </div>
   <div
     :class="{ 'fixed top-0 left-0': isShown, 'hidden md:flex': !isShown }"
@@ -21,20 +18,20 @@
           src="../assets/images/logo.png"
         />
       </a>
-      <x-mark
+      <xMark
         class="cursor-pointer md:hidden flex"
         @click="this.isShown = !this.isShown"
-      ></x-mark>
+      />
     </div>
     <div
       class="flex flex-col w-full md:h-full justify-center items-center gap-1"
     >
-      <admin-nav-link
+      <AdminNavLink
         v-for="route in routes"
         :key="route"
         :name="route.name"
         :route="route.route"
-      ></admin-nav-link>
+      />
     </div>
     <div>
       <div
@@ -45,13 +42,13 @@
       </div>
     </div>
   </div>
-  <confirm-box
+  <ConfirmBox
     v-if="this.logOutModal"
     @close-modal="this.logOutModal = false"
     @confirm-action="logOut"
   >
     Are you sure you want to log out?
-  </confirm-box>
+  </ConfirmBox>
 </template>
 
 <script>
@@ -69,8 +66,9 @@ export default {
     BarsIcon,
     xMark,
   },
+  emits: ["unbind-channel"],
   beforeMount() {
-    if (!sessionStorage.getItem("isLoggedIn")) {
+    if (!sessionStorage.getItem("token")) {
       this.$router.push("/admin/login");
     }
   },
@@ -107,6 +105,7 @@ export default {
     async logOut() {
       await this.$store.dispatch("users/logOut");
       this.logOutModal = false;
+      this.$emit("unbind-channel");
       this.$router.push("/login");
     },
   },

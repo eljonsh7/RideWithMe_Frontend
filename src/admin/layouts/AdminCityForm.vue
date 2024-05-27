@@ -1,14 +1,14 @@
 <template>
-  <custom-modal @close-modal="this.$emit('close-form')">
+  <CustomModal @close-modal="this.$emit('close-form')">
     <div class="w-full flex flex-col gap-5">
       <div>{{ this.city ? "Update" : "Add" }} city:</div>
       <div class="flex gap-2 md:flex-row flex-col">
-        <custom-input
+        <CustomInput
           v-model="this.countryValue"
           placeholder="Country"
           type="text"
         />
-        <custom-input
+        <CustomInput
           v-model="this.cityValue"
           autofocus
           placeholder="City name"
@@ -16,10 +16,10 @@
         />
       </div>
       <div class="flex justify-end">
-        <custom-button :fill="true" @click="submit">Submit</custom-button>
+        <CustomButton :fill="true" @click="submit">Submit</CustomButton>
       </div>
     </div>
-  </custom-modal>
+  </CustomModal>
 </template>
 
 <script>
@@ -54,7 +54,7 @@ export default {
 
         const response = await City.addCity(
           obj,
-          sessionStorage.getItem("token")
+          this.$store.getters["users/getToken"]
         );
 
         if (response) this.$emit("close-form", true);
@@ -69,7 +69,7 @@ export default {
 
       const response = await City.updateCity(
         object,
-        sessionStorage.getItem("token")
+        this.$store.getters["users/getToken"]
       );
       if (response) {
         this.$emit("close-form", object);

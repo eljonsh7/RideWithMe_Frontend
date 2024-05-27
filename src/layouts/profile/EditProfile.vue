@@ -1,5 +1,5 @@
 <template>
-  <custom-modal @close-modal="this.$emit('close-form')">
+  <CustomModal @close-modal="this.$emit('close-form')">
     <div class="w-full h-44 flex flex-col items-center">
       <img
         :src="imageSource"
@@ -11,7 +11,7 @@
           class="relative bottom-9 left-14 bg-white text-black fill-black p-1 rounded-full border border-black w-9 h-9 flex items-center justify-center cursor-pointer"
           for="imageInput"
         >
-          <image-icon />
+          <ImageIcon />
         </label>
         <input
           id="imageInput"
@@ -27,38 +27,39 @@
     <div class="flex flex-col gap-2">
       <div class="flex gap-2">
         <div class="w-full text-left">
-          <label class="text-sm text-black/50">First name</label>
-          <input
-            v-model="first_name"
-            class="px-3 py-2 rounded-lg outline-none border-2 border-black/50 w-full"
-            type="text"
+          <div class="text-sm text-black/50">First name</div>
+          <CustomInput v-model="first_name" type="text" />
+        </div>
+        <div class="w-full text-left">
+          <div class="text-sm text-black/50">Last name</div>
+          <CustomInput v-model="last_name" type="text" />
+        </div>
+      </div>
+      <div class="flex gap-2">
+        <div class="w-full text-left">
+          <div class="text-sm text-black/50">Role:</div>
+          <CustomSelect
+            v-model="role"
+            :options="this.roleOptions"
+            class="md:w-full"
           />
         </div>
         <div class="w-full text-left">
-          <label class="text-sm text-black/50">Last name</label>
-          <input
-            v-model="last_name"
-            class="px-3 py-2 rounded-lg outline-none border-2 border-black/50 w-full"
-            type="text"
-          />
+          <div class="text-sm text-black/50">Car:</div>
+          <div
+            class="w-full border border-gray-500 p-2 rounded-lg bg-white text-black/50 text-center outline-none cursor-pointer"
+            @click="this.$emit('update-car')"
+          >
+            Change Car Details
+          </div>
         </div>
-      </div>
-      <div class="w-full text-left">
-        <label class="text-sm text-black/50">Role</label>
-        <select
-          v-model="role"
-          class="px-3 py-2 rounded-lg outline-none border-2 border-black/50 w-full"
-        >
-          <option value="passenger">Passenger</option>
-          <option value="driver">Driver</option>
-        </select>
       </div>
     </div>
     <div class="flex justify-between mt-2">
-      <custom-button @click="reset">Reset</custom-button>
-      <custom-button :fill="true" @click="updateProfile">Save</custom-button>
+      <CustomButton @click="reset">Reset</CustomButton>
+      <CustomButton :fill="true" @click="updateProfile">Save</CustomButton>
     </div>
-  </custom-modal>
+  </CustomModal>
 </template>
 
 <script>
@@ -66,12 +67,20 @@ import CustomModal from "@/layouts/CustomModal.vue";
 import CustomButton from "@/components/CustomButton.vue";
 import ImageIcon from "@/components/icons/ImageIcon.vue";
 import Media from "@/services/media";
+import CustomSelect from "@/components/CustomSelect.vue";
+import CustomInput from "@/components/CustomInput.vue";
 
 export default {
   name: "EditProfile",
-  components: { ImageIcon, CustomButton, CustomModal },
+  components: {
+    CustomInput,
+    CustomSelect,
+    ImageIcon,
+    CustomButton,
+    CustomModal,
+  },
   props: ["user"],
-  emits: ["close-form", "user-updated"],
+  emits: ["close-form", "update-car", "user-updated"],
   data() {
     return {
       storageUrl: process.env.VUE_APP_STORAGE_URL,
@@ -80,6 +89,16 @@ export default {
       first_name: this.user ? this.user.first_name : "",
       last_name: this.user ? this.user.last_name : "",
       role: this.user ? this.user.role : "",
+      roleOptions: [
+        {
+          id: "passenger",
+          name: "Passenger",
+        },
+        {
+          id: "driver",
+          name: "Driver",
+        },
+      ],
     };
   },
   computed: {
@@ -93,8 +112,8 @@ export default {
   methods: {
     async getMediaLink() {
       const media = await Media.storeMedia(
-        { media: this.currentImageFile },
-        sessionStorage.getItem("token")
+        { media: this.currentImageFile, folder: "users" },
+        this.$store.getters["users/getToken"]
       );
 
       return media.file_path;
@@ -111,7 +130,7 @@ export default {
     async updateProfile() {
       const userObject = {
         user_id: this.user.id,
-        token: sessionStorage.getItem("token"),
+        token: this.$store.getters["users/getToken"],
       };
 
       if (this.currentImageFile)

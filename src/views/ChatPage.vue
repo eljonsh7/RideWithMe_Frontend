@@ -17,14 +17,14 @@
         No conversations found.
       </div>
       <div v-else>
-        <chat-conversation
-          v-for="conversation in this.conversations"
+        <ChatConversation
+          v-for="(conversation, index) in this.conversations"
           :key="conversation"
           :class="{
-            'bg-gray-200': this.selectedConversation == conversation,
+            'bg-gray-200': this.selectedConversation === conversation,
           }"
           :conversation="conversation"
-          @click="this.selectedConversation = conversation"
+          @click="chooseConversation(index)"
         />
       </div>
     </div>
@@ -35,10 +35,7 @@
         >
           <div class="w-16 flex items-center justify-center h-16">
             <img
-              :src="
-                selectedConversation.sender.profile_picture ||
-                require('../assets/images/default-user-pic.png')
-              "
+              :src="selectedConversationImage"
               alt="."
               class="w-12 h-12 rounded-full object-cover border border-black/20"
             />
@@ -49,7 +46,12 @@
             }}
           </div>
         </div>
-        <chat-messages :conversation="selectedConversation"></chat-messages>
+        <ChatMessages
+          :conversation="selectedConversation"
+          :newMessage="newMessage"
+          :userId="userId"
+          @change-last-message="changeLastMessage"
+        />
       </div>
       <div v-else class="w-full h-full flex justify-center items-center">
         <div class="text-black/50 text-sm">No conversation selected!</div>
@@ -60,9 +62,8 @@
 
 <script>
 import Chat from "../services/chat.js";
-import ChatMessages from "../layouts/private/ChatMessages.vue";
-import ChatConversation from "../layouts/private/ChatConversation.vue";
-// import Pusher from "../utils/pusher.js";
+import ChatMessages from "../layouts/chat/ChatMessages.vue";
+import ChatConversation from "../layouts/chat/ChatConversation.vue";
 
 export default {
   name: "ChatPage",
@@ -71,18 +72,65 @@ export default {
     return {
       conversations: [],
       selectedConversation: null,
+      newMessage: null,
+      userId: this.$store.getters["users/getUser"].id,
     };
   },
   beforeMount() {
-    this.getChats();
-    // Pusher.unbindChannel();
-    // Pusher.createPusher();
+    if (sessionStorage.getItem("token")) this.getChats();
+    else this.$router.push("/");
+  },
+  created() {
+    window.addEventListener("new-private-message", this.handleNewMessage);
+  },
+  beforeUnmount() {
+    window.removeEventListener("new-private-message", this.handleNewMessage);
+  },
+  computed: {
+    selectedConversationImage() {
+      return this.selectedConversation.sender.profile_picture
+        ? `${process.env.VUE_APP_STORAGE_URL}/${this.selectedConversation.sender.profile_picture}`
+        : require("../assets/images/default-user-pic.png");
+    },
   },
   methods: {
     async getChats() {
-      const response = await Chat.getChats(sessionStorage.getItem("token"));
-      console.log(response);
+      const response = await Chat.getChats(
+        this.$store.getters["users/getToken"]
+      );
       this.conversations = response.conversations;
+    },
+    changeLastMessage(message) {
+      this.selectedConversation.last_message.content = message;
+    },
+    chooseConversation(index) {
+      this.conversations[index].unread_messages = 0;
+      this.selectedConversation = this.conversations[index];
+    },
+    handleNewMessage(message) {
+      console.log(message);
+      if (message.detail && message.detail.message) {
+        if (message.detail.message.user_id !== this.userId) {
+          if (
+            this.selectedConversation
+              ? this.selectedConversation.sender.id ===
+                message.detail.message.user_id
+              : false
+          )
+            this.newMessage = message.detail.message;
+
+          const index = this.conversations.findIndex((item) => {
+            return item.sender.id == message.detail.other_user_id;
+          });
+
+          console.log(this.conversations[index]);
+          if (index >= 0) {
+            this.conversations[index].last_message.content =
+              message.detail.message.content;
+            this.conversations[index].unread_messages++;
+          }
+        }
+      }
     },
   },
 };

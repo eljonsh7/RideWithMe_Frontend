@@ -1,11 +1,11 @@
 <template>
-  <router-link
+  <RouterLink
     :class="{ 'bg-black/20 border-black/60': isRouteThis }"
     :to="`${route}`"
     class="border-x-2 hover:bg-black/30 border-white hover:border-black/70 text-black w-full px-4 py-2 text-center"
   >
     {{ name }}
-  </router-link>
+  </RouterLink>
 </template>
 
 <script>

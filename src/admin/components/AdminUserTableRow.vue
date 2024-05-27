@@ -5,25 +5,22 @@
     <td class="py-2">{{ this.user.role }}</td>
     <td class="py-2">{{ this.user.reports_number || 0 }}</td>
     <td class="py-2 flex justify-center">
-      <trash-icon
-        class="cursor-pointer"
-        @click="this.deleteUserModal = true"
-      ></trash-icon>
-      <block-icon
+      <TrashIcon class="cursor-pointer" @click="this.deleteUserModal = true" />
+      <BlockIcon
         :class="{ 'bg-gray-500 text-white': this.user.is_banned }"
         class="cursor-pointer rounded-full"
         @click="this.banUserModal = true"
-      ></block-icon>
+      />
     </td>
   </tr>
-  <confirm-box
+  <ConfirmBox
     v-if="this.deleteUserModal"
     @close-modal="this.deleteUserModal = false"
     @confirm-action="deleteUser"
   >
     Are you sure you want to delete user: {{ fullName }}?
-  </confirm-box>
-  <confirm-box
+  </ConfirmBox>
+  <ConfirmBox
     v-if="this.banUserModal"
     @close-modal="this.banUserModal = false"
     @confirm-action="changeBanStatus"
@@ -34,7 +31,7 @@
         ? `remove ban of ${fullName}?`
         : `ban ${fullName} for a month?`
     }}
-  </confirm-box>
+  </ConfirmBox>
 </template>
 
 <script>
@@ -64,7 +61,7 @@ export default {
     deleteUser() {
       const response = User.deleteUser(
         this.user.id,
-        sessionStorage.getItem("token")
+        this.$store.getters["users/getToken"]
       );
       if (response) this.$emit("delete-user", this.index);
     },
@@ -74,7 +71,7 @@ export default {
     banUser() {
       const response = User.banUser(
         this.user.id,
-        sessionStorage.getItem("token")
+        this.$store.getters["users/getToken"]
       );
       if (response) this.$emit("user-ban-status-changed", this.index, true);
 
@@ -83,7 +80,7 @@ export default {
     removeUserBan() {
       const response = User.removeUserBan(
         this.user.id,
-        sessionStorage.getItem("token")
+        this.$store.getters["users/getToken"]
       );
       if (response) this.$emit("user-ban-status-changed", this.index, false);
 

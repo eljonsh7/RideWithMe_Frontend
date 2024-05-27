@@ -1,9 +1,9 @@
 <template>
-  <custom-modal @close-modal="this.$emit('close-form')">
+  <CustomModal @close-modal="this.$emit('close-form')">
     <div class="w-full flex flex-col gap-5">
       <div>{{ this.location ? "Update" : "Add" }} location:</div>
       <div class="flex gap-2 md:flex-row flex-col">
-        <custom-input
+        <CustomInput
           v-model="this.locationName"
           autofocus
           placeholder="Location name"
@@ -11,10 +11,10 @@
         />
       </div>
       <div class="flex justify-end">
-        <custom-button :fill="true" @click="submit">Submit</custom-button>
+        <CustomButton :fill="true" @click="submit">Submit</CustomButton>
       </div>
     </div>
-  </custom-modal>
+  </CustomModal>
 </template>
 
 <script>
@@ -48,7 +48,7 @@ export default {
 
         const response = await Location.addLocation(
           obj,
-          sessionStorage.getItem("token")
+          this.$store.getters["users/getToken"]
         );
 
         if (response) this.$emit("close-form", true);
@@ -60,11 +60,10 @@ export default {
         locationId: this.location.id,
         googleMapsLink: "https://maps.googleapis.com/maps/api/geocode/json",
       };
-      console.log(obj);
 
       const response = await Location.updateLocation(
         obj,
-        sessionStorage.getItem("token")
+        this.$store.getters["users/getToken"]
       );
 
       if (response) this.$emit("close-form", obj);

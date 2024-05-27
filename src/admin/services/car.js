@@ -4,7 +4,7 @@ import Toast from "../../utils/toast.js";
 const apiPath = process.env.VUE_APP_SERVICE_URL;
 
 export default {
-  async addCar(object, token) {
+  async addCar(data, token) {
     let config = {
       method: "post",
       maxBodyLength: Infinity,
@@ -13,7 +13,7 @@ export default {
         Accept: "application/json, text/plain, */*",
         Authorization: `Bearer ${token}`,
       },
-      data: object,
+      data,
     };
     try {
       const response = await axios.request(config);
@@ -23,11 +23,30 @@ export default {
       return false;
     }
   },
-  async deleteCar(id, token) {
+  async updateCar(data, token) {
+    let config = {
+      method: "put",
+      maxBodyLength: Infinity,
+      url: `${apiPath}/cars/update/${data.id}`,
+      headers: {
+        Accept: "application/json, text/plain, */*",
+        Authorization: `Bearer ${token}`,
+      },
+      data,
+    };
+    try {
+      const response = await axios.request(config);
+      return response.data;
+    } catch (error) {
+      Toast.showError(error.response.data.message);
+      return false;
+    }
+  },
+  async deleteCar(carId, token) {
     let config = {
       method: "delete",
       maxBodyLength: Infinity,
-      url: `${apiPath}/cars/delete/${id}`,
+      url: `${apiPath}/cars/delete/${carId}`,
       headers: {
         Accept: "application/json, text/plain, */*",
         Authorization: `Bearer ${token}`,
@@ -50,25 +69,6 @@ export default {
         Accept: "application/json, text/plain, */*",
         Authorization: `Bearer ${token}`,
       },
-    };
-    try {
-      const response = await axios.request(config);
-      return response.data;
-    } catch (error) {
-      Toast.showError(error.response.data.message);
-      return false;
-    }
-  },
-  async updateCar(object, token) {
-    let config = {
-      method: "put",
-      maxBodyLength: Infinity,
-      url: `${apiPath}/cars/update/${object.id}`,
-      headers: {
-        Accept: "application/json, text/plain, */*",
-        Authorization: `Bearer ${token}`,
-      },
-      data: object,
     };
     try {
       const response = await axios.request(config);

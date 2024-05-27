@@ -4,12 +4,12 @@
       <img
         :src="imageSource"
         alt="."
-        class="border rounded-full w-48 aspect-square"
+        class="border border-black/50 rounded-full w-48 aspect-square"
       />
     </div>
     <div class="flex gap-2 items-center">
       <div class="text-2xl font-bold">{{ fullName }}</div>
-      <edit-icon
+      <EditIcon
         class="cursor-pointer"
         @click="this.currentPage = 'editProfile'"
       />
@@ -33,35 +33,49 @@
       </div>
     </div>
     <div class="w-2/3 text-center">
-      <my-routes v-if="this.currentPage === 'myRoutes'" :user="this.user" />
-      <my-reservations
+      <MyRoutes
+        v-if="this.currentPage === 'myRoutes'"
+        :user="this.user"
+        @get-user="this.user = this.$store.getters['users/getUser']"
+      />
+      <MyReservations
         v-if="this.currentPage === 'myReservations'"
         :user="this.user"
       />
-      <edit-profile
+      <EditProfile
         v-if="this.currentPage === 'editProfile'"
         :user="this.user"
         @close-form="this.currentPage = 'myRoutes'"
+        @update-car="this.currentPage = 'editCarForm'"
         @user-updated="updateUser"
+      />
+      <SelectCarForm
+        v-if="this.currentPage === 'editCarForm'"
+        :car="this.user.user_car"
+        @close-form="closeForm"
       />
     </div>
   </div>
 </template>
 
 <script>
-import MyRoutes from "../layouts/private/MyRoutes.vue";
-import MyReservations from "../layouts/private/MyReservations";
+import MyRoutes from "@/layouts/profile/MyRoutes.vue";
+import MyReservations from "@/layouts/profile/MyReservations";
 import EditIcon from "@/components/icons/EditIcon.vue";
-import EditProfile from "@/layouts/private/EditProfile.vue";
+import EditProfile from "@/layouts/profile/EditProfile.vue";
+import SelectCarForm from "@/layouts/profile/SelectCarForm.vue";
 
 export default {
   name: "ProfilePage",
-  components: { EditProfile, EditIcon, MyRoutes, MyReservations },
-  beforeMount() {
-    this.getUser();
+  components: {
+    SelectCarForm,
+    EditProfile,
+    EditIcon,
+    MyRoutes,
+    MyReservations,
   },
-  mounted() {
-    if (sessionStorage.getItem("isLoggedIn"))
+  beforeMount() {
+    if (sessionStorage.getItem("token"))
       this.user = this.$store.getters["users/getUser"];
     else this.$router.push("/login");
   },
@@ -85,13 +99,6 @@ export default {
     };
   },
   methods: {
-    async getUser() {
-      const response = await this.$store.dispatch(
-        "users/getUserByToken",
-        sessionStorage.getItem("token")
-      );
-      this.user = response;
-    },
     updateUser(userObject) {
       if (userObject.profile_picture)
         this.user.profile_picture = userObject.profile_picture;
@@ -100,6 +107,16 @@ export default {
       if (userObject.role) this.user.role = userObject.role;
 
       this.currentPage = "myRoutes";
+    },
+    async closeForm(value = false) {
+      this.currentPage = "myRoutes";
+      if (value) {
+        await this.$store.dispatch(
+          "users/getUserByToken",
+          this.$store.getters["users/getToken"]
+        );
+        this.user = this.$store.getters["users/getUser"];
+      }
     },
   },
 };
