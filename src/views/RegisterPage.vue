@@ -108,14 +108,7 @@
             </span>
           </div>
           <button
-            :class="{
-              'bg-gray-600':
-                this.email.value.length > 0 && this.password.value.length > 0,
-            }"
-            :disabled="
-              !(this.email.value.length > 0 && this.password.value.length > 0)
-            "
-            class="w-full rounded-full p-2 text-white font-normal bg-gray-400"
+            class="w-full rounded-full p-2 text-white font-normal bg-gray-600"
           >
             Sign Up
           </button>
@@ -143,6 +136,8 @@
 <style scoped></style>
 
 <script>
+import Toast from "@/utils/toast";
+
 export default {
   props: [],
   emits: ["auth-in"],
@@ -175,7 +170,6 @@ export default {
         value: "",
         isValid: true,
       },
-      formIsValid: true,
       incorrect: false,
       isLoading: false,
       tDiv: false,
@@ -197,26 +191,43 @@ export default {
       this.incorrect = false;
     },
     validateForm() {
-      this.formIsValid = true;
       this.incorrect = false;
-      if (!this.email.value.includes("@")) {
-        this.email.isValid = false;
-        this.formIsValid = false;
+      if (this.firstName.value === "") {
+        Toast.showWarning("Please fill out all fields.");
+        this.firstName.isValid = false;
+        return false;
       }
-      if (this.password.value.length === 0) {
+      if (this.lastName.value === "") {
+        Toast.showWarning("Please fill out all fields.");
+        this.lastName.isValid = false;
+        return false;
+      }
+      if (this.role.value === "") {
+        Toast.showWarning("Please fill out all fields.");
+        this.role.isValid = false;
+        return false;
+      }
+      if (!this.email.value.includes("@")) {
+        Toast.showWarning("Email should be email type.");
+        this.email.isValid = false;
+        return false;
+      }
+      if (this.password.value.length < 8) {
+        Toast.showWarning("Password should be 8 or more characters long.");
         this.password.isValid = false;
-        this.formIsValid = false;
+        return false;
       }
       if (this.password.value !== this.passwordR.value) {
+        Toast.showWarning("Passwords are not the same.");
         this.password.isValid = false;
         this.passwordR.isValid = false;
-        this.formIsValid = false;
+        return false;
       }
+      return true;
     },
     async submitForm() {
       this.isLoading = true;
-      this.validateForm();
-      if (!this.formIsValid) {
+      if (!this.validateForm()) {
         this.isLoading = false;
         return;
       }
@@ -237,7 +248,6 @@ export default {
           this.incorrect = true;
         }
       } catch (error) {
-        console.error(error);
         this.incorrect = true;
       }
       this.isLoading = false;

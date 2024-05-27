@@ -8,6 +8,7 @@ import AdminCitiesPage from "./admin/views/AdminCitiesPage.vue";
 
 // User Routes
 import HomePage from "./views/HomePage.vue";
+import AboutUs from "./views/AboutUs.vue";
 import ProfilePage from "./views/ProfilePage.vue";
 import ChatPage from "./views/ChatPage.vue";
 import ReservationsPage from "./views/ReservationsPage.vue";
@@ -22,6 +23,7 @@ const router = createRouter({
     { path: "/", redirect: "/home" },
     { path: "/home", component: HomePage, name: "home" },
     { path: "/profile", component: ProfilePage, name: "profile" },
+    { path: "/about-us", component: AboutUs, name: "about-us" },
     {
       path: "/reservations",
       component: ReservationsPage,

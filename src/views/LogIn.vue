@@ -49,14 +49,7 @@
             </span>
           </div>
           <button
-            :class="{
-              'bg-gray-600':
-                this.email.value.length > 0 && this.password.value.length > 0,
-            }"
-            :disabled="
-              !(this.email.value.length > 0 && this.password.value.length > 0)
-            "
-            class="w-full rounded-full p-2 text-white font-normal bg-gray-400"
+            class="w-full rounded-full p-2 text-white font-normal bg-gray-600"
           >
             Login
           </button>
@@ -82,6 +75,8 @@
 </template>
 
 <script>
+import Toast from "@/utils/toast";
+
 export default {
   props: [],
   emits: ["auth-in"],
@@ -97,7 +92,6 @@ export default {
         value: "",
         isValid: true,
       },
-      formIsValid: true,
       incorrect: false,
       isLoading: false,
       resetDiv: false,
@@ -116,21 +110,22 @@ export default {
       this.incorrect = false;
     },
     validateForm() {
-      this.formIsValid = true;
       this.incorrect = false;
       if (!this.email.value.includes("@")) {
+        Toast.showWarning("Email is required and should be email type.");
         this.email.isValid = false;
-        this.formIsValid = false;
+        return false;
       }
       if (this.password.value.length === 0) {
+        Toast.showWarning("Password is required.");
         this.password.isValid = false;
-        this.formIsValid = false;
+        return false;
       }
+      return true;
     },
     async submitForm() {
       this.isLoading = true;
-      this.validateForm();
-      if (!this.formIsValid) {
+      if (!this.validateForm()) {
         this.isLoading = false;
         return;
       }

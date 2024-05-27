@@ -60,4 +60,22 @@ export default {
       return false;
     }
   },
+  async getSentReservations(token) {
+    let config = {
+      method: "get",
+      maxBodyLength: Infinity,
+      url: `${apiPath}/reservations/get`,
+      headers: {
+        Accept: "application/json, text/plain, */*",
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    try {
+      const response = await axios.request(config);
+      return response.data;
+    } catch (error) {
+      Toast.showError(error.response.data.message);
+      return false;
+    }
+  },
 };

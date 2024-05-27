@@ -3,7 +3,7 @@
     class="flex md:hidden w-full h-auto px-4 py-3 justify-between border-b-2 border-black/20 items-center"
   >
     <a href="/home">
-      <img class="w-16 h-16" src="../assets/images/logo.png" />
+      <img alt="" class="w-16 h-16" src="../assets/images/logo.png" />
     </a>
     <BarsIcon class="cursor-pointer" @click="this.isShown = !this.isShown" />
   </div>
