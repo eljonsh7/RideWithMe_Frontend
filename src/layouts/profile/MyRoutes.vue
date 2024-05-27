@@ -1,8 +1,8 @@
 <template>
   <div class="w-full flex flex-col gap-3">
-    <div>My Routes</div>
-    <div class="flex justify-end w-full">
-      <CustomButton @click="checkDriver">Add route</CustomButton>
+    <div>{{ user.id == this.$store.getters["users/getUser"].id ? "My" : user.first_name +"'s" }} Routes</div>
+    <div class="flex justify-start w-full">
+      <custom-button @click="checkDriver" v-if='user.role == "driver" && user.id == this.$store.getters["users/getUser"].id'>Add route</custom-button>
     </div>
     <div class="flex flex-col gap-4">
       <RouteBanner
@@ -37,7 +37,7 @@ export default {
   components: { SelectCarForm, RouteForm, CustomButton, RouteBanner },
   props: ["user"],
   emits: ["get-user"],
-  beforeMount() {
+  created() {
     this.getMyRoutes();
     this.getCities();
   },
@@ -52,8 +52,8 @@ export default {
   methods: {
     async getMyRoutes() {
       const response = await Route.getUserRoutes(
-        this.user.id,
-        this.$store.getters["users/getToken"]
+      this.user.id,
+      sessionStorage.getItem("token")
       );
       this.routes = response.data;
     },
