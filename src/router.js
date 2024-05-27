@@ -10,6 +10,7 @@ import AdminCitiesPage from "./admin/views/AdminCitiesPage.vue";
 import HomePage from "./views/HomePage.vue";
 import AboutUs from "./views/AboutUs.vue";
 import ProfilePage from "./views/ProfilePage.vue";
+import PublicProfilesPage from "./views/PublicProfilesPage.vue";
 import ChatPage from "./views/ChatPage.vue";
 import ReservationsPage from "./views/ReservationsPage.vue";
 import NotFound from "./views/NotFound.vue";
@@ -24,6 +25,7 @@ const router = createRouter({
     { path: "/home", component: HomePage, name: "home" },
     { path: "/profile", component: ProfilePage, name: "profile" },
     { path: "/about-us", component: AboutUs, name: "about-us" },
+    { path: "/profile/:user_id", component: PublicProfilesPage, name: "publicProfile",props:true},
     {
       path: "/reservations",
       component: ReservationsPage,
