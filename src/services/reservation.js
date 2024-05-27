@@ -8,7 +8,7 @@ export default {
     let config = {
       method: "post",
       maxBodyLength: Infinity,
-      url: `${apiPath}/reservations/create`,
+      url: `${apiPath}/reservations/create/${data.route_id}`,
       headers: {
         Accept: "application/json, text/plain, */*",
         Authorization: `Bearer ${token}`,

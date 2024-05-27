@@ -24,6 +24,7 @@ import AdminNavBar from "./admin/layouts/AdminNavBar.vue";
 import BaseLoader from "@/components/BaseLoader.vue";
 
 import Pusher from "pusher-js";
+import Toast from "@/utils/toast";
 
 export default {
   name: "App",
@@ -116,6 +117,9 @@ export default {
           detail: e,
         });
         window.dispatchEvent(event);
+      });
+      this.channel.bind("NotificationEvent", async (e) => {
+        Toast.showInfo(e.notificationEventData.type);
       });
     },
     unbindChannel() {

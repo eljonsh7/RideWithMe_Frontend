@@ -100,7 +100,7 @@ export default {
   beforeMount() {
     this.routes = sessionStorage.getItem("token")
       ? ["reservations", "chat", "about us"]
-      : ["reservations", "about us"];
+      : ["about us"];
   },
   data() {
     return {
