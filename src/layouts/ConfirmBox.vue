@@ -1,17 +1,17 @@
 <template>
-  <custom-modal @close-modal="this.$emit('close-modal')">
+  <CustomModal @close-modal="this.$emit('close-modal')">
     <div class="flex flex-col gap-10">
-      <slot></slot>
+      <slot />
       <div class="flex w-full justify-between">
-        <custom-button :fill="false" @click="this.$emit('close-modal')"
+        <CustomButton :fill="false" @click="this.$emit('close-modal')"
           >No
-        </custom-button>
-        <custom-button :fill="true" @click="this.$emit('confirm-action')"
-          >Yes</custom-button
-        >
+        </CustomButton>
+        <CustomButton :fill="true" @click="this.$emit('confirm-action')"
+          >Yes
+        </CustomButton>
       </div>
     </div>
-  </custom-modal>
+  </CustomModal>
 </template>
 
 <script>

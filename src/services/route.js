@@ -4,25 +4,6 @@ import Toast from "@/utils/toast";
 const apiPath = process.env.VUE_APP_SERVICE_URL;
 
 export default {
-  async getFilteredRoutes(object, token) {
-    let config = {
-      method: "post",
-      maxBodyLength: Infinity,
-      url: `${apiPath}/routes/search`,
-      headers: {
-        Accept: "application/json, text/plain, */*",
-        Authorization: `Bearer ${token}`,
-      },
-      data: object,
-    };
-    try {
-      const response = await axios.request(config);
-      return response.data;
-    } catch (error) {
-      Toast.showError(error.response.data.message);
-      return false;
-    }
-  },
   async addRoute(object, token) {
     let config = {
       method: "post",
@@ -42,7 +23,26 @@ export default {
       return false;
     }
   },
-  async getRoutes(object) {
+  async getFilteredRoutes(data, token) {
+    let config = {
+      method: "post",
+      maxBodyLength: Infinity,
+      url: `${apiPath}/routes/search`,
+      headers: {
+        Accept: "application/json, text/plain, */*",
+        Authorization: `Bearer ${token}`,
+      },
+      data,
+    };
+    try {
+      const response = await axios.request(config);
+      return response.data;
+    } catch (error) {
+      Toast.showError(error.response.data.message);
+      return false;
+    }
+  },
+  async getRoutes(params) {
     let config = {
       method: "get",
       maxBodyLength: Infinity,
@@ -50,7 +50,7 @@ export default {
       headers: {
         Accept: "application/json, text/plain, */*",
       },
-      params: object,
+      params,
     };
     try {
       const response = await axios.request(config);

@@ -1,12 +1,12 @@
 <template>
   <div class="flex flex-col gap-4">
-    <route-filters @filter-routes="addFilters" />
+    <RouteFilters @filter-routes="addFilters" />
     <div
       class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 mx-16 my-8 gap-14"
     >
-      <route-card v-for="route in routes" :key="route.id" :route="route" />
+      <RouteCard v-for="route in routes" :key="route.id" :route="route" />
     </div>
-    <pagination-bar
+    <PaginationBar
       v-if="this.totalRoutes > this.pageSize"
       :currentPage="this.currentPage"
       :limitPerPage="this.pageSize"
@@ -62,8 +62,10 @@ export default {
       this.currentPage = pageNumber;
       filters.page = this.currentPage;
       filters.pageSize = this.pageSize;
-      const response = await Route.getFilteredRoutes(filters, this.token);
-      console.log(response);
+      const response = await Route.getFilteredRoutes(
+        filters,
+        this.$store.getters["users/getToken"]
+      );
       if (response) {
         this.routes = response.data;
         this.totalRoutes = response.total;

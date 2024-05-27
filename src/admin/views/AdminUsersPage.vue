@@ -19,15 +19,14 @@
           v-if="this.users.length > 0"
           class="bg-white divide-y divide-gray-200"
         >
-          <admin-user-table-row
+          <AdminUserTableRow
             v-for="(user, index) in users"
             :key="user"
             :index="index"
             :user="user"
             @delete-user="deleteUser"
             @user-ban-status-changed="changeUserBanStatus"
-          >
-          </admin-user-table-row>
+          />
         </tbody>
         <tbody v-else class="bg-white divide-y divide-gray-200">
           <tr class="text-center text-black/50">
@@ -50,7 +49,12 @@ export default {
     AdminUserTableRow,
   },
   beforeMount() {
-    this.getUsers();
+    if (
+      !this.$store.getters["users/getUser"] ||
+      this.$store.getters["users/getUser"].is_admin === 0
+    )
+      this.$router.push("/");
+    else this.getUsers();
   },
   data() {
     return {
@@ -64,7 +68,7 @@ export default {
   },
   methods: {
     async getUsers() {
-      const users = await User.getUsers(sessionStorage.getItem("token"));
+      const users = await User.getUsers(this.$store.getters["users/getToken"]);
       if (users) this.users = users.users;
     },
     deleteUser(index) {

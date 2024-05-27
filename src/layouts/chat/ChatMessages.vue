@@ -1,27 +1,27 @@
 <template>
-  <div class="h-full">
+  <div style="height: 620px">
     <div
       ref="messagesContainer"
       class="h-full flex flex-col gap-1 p-1 overflow-y-scroll"
       style="scrollbar-width: none"
     >
-      <chat-message
+      <ChatMessage
         v-for="message in this.messages"
         :key="message.id"
         :loggedInUserId="userId"
         :message="message"
       >
         {{ message.content }}
-      </chat-message>
+      </ChatMessage>
     </div>
     <div
       class="w-full h-auto bottom-0 bg-black/30 flex justify-center content-center flex-wrap"
     >
       <div
-        class="w-full h-auto flex items-center md:m-2 gap-1 m-1 flex-row justify-between flex-nowrap"
+        class="w-full h-auto flex items-center m-2 gap-1 flex-row justify-between flex-nowrap"
       >
         <input
-          v-model="this.newMessage"
+          v-model="this.addMessage"
           class="w-full h-auto flex flex-nowrap focus:outline-none bg-white text-left p-3 pr-8 resize-none rounded-lg auto-expand overflow-y-auto"
           placeholder="Write message ..."
           type="text"
@@ -31,7 +31,7 @@
           class="w-auto h-full pt-2 flex flex-row md:gap-2 gap-1 justify-end flex-nowrap"
         >
           <button
-            :disabled="this.newMessage === ''"
+            :disabled="this.addMessage === ''"
             class="py-1 px-2 relative text-white h-fit rounded-lg bg-black/50"
             @click="sendMessage"
           >
@@ -50,17 +50,15 @@ import ChatMessage from "../../components/ChatMessage.vue";
 export default {
   name: "ChatMessages",
   components: { ChatMessage },
-  props: ["conversation"],
+  props: ["conversation", "newMessage", "userId"],
+  emits: ["change-last-message"],
   watch: {
     conversation() {
       this.getMessages();
     },
-  },
-  created() {
-    window.addEventListener("new-message", this.handleNewMessage);
-  },
-  beforeUnmount() {
-    window.removeEventListener("new-message", this.handleNewMessage);
+    newMessage(newValue) {
+      if (newValue) this.handleNewMessage(newValue);
+    },
   },
   beforeMount() {
     this.getMessages();
@@ -68,8 +66,7 @@ export default {
   data() {
     return {
       messages: [],
-      newMessage: "",
-      userId: sessionStorage.getItem("userId"),
+      addMessage: "",
     };
   },
   methods: {
@@ -77,14 +74,18 @@ export default {
       const response = await Chat.getMessages(
         this.conversation.sender.id,
         "private",
-        sessionStorage.getItem("token")
+        this.$store.getters["users/getToken"]
       );
-      console.log(response);
       this.messages = response.messages;
+      this.scrollToBottom();
+      await Chat.markAsRead(
+        this.conversation.sender.id,
+        this.$store.getters["users/getToken"]
+      );
     },
     async sendMessage() {
       const object = {
-        message: this.newMessage,
+        message: this.addMessage,
         type: "text",
       };
 
@@ -94,22 +95,27 @@ export default {
         content: object.message,
         status: "sending",
         user_id: this.userId,
+        created_at: new Date().toISOString(),
       });
 
-      this.newMessage = "";
+      this.addMessage = "";
 
       this.scrollToBottom();
 
       const response = await Chat.sendMessage(
         this.conversation.sender.id,
-        sessionStorage.getItem("token"),
-        object
+        object,
+        this.$store.getters["users/getToken"]
       );
 
-      if (response) this.messages[index].status = "sent";
+      if (response) {
+        this.messages[index].status = "sent";
+        this.$emit("change-last-message", object.message, false);
+      }
     },
-    handleNewMessage(detail) {
-      console.log(detail);
+    handleNewMessage(message) {
+      this.messages.push(message);
+      this.scrollToBottom();
     },
     scrollToBottom() {
       try {

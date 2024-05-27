@@ -16,10 +16,7 @@ export default {
     };
     try {
       const response = await axios.request(config);
-      sessionStorage.setItem("isLoggedIn", true);
       sessionStorage.setItem("token", response.data.token);
-      sessionStorage.setItem("userId", response.data.user.id);
-      sessionStorage.setItem("isAdmin", response.data.user.role == "admin");
       context.commit("setUser", response.data.user);
       context.commit("setToken", response.data.token);
       return response.data;
@@ -40,11 +37,7 @@ export default {
     };
     try {
       const response = await axios.request(config);
-      console.log(response);
-      sessionStorage.setItem("isLoggedIn", true);
       sessionStorage.setItem("token", response.data.token);
-      sessionStorage.setItem("userId", response.data.user.id);
-      sessionStorage.setItem("isAdmin", false);
       context.commit("setUser", response.data.user);
       return response.data;
     } catch (error) {
@@ -73,9 +66,7 @@ export default {
     }
   },
   async logOut(context) {
-    sessionStorage.removeItem("isLoggedIn");
     sessionStorage.removeItem("token");
-    sessionStorage.removeItem("userId");
     context.commit("logOut");
     Toast.showDefault("You logged out!");
   },
@@ -90,6 +81,7 @@ export default {
     };
     try {
       const response = await axios.request(config);
+      context.commit("setToken", sessionStorage.getItem("token"));
       context.commit("setUser", response.data);
       return response.data;
     } catch (error) {

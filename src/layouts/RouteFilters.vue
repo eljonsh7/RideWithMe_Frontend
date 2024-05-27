@@ -4,37 +4,37 @@
   >
     <div class="w-full md:w-auto">
       <label class="text-center text-black block" for="fromRoute">From:</label>
-      <custom-select
+      <CustomSelect
         id="fromRoute"
         v-model="fromCity"
         :options="this.filteredCities('from')"
-      ></custom-select>
+      />
     </div>
     <div class="w-auto flex justify-center items-center">
-      <arrows-horizontal-icon
+      <ArrowsHorizontalIcon
         class="hidden md:flex text-black mt-6"
         @click="this.reverseFromTo"
       />
-      <arrows-vertical-icon
+      <ArrowsVerticalIcon
         class="md:hidden flex text-black"
         @click="this.reverseFromTo"
       />
     </div>
     <div class="w-full md:w-auto">
       <label class="text-center text-black block" for="toRoute">To:</label>
-      <custom-select
+      <CustomSelect
         id="toRoute"
         v-model="toCity"
         :options="this.filteredCities('to')"
-      ></custom-select>
+      />
     </div>
     <div class="w-full md:w-auto">
       <label class="text-center text-black block" for="dateRoute">Date:</label>
-      <custom-input id="dateRoute" v-model="date" type="date" />
+      <CustomInput id="dateRoute" v-model="date" type="date" />
     </div>
     <div v-if="this.date" class="w-full md:w-auto">
       <label class="text-center text-black block" for="timeRoute">Time:</label>
-      <custom-input id="timeRoute" v-model="time" type="time" />
+      <CustomInput id="timeRoute" v-model="time" type="time" />
     </div>
     <div class="mt-6 flex gap-2">
       <div
@@ -42,7 +42,7 @@
         class="flex justify-center items-center bg-white border border-gray-500 aspect-square h-10 p-2 rounded-full cursor-pointer"
         @click="resetTimeFilter"
       >
-        <x-mark></x-mark>
+        <xMark />
       </div>
       <div
         class="flex justify-center items-center bg-white border border-gray-500 text-black h-10 aspect-square py-2 rounded-full w-full lg:w-auto cursor-pointer"
@@ -51,7 +51,7 @@
           getFilteredRoutes();
         "
       >
-        <search-icon />
+        <SearchIcon />
       </div>
     </div>
   </div>

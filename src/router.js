@@ -36,9 +36,9 @@ const router = createRouter({
     { path: "/admin/cities", component: AdminCitiesPage, name: "adminCities" },
     { path: "/:notFound(.*)", component: NotFound },
     {
-      path: "/route/:route_id",
+      path: "/route/:routeId",
       component: RouteDetails,
-      name: "RouteDetails",
+      name: "routeDetails",
       props: true,
     },
   ],

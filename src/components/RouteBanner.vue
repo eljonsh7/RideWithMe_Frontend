@@ -5,6 +5,7 @@
   >
     <div class="w-auto h-auto flex gap-5 justify-center items-center">
       <img
+        alt=""
         class="w-10 h-10 rounded-full bg-white"
         src="../assets/images/default-user-pic.png"
       />

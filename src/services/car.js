@@ -41,4 +41,23 @@ export default {
       return false;
     }
   },
+  async updateAttachedCar(data, token) {
+    let config = {
+      method: "put",
+      maxBodyLength: Infinity,
+      url: `${apiPath}/users/car/update`,
+      headers: {
+        Accept: "application/json, text/plain, */*",
+        Authorization: `Bearer ${token}`,
+      },
+      data,
+    };
+    try {
+      const response = await axios.request(config);
+      return response.data;
+    } catch (error) {
+      Toast.showError(error.response.data.message);
+      return false;
+    }
+  },
 };

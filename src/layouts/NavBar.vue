@@ -1,26 +1,26 @@
 <template>
   <div
-    class="w-full h-fit px-10 flex justify-between items-center"
+    class="w-full h-fit px-10 flex justify-between items-center border-b border-black/50"
     @click="this.showProfileOptions = false"
   >
     <div class="flex gap-10">
-      <router-link to="/home">
+      <RouterLink to="/home">
         <img
           alt="Not Found!"
           class="w-12 h-12 my-2"
           src="../assets/images/logo.png"
         />
-      </router-link>
+      </RouterLink>
       <div class="flex gap-x-4 items-center text-black">
-        <nav-link v-for="route in routes" :key="route" :text="route"></nav-link>
+        <NavLink v-for="route in routes" :key="route" :text="route" />
       </div>
     </div>
     <div v-if="this.isLoggedIn" class="flex items-center cursor-pointer">
       <div class="flex items-center gap-1 cursor-pointer">
         <img
-          alt="Not Found!"
-          class="w-10 h-10 border border-black rounded-full bg-white cursor-pointer"
-          src="../assets/images/default-user-pic.png"
+          :src="userImage"
+          alt=""
+          class="w-10 h-10 border border-black/50 rounded-full bg-white cursor-pointer"
           @click.stop="showProfileOptions = !showProfileOptions"
         />
       </div>
@@ -65,14 +65,13 @@
       </p>
     </div>
   </div>
-  <hr />
-  <confirm-box
+  <ConfirmBox
     v-if="this.logOutModal"
-    @closeModal="this.logOutModal = false"
+    @close-modal="this.logOutModal = false"
     @confirm-action="logOut"
   >
     Are you sure you want to log out?
-  </confirm-box>
+  </ConfirmBox>
 </template>
 
 <script>
@@ -84,30 +83,39 @@ export default {
     ConfirmBox,
     NavLink,
   },
+  emits: ["unbind-channel"],
   computed: {
     isLoggedIn() {
-      return sessionStorage.getItem("isLoggedIn");
+      return sessionStorage.getItem("token");
     },
+    isAdmin() {
+      return this.$store.getters["users/getUser"].is_admin === 1;
+    },
+    userImage() {
+      return this.user.profile_picture
+        ? `${process.env.VUE_APP_STORAGE_URL}/${this.user.profile_picture}`
+        : require("../assets/images/default-user-pic.png");
+    },
+  },
+  beforeMount() {
+    this.routes = sessionStorage.getItem("token")
+      ? ["reservations", "chat", "about us"]
+      : ["reservations", "about us"];
   },
   data() {
     return {
       logOutModal: false,
       showProfileOptions: false,
-      routes: ["reservations", "chat", "about us"],
+      routes: [],
+      user: this.$store.getters["users/getUser"],
     };
   },
   methods: {
     async logOut() {
       await this.$store.dispatch("users/logOut");
       this.logOutModal = false;
+      this.$emit("unbind-channel");
       this.$router.push("/login");
-    },
-    isAdmin() {
-      try {
-        return this.$store.getters["users/getUser"].is_admin;
-      } catch (e) {
-        return false;
-      }
     },
   },
 };

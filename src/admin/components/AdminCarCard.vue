@@ -9,7 +9,7 @@
         alt="."
         class="w-full h-full object-cover rounded-t-lg"
       />
-      <image-icon v-else class="w-full h-full object-cover rounded-t-lg" />
+      <ImageIcon v-else class="w-full h-full object-cover rounded-t-lg" />
     </div>
     <div class="p-2">
       {{ this.fullCarName }}
@@ -19,22 +19,22 @@
         Seats: {{ this.car.seats_number }}
       </div>
       <div class="flex justify-end gap-2 p-2">
-        <edit-icon @click="this.updateCarModal = true"></edit-icon>
-        <trash-icon @click="this.deleteCarModal = true"></trash-icon>
+        <EditIcon @click="this.updateCarModal = true" />
+        <TrashIcon @click="this.deleteCarModal = true" />
       </div>
     </div>
   </div>
-  <confirm-box
+  <ConfirmBox
     v-if="this.deleteCarModal"
     @close-modal="this.deleteCarModal = false"
     @confirm-action="this.deleteCar"
     >Are you sure you want to delete car: {{ this.fullCarName }}
-  </confirm-box>
-  <admin-car-form
+  </ConfirmBox>
+  <AdminCarForm
     v-if="this.updateCarModal"
     :car="this.car"
     @close-form="closeForm"
-  ></admin-car-form>
+  />
 </template>
 
 <script>
@@ -68,7 +68,7 @@ export default {
     async deleteCar() {
       const response = await Car.deleteCar(
         this.id,
-        sessionStorage.getItem("token")
+        this.$store.getters["users/getToken"]
       );
       if (response) this.$emit("car-deleted", this.index);
     },

@@ -8,7 +8,7 @@
       <h1 class="text-2xl text-white">Page not found</h1>
       <p class="text-white">
         This page could not be found - check out
-        <router-link class="text-sky-500" to="/home">HOME</router-link>
+        <RouterLink class="text-sky-500" to="/home">HOME</RouterLink>
         .
       </p>
     </div>
@@ -20,7 +20,7 @@ export default {
   name: "NotFound",
   computed: {
     isLoggedIn() {
-      return JSON.parse(sessionStorage.getItem("isLoggedIn"));
+      return sessionStorage.getItem("token");
     },
   },
 };

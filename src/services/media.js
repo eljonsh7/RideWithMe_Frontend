@@ -4,7 +4,7 @@ import Toast from "../utils/toast.js";
 const apiPath = process.env.VUE_APP_SERVICE_URL;
 
 export default {
-  async storeMedia(object, token) {
+  async storeMedia(data, token) {
     let config = {
       method: "post",
       maxBodyLength: Infinity,
@@ -14,7 +14,7 @@ export default {
         "Content-Type": "multipart/form-data",
         Authorization: `Bearer ${token}`,
       },
-      data: object,
+      data,
     };
     try {
       const response = await axios.request(config);
