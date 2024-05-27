@@ -25,7 +25,8 @@
           {{ this.route.driver ? this.route.driver.last_name : "" }}
         </p>
         <div class="flex routes-center text-xs">
-          <span class="text-yellow-500 mr-1">★★★★★</span>
+          <span class="text-yellow-500 mr-1"><div class="flex justify-center w-24"><star-icon class="w-8 my-2" v-for="starIndex in 5" :key="starIndex" 
+        :color="calculateStarColor(starIndex)" strokeColor="white" :type="calculateStarType(starIndex)"></star-icon></div></span>
         </div>
       </div>
     </div>
@@ -47,10 +48,14 @@
 
 <script>
 import DateUtil from "../utils/date.js";
+import StarIcon from ".//icons/StarIcon.vue";
 
 export default {
   name: "RouteCard",
   props: ["route"],
+  components:{
+    StarIcon
+  },
   data() {
     return {
       DateUtil,
@@ -62,6 +67,35 @@ export default {
         this.$router.push(`/route/${this.route.id}`);
       else this.$router.push("/login");
     },
+    calculateStarType(starNumber) {
+      if (this.route.driver.averageRating) {
+        if (starNumber < this.route.driver.averageRating) {
+          return "star";
+        }
+        if (starNumber - this.route.driver.averageRating > 0.3 && starNumber - this.route.driver.averageRating < 0.7) {
+          return "half-star";
+        }
+        if (this.route.driver.averageRating - starNumber <= 0) {
+          return "star";
+        }
+
+      }
+    },
+    calculateStarColor(starNumber) {
+      if (this.route.driver.averageRating) {
+        if (starNumber <= this.route.driver.averageRating) {
+          return "white";
+        }
+        if (starNumber - this.route.driver.averageRating > 0.7 && starNumber - this.route.driver.averageRating < 1) {
+          return "none";
+        }
+
+        if(starNumber - this.route.driver.averageRating > 0.3 && starNumber - this.route.driver.averageRating < 0.7){
+          return "white";
+        }
+        return "none";
+      }
+    }
   },
 };
 </script>
