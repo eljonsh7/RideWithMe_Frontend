@@ -8,7 +8,7 @@ export default {
     let config = {
       method: "post",
       maxBodyLength: Infinity,
-      url: `${apiPath}/reservations/create`,
+      url: `${apiPath}/reservations/create/${data.route_id}`,
       headers: {
         Accept: "application/json, text/plain, */*",
         Authorization: `Bearer ${token}`,
@@ -51,6 +51,24 @@ export default {
         Authorization: `Bearer ${token}`,
       },
       data,
+    };
+    try {
+      const response = await axios.request(config);
+      return response.data;
+    } catch (error) {
+      Toast.showError(error.response.data.message);
+      return false;
+    }
+  },
+  async getSentReservations(token) {
+    let config = {
+      method: "get",
+      maxBodyLength: Infinity,
+      url: `${apiPath}/reservations/get`,
+      headers: {
+        Accept: "application/json, text/plain, */*",
+        Authorization: `Bearer ${token}`,
+      },
     };
     try {
       const response = await axios.request(config);
