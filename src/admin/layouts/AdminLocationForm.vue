@@ -1,19 +1,20 @@
 <template>
   <CustomModal @close-modal="this.$emit('close-form')">
-    <div class="w-full flex flex-col gap-5">
+    <form class="w-full flex flex-col gap-5" @submit.prevent="submit">
       <div>{{ this.location ? "Update" : "Add" }} location:</div>
       <div class="flex gap-2 md:flex-row flex-col">
         <CustomInput
           v-model="this.locationName"
           autofocus
           placeholder="Location name"
+          required
           type="text"
         />
       </div>
       <div class="flex justify-end">
-        <CustomButton :fill="true" @click="submit">Submit</CustomButton>
+        <CustomButton :fill="true">Submit</CustomButton>
       </div>
-    </div>
+    </form>
   </CustomModal>
 </template>
 

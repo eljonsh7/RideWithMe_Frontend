@@ -1,27 +1,34 @@
 <template>
   <CustomModal @close-modal="this.$emit('close-form')">
-    <div class="w-full flex flex-col gap-5">
+    <form class="w-full flex flex-col gap-5" @submit.prevent="submit">
       <div>{{ this.car ? "Update" : "Add" }} car:</div>
       <div class="flex gap-2 flex-col">
         <CustomInput
-          v-model="this.brand.value"
+          v-model="this.brand"
+          :class="{ 'border-red-500': !this.brand.isValid }"
           autofocus
           placeholder="Car brand"
+          required
           type="text"
         />
         <CustomInput
-          v-model="this.serie.value"
+          v-model="this.serie"
           placeholder="Car serie"
+          required
           type="text"
         />
         <CustomInput
-          v-model="this.type.value"
+          v-model="this.type"
           placeholder="Car type"
+          required
           type="text"
         />
         <CustomInput
-          v-model="this.seats_number.value"
+          v-model="this.seats_number"
+          max="10"
+          min="2"
           placeholder="Number of seats"
+          required
           type="number"
         />
         <div class="flex gap-3">
@@ -49,6 +56,7 @@
                 accept="image/png, image/jpeg"
                 class="sr-only"
                 name="fileInput"
+                required
                 type="file"
                 @change="showImage"
               />
@@ -57,11 +65,9 @@
         </div>
       </div>
       <div class="flex justify-end">
-        <CustomButton :fill="true" class="w-full" @click="submit"
-          >Submit
-        </CustomButton>
+        <CustomButton :fill="true" class="w-full">Submit </CustomButton>
       </div>
-    </div>
+    </form>
   </CustomModal>
 </template>
 
@@ -84,42 +90,41 @@ export default {
       return this.thumbnailPath || require("../assets/images/noCarPic.svg");
     },
   },
+  watch: {
+    seats_number(newValue) {
+      if (newValue > 10) this.seats_number = 10;
+      if (newValue < 2) this.seats_number = 2;
+    },
+  },
   data() {
     return {
-      formIsValid: true,
-      brand: { value: this.car ? this.car.brand : "", isValid: true },
-      serie: { value: this.car ? this.car.serie : "", isValid: true },
-      type: { value: this.car ? this.car.type : "", isValid: true },
+      brand: this.car ? this.car.brand : "",
+      serie: this.car ? this.car.serie : "",
+      type: this.car ? this.car.type : "",
       thumbnailPath: this.car
         ? `http://127.0.0.1:8000/storage/${this.car.thumbnail}`
         : null,
       thumbnailFile: null,
       shouldCrop: false,
-      seats_number: {
-        value: this.car ? this.car.seats_number : 5,
-        isValid: true,
-      },
+      seats_number: this.car ? this.car.seats_number : 5,
     };
   },
   methods: {
-    async submit() {
-      await this.resetValidity();
-
-      await this.checkValidity();
-      if (!this.formIsValid) return;
-
-      if (this.car) await this.updateCar();
-      else await this.addCar();
+    submit() {
+      if (this.car) this.updateCar();
+      else this.addCar();
     },
     async addCar() {
       const thumbnail = await this.getMediaLink(this.thumbnailFile);
 
+      if (!thumbnail) return;
+
       const carObject = {
-        brand: this.brand.value,
-        serie: this.serie.value,
-        type: this.type.value,
+        brand: this.brand,
+        serie: this.serie,
+        type: this.type,
         thumbnail,
-        seats_number: this.seats_number.value,
+        seats_number: this.seats_number,
       };
 
       const response = await Car.addCar(
@@ -133,17 +138,14 @@ export default {
         id: this.car.id,
       };
 
-      if (this.brand.value !== this.car.brand)
-        carObject.brand = this.brand.value;
-      if (this.serie.value !== this.car.serie)
-        carObject.serie = this.serie.value;
-      if (this.type.value !== this.car.type) carObject.type = this.type.value;
-      if (this.seats_number.value !== this.car.seats_number)
-        carObject.seats_number = this.seats_number.value;
+      if (this.brand !== this.car.brand) carObject.brand = this.brand;
+      if (this.serie !== this.car.serie) carObject.serie = this.serie;
+      if (this.type !== this.car.type) carObject.type = this.type;
+      if (this.seats_number !== this.car.seats_number)
+        carObject.seats_number = this.seats_number;
 
-      if (this.thumbnailFile) {
+      if (this.thumbnailFile)
         carObject.thumbnail = await this.getMediaLink(this.thumbnailFile);
-      }
 
       const response = await Car.updateCar(
         carObject,
@@ -158,34 +160,6 @@ export default {
       );
 
       return media.file_path;
-    },
-    async checkValidity() {
-      if (this.brand.value === "") {
-        this.brand.isValid = false;
-        this.formIsValid = false;
-      }
-
-      if (this.serie.value === "") {
-        this.serie.isValid = false;
-        this.formIsValid = false;
-      }
-
-      if (this.type.value === "") {
-        this.type.isValid = false;
-        this.formIsValid = false;
-      }
-
-      if (this.seats_number.value === "" || this.seats_number.value === 0) {
-        this.seats_number.isValid = false;
-        this.formIsValid = false;
-      }
-    },
-    async resetValidity() {
-      this.formIsValid = true;
-      this.brand.isValid = true;
-      this.serie.isValid = true;
-      this.type.isValid = true;
-      this.seats_number.isValid = true;
     },
     showImage() {
       this.thumbnailFile = this.$refs.fileInput.files[0];

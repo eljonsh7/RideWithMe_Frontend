@@ -1,9 +1,9 @@
 <template>
   <div class="flex flex-col gap-3 p-5 w-full">
     <div class="flex justify-center text-3xl font-extrabold">Users</div>
-    <div class="overflow-hidden flex flex-col gap-4 w-full">
-      <table class="divide-y divide-gray-200 w-full border rounded-lg">
-        <thead class="bg-gray-50 border">
+    <div class="overflow-x-auto flex flex-col gap-4 w-full border rounded-xl">
+      <table class="divide-x divide-y divide-gray-200 w-full border rounded-xl">
+        <thead class="bg-gray-50 border rounded-xl">
           <tr>
             <th
               v-for="column in this.columns"
