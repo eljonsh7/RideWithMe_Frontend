@@ -1,4 +1,5 @@
 import axios from "axios";
+import Toast from "../../utils/toast.js";
 
 const apiPath = process.env.VUE_APP_SERVICE_URL;
 
@@ -14,9 +15,10 @@ export default {
       },
     };
     try {
-      return await axios.request(config);
+      const response = await axios.request(config);
+      return response.data;
     } catch (error) {
-      console.log(error);
+      Toast.showError(error.response.data.message);
       return false;
     }
   },
@@ -31,27 +33,10 @@ export default {
       },
     };
     try {
-      return await axios.request(config);
+      const response = await axios.request(config);
+      return response.data;
     } catch (error) {
-      console.log(error);
-      return false;
-    }
-  },
-  async updateUser(object, token) {
-    let config = {
-      method: "put",
-      maxBodyLength: Infinity,
-      url: `${apiPath}/users/update/${object.userId}`,
-      headers: {
-        Accept: "application/json, text/plain, */*",
-        Authorization: `Bearer ${token}`,
-      },
-      data: object.data,
-    };
-    try {
-      return await axios.request(config);
-    } catch (error) {
-      console.log(error);
+      Toast.showError(error.response.data.message);
       return false;
     }
   },
@@ -66,9 +51,10 @@ export default {
       },
     };
     try {
-      return await axios.request(config);
+      const response = await axios.request(config);
+      return response.data;
     } catch (error) {
-      console.log(error);
+      Toast.showError(error.response.data.message);
       return false;
     }
   },
@@ -83,9 +69,10 @@ export default {
       },
     };
     try {
-      return await axios.request(config);
+      const response = await axios.request(config);
+      return response.data;
     } catch (error) {
-      console.log(error);
+      Toast.showError(error.response.data.message);
       return false;
     }
   },

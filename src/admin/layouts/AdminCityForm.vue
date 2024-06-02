@@ -1,47 +1,52 @@
 <template>
-  <custom-modal @close-modal="this.$emit('close-form')">
-    <div class="w-full flex flex-col gap-5">
-      <div>Add city:</div>
+  <CustomModal @close-modal="this.$emit('close-form')">
+    <form class="w-full flex flex-col gap-5" @submit.prevent="submit">
+      <div>{{ this.city ? "Update" : "Add" }} city:</div>
       <div class="flex gap-2 md:flex-row flex-col">
-        <input
+        <CustomInput
           v-model="this.countryValue"
-          class="px-4 py-3 rounded-lg outline-none border-2 border-gray-300 w-full"
           placeholder="Country"
+          required
           type="text"
-          value="Kosova"
         />
-        <input
+        <CustomInput
           v-model="this.cityValue"
           autofocus
-          class="px-4 py-3 rounded-lg outline-none border-2 border-gray-300 w-full"
           placeholder="City name"
+          required
           type="text"
         />
       </div>
       <div class="flex justify-end">
-        <custom-button :fill="true" @click="addCity">Add</custom-button>
+        <CustomButton :fill="true">Submit</CustomButton>
       </div>
-    </div>
-  </custom-modal>
+    </form>
+  </CustomModal>
 </template>
 
 <script>
-import CustomButton from "../../components/CustomButton.vue";
-import CustomModal from "../../layouts/CustomModal.vue";
+import CustomButton from "../../components/form/CustomButton.vue";
+import CustomModal from "../../layouts/ui/CustomModal.vue";
+import CustomInput from "@/components/form/CustomInput.vue";
 
 import City from "../services/city.js";
 
 export default {
   name: "AdminCityForm",
-  components: { CustomButton, CustomModal },
+  components: { CustomInput, CustomButton, CustomModal },
+  props: ["city"],
   emits: ["close-form"],
   data() {
     return {
-      cityValue: "",
+      cityValue: this.city ? this.city.name : "",
       countryValue: "Kosovë",
     };
   },
   methods: {
+    submit() {
+      if (this.city) this.updateCity();
+      else this.addCity();
+    },
     async addCity() {
       if (this.cityValue !== "" && this.countryValue !== "") {
         const obj = {
@@ -51,10 +56,25 @@ export default {
 
         const response = await City.addCity(
           obj,
-          sessionStorage.getItem("token")
+          this.$store.getters["users/getToken"]
         );
 
         if (response) this.$emit("close-form", true);
+      }
+    },
+    async updateCity() {
+      const object = {
+        id: this.city.id,
+        country: this.countryValue,
+        name: this.cityValue,
+      };
+
+      const response = await City.updateCity(
+        object,
+        this.$store.getters["users/getToken"]
+      );
+      if (response) {
+        this.$emit("close-form", object);
       }
     },
   },

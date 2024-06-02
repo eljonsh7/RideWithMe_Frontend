@@ -3,25 +3,23 @@
     <div class="flex flex-col gap-3">
       <div class="flex justify-center text-3xl font-extrabold">Cities</div>
       <div class="flex w-full justify-end">
-        <custom-button
+        <CustomButton
           :fill="true"
           class="w-full"
           @click="isAddCityModalOpen = true"
           >Add city
-        </custom-button>
+        </CustomButton>
       </div>
       <div class="flex flex-col gap-2">
-        <admin-city-card
+        <AdminCityCard
           v-for="(city, index) in cities"
-          :id="city.id"
           :key="city.id"
-          :country="city.country"
+          :city="city"
           :index="index"
-          :name="city.name"
           :selectedCityId="this.selectedCityId"
           @select-city="(id) => (this.selectedCityId = id)"
           @delete-city="deleteCity"
-        ></admin-city-card>
+        />
       </div>
 
       <div
@@ -34,22 +32,22 @@
     <div class="flex flex-col gap-3">
       <div class="flex justify-center text-3xl font-extrabold">Locations</div>
       <div v-if="this.selectedCityId !== null" class="flex w-full justify-end">
-        <custom-button
+        <CustomButton
           :fill="true"
           class="w-full"
           @click="isAddLocationModalOpen = true"
           >Add location
-        </custom-button>
+        </CustomButton>
       </div>
       <div class="flex flex-col gap-2">
-        <admin-location-card
+        <AdminLocationCard
           v-for="(location, index) in locations"
-          :id="location.id"
           :key="location.id"
+          :cityId="this.selectedCityId"
           :index="index"
-          :name="location.name"
+          :location="location"
           @delete-location="deleteLocation"
-        ></admin-location-card>
+        />
       </div>
       <div
         v-if="this.locations.length === 0"
@@ -63,17 +61,15 @@
       </div>
     </div>
   </div>
-  <admin-city-form
+  <AdminCityForm
     v-if="this.isAddCityModalOpen"
     @close-form="this.closeCityForm"
-  >
-  </admin-city-form>
-  <admin-location-form
+  />
+  <AdminLocationForm
     v-if="this.isAddLocationModalOpen"
     :selectedCityId="this.selectedCityId"
     @close-form="this.closeLocationForm"
-  >
-  </admin-location-form>
+  />
 </template>
 
 <script>
@@ -81,7 +77,7 @@ import AdminCityCard from "../components/AdminCityCard.vue";
 import AdminLocationCard from "../components/AdminLocationCard.vue";
 import AdminCityForm from "../layouts/AdminCityForm.vue";
 import AdminLocationForm from "../layouts/AdminLocationForm.vue";
-import CustomButton from "../../components/CustomButton.vue";
+import CustomButton from "../../components/form/CustomButton.vue";
 
 import City from "../services/city.js";
 import Location from "../services/location.js";
@@ -106,7 +102,12 @@ export default {
     };
   },
   beforeMount() {
-    this.getCities();
+    if (
+      !this.$store.getters["users/getUser"] ||
+      this.$store.getters["users/getUser"].is_admin === 0
+    )
+      this.$router.push("/");
+    else this.getCities();
   },
   watch: {
     selectedCityId(newValue) {
@@ -118,7 +119,6 @@ export default {
   methods: {
     async closeCityForm(arg) {
       if (arg) await this.getCities();
-
       this.isAddCityModalOpen = false;
     },
     async closeLocationForm(arg) {
@@ -127,24 +127,20 @@ export default {
       this.isAddLocationModalOpen = false;
     },
     async getCities() {
-      const cities = await City.getCities(sessionStorage.getItem("token"));
-      if (cities) this.cities = cities.data.cities;
+      const cities = await City.getCities(
+        this.$store.getters["users/getToken"]
+      );
+      if (cities) this.cities = cities.cities;
     },
     async deleteCity(obj) {
-      const response = await City.deleteCity(
-        obj.id,
-        sessionStorage.getItem("token")
-      );
-      if (response) {
-        this.cities.splice(obj.index, 1);
-      }
+      this.cities.splice(obj.index, 1);
     },
     async getLocations() {
       const locations = await Location.getLocations(
         this.selectedCityId,
-        sessionStorage.getItem("token")
+        this.$store.getters["users/getToken"]
       );
-      if (locations) this.locations = locations.data.locations;
+      if (locations) this.locations = locations.locations;
     },
     async deleteLocation(index) {
       this.locations.splice(index, 1);

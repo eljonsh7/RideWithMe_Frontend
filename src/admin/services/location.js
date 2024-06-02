@@ -1,9 +1,10 @@
 import axios from "axios";
+import Toast from "../../utils/toast.js";
 
 const apiPath = process.env.VUE_APP_SERVICE_URL;
 
 export default {
-  async addLocation(object, token) {
+  async addLocation(data, token) {
     let config = {
       method: "post",
       maxBodyLength: Infinity,
@@ -12,12 +13,32 @@ export default {
         Accept: "application/json, text/plain, */*",
         Authorization: `Bearer ${token}`,
       },
-      data: object,
+      data,
     };
     try {
-      return await axios.request(config);
+      const response = await axios.request(config);
+      return response.data;
     } catch (error) {
-      console.log(error);
+      Toast.showError(error.response.data.message);
+      return false;
+    }
+  },
+  async updateLocation(data, token) {
+    let config = {
+      method: "put",
+      maxBodyLength: Infinity,
+      url: `${apiPath}/locations/update/${data.locationId}`,
+      headers: {
+        Accept: "application/json, text/plain, */*",
+        Authorization: `Bearer ${token}`,
+      },
+      data,
+    };
+    try {
+      const response = await axios.request(config);
+      return response.data;
+    } catch (error) {
+      Toast.showError(error.response.data.message);
       return false;
     }
   },
@@ -32,9 +53,10 @@ export default {
       },
     };
     try {
-      return await axios.request(config);
+      const response = await axios.request(config);
+      return response.data;
     } catch (error) {
-      console.log(error);
+      Toast.showError(error.response.data.message);
       return false;
     }
   },
@@ -49,27 +71,10 @@ export default {
       },
     };
     try {
-      return await axios.request(config);
+      const response = await axios.request(config);
+      return response.data;
     } catch (error) {
-      console.log(error);
-      return false;
-    }
-  },
-  async updateLocation(object, token) {
-    let config = {
-      method: "put",
-      maxBodyLength: Infinity,
-      url: `${apiPath}/locations/update/${object.locationid}`,
-      headers: {
-        Accept: "application/json, text/plain, */*",
-        Authorization: `Bearer ${token}`,
-      },
-      data: object.data,
-    };
-    try {
-      return await axios.request(config);
-    } catch (error) {
-      console.log(error);
+      Toast.showError(error.response.data.message);
       return false;
     }
   },

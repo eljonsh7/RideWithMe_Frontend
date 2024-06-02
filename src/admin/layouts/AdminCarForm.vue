@@ -1,40 +1,43 @@
 <template>
-  <custom-modal @close-modal="this.$emit('close-form')">
-    <div class="w-full flex flex-col gap-5">
-      <div>Add car:</div>
+  <CustomModal @close-modal="this.$emit('close-form')">
+    <form class="w-full flex flex-col gap-5" @submit.prevent="submit">
+      <div>{{ this.car ? "Update" : "Add" }} car:</div>
       <div class="flex gap-2 flex-col">
-        <input
-          v-model="this.brand.value"
+        <CustomInput
+          v-model="this.brand"
+          :class="{ 'border-red-500': !this.brand.isValid }"
           autofocus
-          class="px-4 py-3 rounded-lg outline-none border-2 border-gray-300 w-full"
           placeholder="Car brand"
+          required
           type="text"
         />
-        <input
-          v-model="this.serie.value"
-          class="px-4 py-3 rounded-lg outline-none border-2 border-gray-300 w-full"
+        <CustomInput
+          v-model="this.serie"
           placeholder="Car serie"
+          required
           type="text"
         />
-        <input
-          v-model="this.type.value"
-          class="px-4 py-3 rounded-lg outline-none border-2 border-gray-300 w-full"
+        <CustomInput
+          v-model="this.type"
           placeholder="Car type"
+          required
           type="text"
         />
-        <input
-          v-model="this.seats_number.value"
-          class="px-4 py-3 rounded-lg outline-none border-2 border-gray-300 w-full"
+        <CustomInput
+          v-model="this.seats_number"
+          max="10"
+          min="2"
           placeholder="Number of seats"
+          required
           type="number"
         />
         <div class="flex gap-3">
-          <div class="w-full aspect-square p-2">
+          <div class="w-full aspect-square pt-2">
             <div class="w-full h-full rounded-lg border">
               <img
                 :src="imageSource"
                 alt="."
-                class="w-full h-full object-cover"
+                class="w-full h-full object-cover rounded-lg"
               />
             </div>
           </div>
@@ -45,13 +48,15 @@
             <span
               class="flex flex-col justify-center text-sm leading-6 text-gray-600"
             >
-              <image-icon></image-icon>
+              <ImageIcon />
               <span>Upload a file here</span>
               <input
                 id="fileInput"
                 ref="fileInput"
+                accept="image/png, image/jpeg"
                 class="sr-only"
                 name="fileInput"
+                required
                 type="file"
                 @change="showImage"
               />
@@ -60,135 +65,101 @@
         </div>
       </div>
       <div class="flex justify-end">
-        <custom-button :fill="true" class="w-full" @click="submit"
-          >Submit
-        </custom-button>
+        <CustomButton :fill="true" class="w-full">Submit</CustomButton>
       </div>
-    </div>
-  </custom-modal>
+    </form>
+  </CustomModal>
 </template>
 
 <script>
-import CustomModal from "../../layouts/CustomModal.vue";
-import CustomButton from "../../components/CustomButton.vue";
+import CustomModal from "../../layouts/ui/CustomModal.vue";
+import CustomButton from "../../components/form/CustomButton.vue";
+import CustomInput from "@/components/form/CustomInput.vue";
 import ImageIcon from "../../components/icons/ImageIcon.vue";
 
 import Car from "../services/car.js";
-import Media from "../services/media.js";
+import Media from "../../services/media.js";
 
 export default {
   name: "AdminAddCarForm",
   emits: ["close-form"],
-  components: { ImageIcon, CustomButton, CustomModal },
+  components: { CustomInput, ImageIcon, CustomButton, CustomModal },
   props: ["car"],
   computed: {
     imageSource() {
       return this.thumbnailPath || require("../assets/images/noCarPic.svg");
     },
   },
+  watch: {
+    seats_number(newValue) {
+      if (newValue > 10) this.seats_number = 10;
+      if (newValue < 2) this.seats_number = 2;
+    },
+  },
   data() {
     return {
-      formIsValid: true,
-      brand: { value: this.car ? this.car.brand : "", isValid: true },
-      serie: { value: this.car ? this.car.serie : "", isValid: true },
-      type: { value: this.car ? this.car.type : "", isValid: true },
+      brand: this.car ? this.car.brand : "",
+      serie: this.car ? this.car.serie : "",
+      type: this.car ? this.car.type : "",
       thumbnailPath: this.car
         ? `http://127.0.0.1:8000/storage/${this.car.thumbnail}`
         : null,
       thumbnailFile: null,
       shouldCrop: false,
-      seats_number: {
-        value: this.car ? this.car.seats_number : 5,
-        isValid: true,
-      },
+      seats_number: this.car ? this.car.seats_number : 5,
     };
   },
   methods: {
-    async submit() {
-      await this.resetValidity();
-
-      await this.checkValidity();
-      if (!this.formIsValid) return;
-
-      if (this.car) await this.updateCar();
-      else await this.addCar();
+    submit() {
+      if (this.car) this.updateCar();
+      else this.addCar();
     },
     async addCar() {
       const thumbnail = await this.getMediaLink(this.thumbnailFile);
 
+      if (!thumbnail) return;
+
       const carObject = {
-        brand: this.brand.value,
-        serie: this.serie.value,
-        type: this.type.value,
+        brand: this.brand,
+        serie: this.serie,
+        type: this.type,
         thumbnail,
-        seats_number: this.seats_number.value,
+        seats_number: this.seats_number,
       };
 
-      console.log(carObject);
       const response = await Car.addCar(
         carObject,
-        sessionStorage.getItem("token")
+        this.$store.getters["users/getToken"]
       );
-      if (response) this.$emit("close-form", response);
+      if (response) this.$emit("close-form", true);
     },
     async updateCar() {
       const carObject = {
         id: this.car.id,
       };
 
-      if (this.brand.value !== this.car.brand)
-        carObject.brand = this.brand.value;
-      if (this.serie.value !== this.car.serie)
-        carObject.serie = this.serie.value;
-      if (this.type.value !== this.car.type) carObject.type = this.type.value;
-      if (this.seats_number.value !== this.car.seats_number)
-        carObject.seats_number = this.seats_number.value;
+      if (this.brand !== this.car.brand) carObject.brand = this.brand;
+      if (this.serie !== this.car.serie) carObject.serie = this.serie;
+      if (this.type !== this.car.type) carObject.type = this.type;
+      if (this.seats_number !== this.car.seats_number)
+        carObject.seats_number = this.seats_number;
 
-      if (this.thumbnailFile) {
+      if (this.thumbnailFile)
         carObject.thumbnail = await this.getMediaLink(this.thumbnailFile);
-      }
 
       const response = await Car.updateCar(
         carObject,
-        sessionStorage.getItem("token")
+        this.$store.getters["users/getToken"]
       );
-      if (response) this.$emit("close-form", carObject);
+      if (response) this.$emit("close-form", true);
     },
     async getMediaLink(file) {
       const media = await Media.storeMedia(
-        { media: file },
-        sessionStorage.getItem("token")
+        { media: file, folder: "cars" },
+        this.$store.getters["users/getToken"]
       );
 
-      return media.data.file_path;
-    },
-    async checkValidity() {
-      if (this.brand.value === "") {
-        this.brand.isValid = false;
-        this.formIsValid = false;
-      }
-
-      if (this.serie.value === "") {
-        this.serie.isValid = false;
-        this.formIsValid = false;
-      }
-
-      if (this.type.value === "") {
-        this.type.isValid = false;
-        this.formIsValid = false;
-      }
-
-      if (this.seats_number.value === "" || this.seats_number.value === 0) {
-        this.seats_number.isValid = false;
-        this.formIsValid = false;
-      }
-    },
-    async resetValidity() {
-      this.formIsValid = true;
-      this.brand.isValid = true;
-      this.serie.isValid = true;
-      this.type.isValid = true;
-      this.seats_number.isValid = true;
+      return media.file_path;
     },
     showImage() {
       this.thumbnailFile = this.$refs.fileInput.files[0];

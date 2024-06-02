@@ -1,54 +1,73 @@
 <template>
-  <custom-modal @close-modal="this.$emit('close-form')">
-    <div class="w-full flex flex-col gap-5">
-      <div>Add city:</div>
+  <CustomModal @close-modal="this.$emit('close-form')">
+    <form class="w-full flex flex-col gap-5" @submit.prevent="submit">
+      <div>{{ this.location ? "Update" : "Add" }} location:</div>
       <div class="flex gap-2 md:flex-row flex-col">
-        <input
-          v-model="this.location"
+        <CustomInput
+          v-model="this.locationName"
           autofocus
-          class="px-4 py-3 rounded-lg outline-none border-2 border-gray-300 w-full"
           placeholder="Location name"
+          required
           type="text"
         />
       </div>
       <div class="flex justify-end">
-        <custom-button :fill="true" @click="addLocation">Add</custom-button>
+        <CustomButton :fill="true">Submit</CustomButton>
       </div>
-    </div>
-  </custom-modal>
+    </form>
+  </CustomModal>
 </template>
 
 <script>
-import CustomModal from "../../layouts/CustomModal.vue";
-import CustomButton from "../../components/CustomButton.vue";
+import CustomModal from "../../layouts/ui/CustomModal.vue";
+import CustomButton from "../../components/form/CustomButton.vue";
+import CustomInput from "@/components/form/CustomInput.vue";
 
 import Location from "../services/location.js";
 
 export default {
   name: "AdminLocationForm",
-  props: ["selectedCityId"],
-  components: { CustomButton, CustomModal },
+  props: ["selectedCityId", "location"],
+  components: { CustomInput, CustomButton, CustomModal },
   data() {
     return {
-      location: "",
+      locationName: this.location ? this.location.name : "",
     };
   },
   methods: {
+    submit() {
+      if (this.location) this.updateLocation();
+      else this.addLocation();
+    },
     async addLocation() {
-      if (this.location !== "" && this.selectedCityId !== null) {
+      if (this.locationName !== "" && this.selectedCityId !== null) {
         const obj = {
           cityId: this.selectedCityId,
-          name: this.location,
+          name: this.locationName,
           googleMapsLink: "https://maps.googleapis.com/maps/api/geocode/json",
         };
 
         const response = await Location.addLocation(
           obj,
-          sessionStorage.getItem("token")
+          this.$store.getters["users/getToken"]
         );
 
         if (response) this.$emit("close-form", true);
       }
+    },
+    async updateLocation() {
+      const obj = {
+        name: this.locationName,
+        locationId: this.location.id,
+        googleMapsLink: "https://maps.googleapis.com/maps/api/geocode/json",
+      };
+
+      const response = await Location.updateLocation(
+        obj,
+        this.$store.getters["users/getToken"]
+      );
+
+      if (response) this.$emit("close-form", obj);
     },
   },
 };
