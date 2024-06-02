@@ -30,12 +30,12 @@
         <div
           v-if="request.status === 'pending'"
           class="bg-black w-full p-1 cursor-pointer rounded-lg text-white"
-          @click="rejectFriendRequest(request.sender.id, index)"
+          @click="declineFriendRequest(request.sender.id, index)"
         >
-          Reject
+          Decline
         </div>
-        <div v-if="request.status === 'rejected'" class="text-sm text-black/50">
-          Rejected
+        <div v-if="request.status === 'declined'" class="text-sm text-black/50">
+          Declined
         </div>
         <div v-if="request.status === 'accepted'" class="text-sm text-black/50">
           Accepted
@@ -76,12 +76,12 @@ export default {
       );
       if (response) this.requests[index].status = "accepted";
     },
-    async rejectFriendRequest(id, index) {
-      const response = await Friend.rejectFriendRequest(
+    async declineFriendRequest(id, index) {
+      const response = await Friend.declineFriendRequest(
         id,
         this.$store.getters["users/getToken"]
       );
-      if (response) this.requests[index].status = "rejected";
+      if (response) this.requests[index].status = "declined";
     },
   },
 };

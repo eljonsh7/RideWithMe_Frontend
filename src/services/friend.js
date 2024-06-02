@@ -40,7 +40,7 @@ export default {
       return false;
     }
   },
-  async rejectFriendRequest(friendId, token) {
+  async declineFriendRequest(friendId, token) {
     let config = {
       method: "delete",
       maxBodyLength: Infinity,
