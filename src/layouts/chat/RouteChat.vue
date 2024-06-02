@@ -83,7 +83,7 @@
 
 <script>
 import Chat from "../../services/chat.js";
-import GroupChatMessage from "@/components/GroupChatMessage.vue";
+import GroupChatMessage from "@/components/chat/GroupChatMessage.vue";
 
 export default {
   name: "RouteChat",

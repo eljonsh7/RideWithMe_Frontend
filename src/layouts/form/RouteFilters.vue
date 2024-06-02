@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex flex-wrap items-center justify-center md:flex-row flex-col gap-3 px-5"
+    class="flex flex-wrap items-center justify-center md:flex-row flex-col gap-3 px-5 mt-5"
   >
     <div class="w-full md:w-auto">
       <label class="text-center text-black block" for="fromRoute">From:</label>
@@ -58,13 +58,13 @@
 </template>
 
 <script>
-import ArrowsHorizontalIcon from "../components/icons/ArrowsHorizontalIcon.vue";
-import SearchIcon from "../components/icons/SearchIcon.vue";
-import ArrowsVerticalIcon from "../components/icons/ArrowsVerticalIcon.vue";
-import xMark from "../components/icons/xMark.vue";
-import City from "../services/city";
-import CustomSelect from "@/components/CustomSelect.vue";
-import CustomInput from "@/components/CustomInput.vue";
+import ArrowsHorizontalIcon from "../../components/icons/ArrowsHorizontalIcon.vue";
+import SearchIcon from "../../components/icons/SearchIcon.vue";
+import ArrowsVerticalIcon from "../../components/icons/ArrowsVerticalIcon.vue";
+import xMark from "../../components/icons/xMark.vue";
+import City from "../../services/city";
+import CustomSelect from "@/components/form/CustomSelect.vue";
+import CustomInput from "@/components/form/CustomInput.vue";
 
 export default {
   name: "RouteFilters",

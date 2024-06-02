@@ -59,7 +59,7 @@
 </template>
 
 <script>
-import CarSeat from ".//icons/CarSeat.vue";
+import CarSeat from "../icons/CarSeat.vue";
 
 export default {
   name: "RouteSeats",

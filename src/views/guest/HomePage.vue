@@ -17,10 +17,10 @@
 </template>
 
 <script>
-import Route from "../services/route.js";
-import PaginationBar from "../layouts/PaginationBar.vue";
-import RouteCard from "../components/RouteCard.vue";
-import RouteFilters from "../layouts/RouteFilters.vue";
+import Route from "../../services/route.js";
+import PaginationBar from "../../layouts/ui/PaginationBar.vue";
+import RouteCard from "../../components/ui/RouteCard.vue";
+import RouteFilters from "../../layouts/form/RouteFilters.vue";
 
 export default {
   components: {
@@ -66,7 +66,7 @@ export default {
         filters,
         this.$store.getters["users/getToken"]
       );
-      if (response) {
+      if (response && response.data) {
         this.routes = response.data;
         this.totalRoutes = response.total;
       }
@@ -82,7 +82,7 @@ export default {
 <style scoped>
 @font-face {
   font-family: mySansation;
-  src: url(../assets/fonts/Sansation_Light.ttf);
+  src: url(../../assets/fonts/Sansation_Light.ttf);
 }
 
 * {

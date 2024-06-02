@@ -33,7 +33,7 @@
 import EditIcon from "../../components/icons/EditIcon.vue";
 import TrashIcon from "../../components/icons/TrashIcon.vue";
 import AdminCityForm from "../layouts/AdminCityForm.vue";
-import ConfirmBox from "../../layouts/ConfirmBox.vue";
+import ConfirmBox from "../../layouts/ui/ConfirmBox.vue";
 
 import City from "../services/city.js";
 

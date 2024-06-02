@@ -37,7 +37,7 @@
 <script>
 import TrashIcon from "../../components/icons/TrashIcon.vue";
 import BlockIcon from "../../components/icons/BlockIcon.vue";
-import ConfirmBox from "../../layouts/ConfirmBox.vue";
+import ConfirmBox from "../../layouts/ui/ConfirmBox.vue";
 
 import User from "../services/user.js";
 

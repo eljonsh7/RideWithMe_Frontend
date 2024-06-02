@@ -1,10 +1,24 @@
 <template>
   <div class="w-full flex flex-col gap-3">
-    <div>{{ user.id == this.$store.getters["users/getUser"].id ? "My" : user.first_name +"'s" }} Routes</div>
-    <div class="flex justify-start w-full">
-      <custom-button @click="checkDriver" v-if='user.role == "driver" && user.id == this.$store.getters["users/getUser"].id'>Add route</custom-button>
+    <div>
+      {{
+        user.id == this.$store.getters["users/getUser"].id
+          ? "My"
+          : user.first_name + "'s"
+      }}
+      Routes
     </div>
-    <div class="flex flex-col gap-4">
+    <div class="flex justify-start w-full">
+      <custom-button
+        v-if="
+          user.role == 'driver' &&
+          user.id == this.$store.getters['users/getUser'].id
+        "
+        @click="checkDriver"
+        >Add route
+      </custom-button>
+    </div>
+    <div class="flex flex-col gap-4 w-full">
       <RouteBanner
         v-for="(route, index) in routes"
         :key="index"
@@ -23,11 +37,11 @@
 </template>
 
 <script>
-import CustomButton from "../../components/CustomButton.vue";
-import RouteBanner from "../../components/RouteBanner.vue";
+import CustomButton from "../../components/form/CustomButton.vue";
+import RouteBanner from "../../components/ui/RouteBanner.vue";
 
 import Route from "../../services/route.js";
-import RouteForm from "../../layouts/RouteForm.vue";
+import RouteForm from "../form/RouteForm.vue";
 import City from "../../services/city.js";
 import SelectCarForm from "@/layouts/profile/SelectCarForm.vue";
 import Toast from "@/utils/toast";
@@ -52,8 +66,8 @@ export default {
   methods: {
     async getMyRoutes() {
       const response = await Route.getUserRoutes(
-      this.user.id,
-      sessionStorage.getItem("token")
+        this.user.id,
+        sessionStorage.getItem("token")
       );
       this.routes = response.data;
     },

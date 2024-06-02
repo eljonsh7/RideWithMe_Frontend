@@ -19,9 +19,9 @@
 </template>
 
 <script>
-import CustomModal from "../../layouts/CustomModal.vue";
-import CustomButton from "../../components/CustomButton.vue";
-import CustomInput from "@/components/CustomInput.vue";
+import CustomModal from "../../layouts/ui/CustomModal.vue";
+import CustomButton from "../../components/form/CustomButton.vue";
+import CustomInput from "@/components/form/CustomInput.vue";
 
 import Location from "../services/location.js";
 

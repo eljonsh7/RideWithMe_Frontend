@@ -65,16 +65,16 @@
         </div>
       </div>
       <div class="flex justify-end">
-        <CustomButton :fill="true" class="w-full">Submit </CustomButton>
+        <CustomButton :fill="true" class="w-full">Submit</CustomButton>
       </div>
     </form>
   </CustomModal>
 </template>
 
 <script>
-import CustomModal from "../../layouts/CustomModal.vue";
-import CustomButton from "../../components/CustomButton.vue";
-import CustomInput from "@/components/CustomInput.vue";
+import CustomModal from "../../layouts/ui/CustomModal.vue";
+import CustomButton from "../../components/form/CustomButton.vue";
+import CustomInput from "@/components/form/CustomInput.vue";
 import ImageIcon from "../../components/icons/ImageIcon.vue";
 
 import Car from "../services/car.js";

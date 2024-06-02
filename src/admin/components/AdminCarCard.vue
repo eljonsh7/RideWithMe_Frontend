@@ -39,7 +39,7 @@
 
 <script>
 import ImageIcon from "../../components/icons/ImageIcon.vue";
-import ConfirmBox from "../../layouts/ConfirmBox.vue";
+import ConfirmBox from "../../layouts/ui/ConfirmBox.vue";
 
 import Car from "../services/car.js";
 import EditIcon from "../../components/icons/EditIcon.vue";

@@ -1,27 +1,27 @@
 <template>
-  <base-loader v-if="isLoading" />
+  <BaseLoader v-if="isLoading" />
   <div v-else class="h-full">
     <div v-if="shouldHideComponent" class="flex w-full h-full flex-col">
-      <nav-bar @unbind-channel="unbindChannel" />
-      <router-view />
+      <NavBar @unbind-channel="unbindChannel" />
+      <RouterView />
     </div>
     <div
       v-else-if="shouldHideAdminComponent"
       class="w-full h-full flex flex-col md:flex-row"
     >
-      <admin-nav-bar @unbind-channel="unbindChannel" />
-      <router-view />
+      <AdminNavBar @unbind-channel="unbindChannel" />
+      <RouterView />
     </div>
     <div v-else>
-      <router-view />
+      <RouterView />
     </div>
   </div>
 </template>
 
 <script>
-import NavBar from "./layouts/NavBar.vue";
+import NavBar from "./layouts/ui/NavBar.vue";
 import AdminNavBar from "./admin/layouts/AdminNavBar.vue";
-import BaseLoader from "@/components/BaseLoader.vue";
+import BaseLoader from "@/components/general/BaseLoader.vue";
 
 import Pusher from "pusher-js";
 import Toast from "@/utils/toast";
@@ -32,6 +32,19 @@ export default {
     BaseLoader,
     NavBar,
     AdminNavBar,
+  },
+  data() {
+    return {
+      isLoading: false,
+      user: {},
+      pusher: null,
+      channel: null,
+    };
+  },
+  watch: {
+    $route() {
+      this.getUser();
+    },
   },
   computed: {
     shouldHideAdminComponent() {
@@ -67,19 +80,6 @@ export default {
         this.$store.getters["users/getUser"].id,
         sessionStorage.getItem("token")
       );
-  },
-  data() {
-    return {
-      isLoading: false,
-      user: {},
-      pusher: null,
-      channel: null,
-    };
-  },
-  watch: {
-    $route() {
-      this.getUser();
-    },
   },
   methods: {
     async getUser() {
@@ -119,7 +119,7 @@ export default {
         window.dispatchEvent(event);
       });
       this.channel.bind("NotificationEvent", async (e) => {
-        Toast.showInfo(e.notificationEventData.type);
+        Toast.showInfo(e.notificationEventData.message);
       });
     },
     unbindChannel() {

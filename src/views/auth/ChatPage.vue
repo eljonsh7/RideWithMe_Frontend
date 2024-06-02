@@ -31,19 +31,37 @@
     <div class="bg-black/20 w-3/4 h-full flex flex-col">
       <div v-if="this.selectedConversation" class="h-3/4">
         <div
-          class="h-28 px-3 gap-3 flex justify-between items-center bg-white border-b border-black/20"
+          class="w-full h-28 px-3 gap-3 flex justify-between items-center bg-white border-b border-black/20"
         >
-          <div class="w-16 flex items-center justify-center h-16">
-            <img
-              :src="selectedConversationImage"
-              alt="."
-              class="w-12 h-12 rounded-full object-cover border border-black/20"
-            />
+          <div class="flex items-center gap-3 w-full">
+            <div class="w-16 flex items-center justify-center h-16">
+              <img
+                :src="selectedConversationImage"
+                alt="."
+                class="w-12 h-12 rounded-full object-cover cursor-pointer border border-black/20"
+                @click="
+                  this.$router.push(
+                    `/profile/${selectedConversation.sender.id}`
+                  )
+                "
+              />
+            </div>
+            <div
+              class="font-semibold text-base w-full cursor-pointer"
+              @click="
+                this.$router.push(`/profile/${selectedConversation.sender.id}`)
+              "
+            >
+              {{
+                `${selectedConversation.sender.first_name} ${selectedConversation.sender.last_name}`
+              }}
+            </div>
           </div>
-          <div class="font-semibold text-base w-full">
-            {{
-              `${selectedConversation.sender.first_name} ${selectedConversation.sender.last_name}`
-            }}
+          <div class="w-5 h-full flex items-center">
+            <TrashIcon
+              class="cursor-pointer"
+              @click="this.deleteChatModal = true"
+            />
           </div>
         </div>
         <ChatMessages
@@ -58,22 +76,32 @@
       </div>
     </div>
   </div>
+  <ConfirmBox
+    v-if="deleteChatModal"
+    @close-modal="this.deleteChatModal = false"
+    @confirm-action="deleteConversation"
+  >
+    Are you sure you want to delete this conversation?
+  </ConfirmBox>
 </template>
 
 <script>
-import Chat from "../services/chat.js";
-import ChatMessages from "../layouts/chat/ChatMessages.vue";
-import ChatConversation from "../layouts/chat/ChatConversation.vue";
+import Chat from "../../services/chat.js";
+import ChatMessages from "../../layouts/chat/ChatMessages.vue";
+import ChatConversation from "../../layouts/chat/ChatConversation.vue";
+import TrashIcon from "@/components/icons/TrashIcon.vue";
+import ConfirmBox from "@/layouts/ui/ConfirmBox.vue";
 
 export default {
   name: "ChatPage",
-  components: { ChatConversation, ChatMessages },
+  components: { ConfirmBox, TrashIcon, ChatConversation, ChatMessages },
   data() {
     return {
       conversations: [],
       selectedConversation: null,
       newMessage: null,
       userId: this.$store.getters["users/getUser"].id,
+      deleteChatModal: false,
     };
   },
   beforeMount() {
@@ -90,7 +118,7 @@ export default {
     selectedConversationImage() {
       return this.selectedConversation.sender.profile_picture
         ? `${process.env.VUE_APP_STORAGE_URL}/${this.selectedConversation.sender.profile_picture}`
-        : require("../assets/images/default-user-pic.png");
+        : require("../../assets/images/default-user-pic.png");
     },
   },
   methods: {
@@ -107,6 +135,23 @@ export default {
       this.conversations[index].unread_messages = 0;
       this.selectedConversation = this.conversations[index];
     },
+    async deleteConversation() {
+      const response = await Chat.deleteMessages(
+        this.selectedConversation.sender.id,
+        this.$store.getters["users/getToken"]
+      );
+      if (response) {
+        const index = this.conversations.findIndex((item) => {
+          return item.sender.id === this.selectedConversation.sender.id;
+        });
+        this.selectedConversation = null;
+
+        if (index > -1) {
+          this.conversations.splice(index, 1);
+        }
+      }
+      this.deleteChatModal = false;
+    },
     handleNewMessage(message) {
       console.log(message);
       if (message.detail && message.detail.message) {
@@ -118,16 +163,17 @@ export default {
               : false
           )
             this.newMessage = message.detail.message;
+          else {
+            const index = this.conversations.findIndex((item) => {
+              return item.sender.id === message.detail.other_user_id;
+            });
 
-          const index = this.conversations.findIndex((item) => {
-            return item.sender.id == message.detail.other_user_id;
-          });
-
-          console.log(this.conversations[index]);
-          if (index >= 0) {
-            this.conversations[index].last_message.content =
-              message.detail.message.content;
-            this.conversations[index].unread_messages++;
+            console.log(this.conversations[index]);
+            if (index >= 0) {
+              this.conversations[index].last_message.content =
+                message.detail.message.content;
+              this.conversations[index].unread_messages++;
+            }
           }
         }
       }

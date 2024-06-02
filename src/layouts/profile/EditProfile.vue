@@ -63,12 +63,12 @@
 </template>
 
 <script>
-import CustomModal from "@/layouts/CustomModal.vue";
-import CustomButton from "@/components/CustomButton.vue";
+import CustomModal from "@/layouts/ui/CustomModal.vue";
+import CustomButton from "@/components/form/CustomButton.vue";
 import ImageIcon from "@/components/icons/ImageIcon.vue";
 import Media from "@/services/media";
-import CustomSelect from "@/components/CustomSelect.vue";
-import CustomInput from "@/components/CustomInput.vue";
+import CustomSelect from "@/components/form/CustomSelect.vue";
+import CustomInput from "@/components/form/CustomInput.vue";
 
 export default {
   name: "EditProfile",

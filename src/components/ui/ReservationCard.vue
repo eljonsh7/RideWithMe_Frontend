@@ -5,7 +5,7 @@
         :src="
           reservation.user.profile_picture
             ? `${this.storageLink}/${reservation.user.profile_picture}`
-            : require('../assets/images/default-user-pic.png')
+            : require('../../assets/images/default-user-pic.png')
         "
         alt=""
         class="w-14 h-14 rounded-full border border-white"
@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import CustomButton from "@/components/CustomButton.vue";
+import CustomButton from "@/components/form/CustomButton.vue";
 import Reservation from "@/services/reservation";
 
 export default {

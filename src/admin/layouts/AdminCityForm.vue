@@ -25,9 +25,9 @@
 </template>
 
 <script>
-import CustomButton from "../../components/CustomButton.vue";
-import CustomModal from "../../layouts/CustomModal.vue";
-import CustomInput from "@/components/CustomInput.vue";
+import CustomButton from "../../components/form/CustomButton.vue";
+import CustomModal from "../../layouts/ui/CustomModal.vue";
+import CustomInput from "@/components/form/CustomInput.vue";
 
 import City from "../services/city.js";
 

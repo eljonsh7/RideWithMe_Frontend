@@ -56,7 +56,7 @@ import AdminNavLink from "../components/AdminNavLink.vue";
 
 import BarsIcon from "../../components/icons/BarsIcon.vue";
 import xMark from "../../components/icons/xMark.vue";
-import ConfirmBox from "@/layouts/ConfirmBox.vue";
+import ConfirmBox from "@/layouts/ui/ConfirmBox.vue";
 
 export default {
   name: "NavBar",
