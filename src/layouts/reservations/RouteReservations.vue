@@ -14,7 +14,7 @@
 
 <script>
 import Reservation from "@/services/reservation";
-import ReservationCard from "@/components/ReservationCard.vue";
+import ReservationCard from "@/components/ui/ReservationCard.vue";
 
 export default {
   name: "RouteReservations",

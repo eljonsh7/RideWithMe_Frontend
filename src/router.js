@@ -7,16 +7,16 @@ import AdminCarsPage from "./admin/views/AdminCarsPage.vue";
 import AdminCitiesPage from "./admin/views/AdminCitiesPage.vue";
 
 // User Routes
-import HomePage from "./views/HomePage.vue";
-import AboutUs from "./views/AboutUs.vue";
-import ProfilePage from "./views/ProfilePage.vue";
-import PublicProfilesPage from "./views/PublicProfilesPage.vue";
-import ChatPage from "./views/ChatPage.vue";
-import ReservationsPage from "./views/ReservationsPage.vue";
-import NotFound from "./views/NotFound.vue";
-import LogIn from "./views/LogIn.vue";
-import RegisterPage from "./views/RegisterPage.vue";
-import RouteDetails from "./views/RouteDetails.vue";
+import HomePage from "./views/guest/HomePage.vue";
+import AboutUs from "./views/guest/AboutUs.vue";
+import ProfilePage from "./views/auth/ProfilePage.vue";
+import PublicProfilesPage from "./views/auth/PublicProfilesPage.vue";
+import ChatPage from "./views/auth/ChatPage.vue";
+import ReservationsPage from "./views/auth/ReservationsPage.vue";
+import NotFound from "./views/guest/NotFound.vue";
+import LogIn from "./views/guest/LogIn.vue";
+import RegisterPage from "./views/guest/RegisterPage.vue";
+import RouteDetails from "./views/auth/RouteDetails.vue";
 
 const router = createRouter({
   history: createWebHistory(),
@@ -25,7 +25,12 @@ const router = createRouter({
     { path: "/home", component: HomePage, name: "home" },
     { path: "/profile", component: ProfilePage, name: "profile" },
     { path: "/about-us", component: AboutUs, name: "about-us" },
-    { path: "/profile/:user_id", component: PublicProfilesPage, name: "publicProfile",props:true},
+    {
+      path: "/profile/:user_id",
+      component: PublicProfilesPage,
+      name: "publicProfile",
+      props: true,
+    },
     {
       path: "/reservations",
       component: ReservationsPage,

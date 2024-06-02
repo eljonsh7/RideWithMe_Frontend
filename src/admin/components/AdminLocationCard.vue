@@ -28,7 +28,7 @@
 import EditIcon from "../../components/icons/EditIcon.vue";
 import TrashIcon from "../../components/icons/TrashIcon.vue";
 import AdminLocationForm from "../layouts/AdminLocationForm.vue";
-import ConfirmBox from "../../layouts/ConfirmBox.vue";
+import ConfirmBox from "../../layouts/ui/ConfirmBox.vue";
 
 import Location from "../services/location.js";
 

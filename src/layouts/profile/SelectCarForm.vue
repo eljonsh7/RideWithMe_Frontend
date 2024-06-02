@@ -75,10 +75,10 @@
 </template>
 
 <script>
-import CustomModal from "@/layouts/CustomModal.vue";
+import CustomModal from "@/layouts/ui/CustomModal.vue";
 import Car from "../../services/car.js";
 import Media from "../../services/media.js";
-import CustomButton from "@/components/CustomButton.vue";
+import CustomButton from "@/components/form/CustomButton.vue";
 
 import "swiper/css";
 import { Swiper, SwiperSlide } from "swiper/vue";
@@ -87,7 +87,7 @@ import "swiper/css/pagination";
 import "swiper/css/scrollbar";
 
 import Toast from "../../utils/toast.js";
-import CustomInput from "@/components/CustomInput.vue";
+import CustomInput from "@/components/form/CustomInput.vue";
 
 export default {
   name: "SelectCarForm",
@@ -152,7 +152,7 @@ export default {
         thumbnail,
       };
 
-      const response = Car.attachCar(
+      const response = await Car.attachCar(
         object,
         this.$store.getters["users/getToken"]
       );

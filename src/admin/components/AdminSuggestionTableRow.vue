@@ -21,7 +21,7 @@
 
 <script>
 import TrashIcon from "@/components/icons/TrashIcon.vue";
-import ConfirmBox from "@/layouts/ConfirmBox.vue";
+import ConfirmBox from "@/layouts/ui/ConfirmBox.vue";
 import Suggestion from "@/admin/services/suggestion";
 
 export default {

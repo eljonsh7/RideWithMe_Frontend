@@ -34,7 +34,7 @@
 
 <script>
 import AdminCarCard from "../components/AdminCarCard.vue";
-import CustomButton from "../../components/CustomButton.vue";
+import CustomButton from "../../components/form/CustomButton.vue";
 import AdminCarForm from "@/admin/layouts/AdminCarForm.vue";
 
 import Car from "../services/car.js";

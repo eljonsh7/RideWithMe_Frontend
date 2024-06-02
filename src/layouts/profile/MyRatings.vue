@@ -1,6 +1,13 @@
 <template>
   <div class="w-full flex flex-col gap-3">
-    <div>{{ user.id == this.$store.getters["users/getUser"].id ? "My" : user.first_name +"'s" }} Reviews</div>
+    <div>
+      {{
+        user.id == this.$store.getters["users/getUser"].id
+          ? "My"
+          : user.first_name + "'s"
+      }}
+      Reviews
+    </div>
     <div class="flex gap-2 my-2 w-full justify-center">
       <button
         v-for="star in 5"
@@ -8,14 +15,9 @@
         :class="calculateClasses(star)"
         @click="filterRatings(star)"
       >
-        {{ star + (star == 1 ? " star" :" stars")}}
+        {{ star + (star == 1 ? " star" : " stars") }}
       </button>
-      <button
-        :class="calculateClasses(null)"
-        @click="resetFilter"
-      >
-        All
-      </button>
+      <button :class="calculateClasses(null)" @click="resetFilter">All</button>
     </div>
     <div class="flex flex-col gap-4">
       <rating-banner
@@ -24,13 +26,15 @@
         :index="index"
         :rating="rating"
       />
-      <p v-if="filteredRatings.length==0" class="font-bold text-lg">User has no reviews at the moment.</p>
+      <p v-if="filteredRatings.length == 0" class="font-bold text-lg">
+        User has no reviews at the moment.
+      </p>
     </div>
   </div>
 </template>
 
 <script>
-import RatingBanner from "../../components/RatingBanner.vue";
+import RatingBanner from "../../components/ui/RatingBanner.vue";
 
 import Rating from "../../services/rating.js";
 
@@ -46,14 +50,16 @@ export default {
       ratings: [],
       filteredRatings: [],
       selectedStarRating: null,
-      loggedUser: this.$store.getters['users/getUser'],
+      loggedUser: this.$store.getters["users/getUser"],
     };
   },
   methods: {
     async getMyRatings() {
       const response = await Rating.getRatings(
-      this.$route.params.user_id ? this.$route.params.user_id : this.loggedUser.id ,
-      this.$store.getters['users/getToken']
+        this.$route.params.user_id
+          ? this.$route.params.user_id
+          : this.loggedUser.id,
+        this.$store.getters["users/getToken"]
       );
       this.ratings = response.ratings;
       this.filteredRatings = this.ratings;
@@ -68,9 +74,11 @@ export default {
       this.selectedStarRating = null;
       this.filteredRatings = this.ratings;
     },
-    calculateClasses(stars){
-      return this.selectedStarRating == stars ? "bg-black px-3 py-1 rounded-lg text-white" : "bg-none px-3 py-1 rounded-lg text-black border border-black";
-    }
+    calculateClasses(stars) {
+      return this.selectedStarRating == stars
+        ? "bg-black px-3 py-1 rounded-lg text-white"
+        : "bg-none px-3 py-1 rounded-lg text-black border border-black";
+    },
   },
 };
 </script>

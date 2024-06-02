@@ -41,24 +41,6 @@ export default {
       return false;
     }
   },
-  async readMessages(recipientId, token) {
-    let config = {
-      method: "put",
-      maxBodyLength: Infinity,
-      url: `${apiPath}/messages/read/${recipientId}`,
-      headers: {
-        Accept: "application/json, text/plain, */*",
-        Authorization: `Bearer ${token}`,
-      },
-    };
-    try {
-      const response = await axios.request(config);
-      return response.data;
-    } catch (error) {
-      Toast.showError(error.response.data.message);
-      return false;
-    }
-  },
   async deleteMessages(recipientId, token) {
     let config = {
       method: "delete",

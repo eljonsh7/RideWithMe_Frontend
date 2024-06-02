@@ -59,8 +59,8 @@
 </template>
 
 <script>
-import ChevronLeft from "../components/icons/ChevronLeft.vue";
-import ChevronRight from "../components/icons/ChevronRight.vue";
+import ChevronLeft from "../../components/icons/ChevronLeft.vue";
+import ChevronRight from "../../components/icons/ChevronRight.vue";
 
 export default {
   name: "PaginationBar",

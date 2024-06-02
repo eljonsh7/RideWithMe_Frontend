@@ -77,7 +77,7 @@ import AdminCityCard from "../components/AdminCityCard.vue";
 import AdminLocationCard from "../components/AdminLocationCard.vue";
 import AdminCityForm from "../layouts/AdminCityForm.vue";
 import AdminLocationForm from "../layouts/AdminLocationForm.vue";
-import CustomButton from "../../components/CustomButton.vue";
+import CustomButton from "../../components/form/CustomButton.vue";
 
 import City from "../services/city.js";
 import Location from "../services/location.js";

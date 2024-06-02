@@ -5,14 +5,14 @@
         <img
           alt="Background Image"
           class="absolute inset-0 object-cover w-full h-full opacity-50"
-          src="../assets/images/aboutUsBackground.jpg"
+          src="../../assets/images/aboutUsBackground.jpg"
         />
         <div
-          class="absolute inset-0 flex flex-row justify-between items-center text-center text-white p-10"
+          class="absolute inset-0 flex flex-col md:flex-row justify-between items-center text-center text-white p-10"
         >
           <div
-            :class="{ 'w-1/2': isLoggedIn, 'w-full': !isLoggedIn }"
-            class="text-left border-2 border-white rounded-lg p-8 h-full overflow-y-scroll"
+            :class="{ 'md:w-1/2': isLoggedIn, 'md:w-full': !isLoggedIn }"
+            class="text-left border-2 border-white rounded-lg p-8 h-full overflow-y-scroll w-full"
           >
             <h1 class="text-5xl font-bold mb-8">About us</h1>
             <div class="mb-8">
@@ -67,10 +67,10 @@
           </div>
           <div
             v-if="isLoggedIn"
-            class="flex justify-center items-center w-1/2 h-full"
+            class="flex justify-center items-center md:w-1/2 h-full md:px-10"
           >
             <form
-              class="h-auto p-4 gap-4 border border-black/50 rounded-xl flex flex-col justify-center bg-white text-black"
+              class="h-auto p-4 gap-4 border border-black/50 rounded-xl flex flex-col justify-center bg-white text-black w-full"
               @submit.prevent="submit"
             >
               <div>Add a suggestion/opinion to admins:</div>
@@ -105,8 +105,8 @@
 </template>
 
 <script>
-import Suggestion from "../services/suggestion.js";
-import CustomButton from "@/components/CustomButton.vue";
+import Suggestion from "../../services/suggestion.js";
+import CustomButton from "@/components/form/CustomButton.vue";
 import Toast from "@/utils/toast";
 
 export default {

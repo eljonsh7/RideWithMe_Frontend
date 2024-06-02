@@ -107,10 +107,10 @@
 </template>
 
 <script>
-import Route from "../services/route.js";
-import Reserve from "../services/reservation.js";
-import RouteSeats from "../components/RouteSeats.vue";
-import RightArrowIcon from "../components/icons/RightArrowIcon.vue";
+import Route from "../../services/route.js";
+import Reserve from "../../services/reservation.js";
+import RouteSeats from "../../components/ui/RouteSeats.vue";
+import RightArrowIcon from "../../components/icons/RightArrowIcon.vue";
 import RouteChat from "@/layouts/chat/RouteChat.vue";
 import RouteReservations from "@/layouts/reservations/RouteReservations.vue";
 

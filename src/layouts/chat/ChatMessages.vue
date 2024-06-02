@@ -45,7 +45,7 @@
 
 <script>
 import Chat from "../../services/chat.js";
-import ChatMessage from "../../components/ChatMessage.vue";
+import ChatMessage from "../../components/chat/ChatMessage.vue";
 
 export default {
   name: "ChatMessages",
@@ -78,10 +78,7 @@ export default {
       );
       this.messages = response.messages;
       this.scrollToBottom();
-      await Chat.markAsRead(
-        this.conversation.sender.id,
-        this.$store.getters["users/getToken"]
-      );
+      this.markAsRead();
     },
     async sendMessage() {
       const object = {
@@ -116,6 +113,7 @@ export default {
     handleNewMessage(message) {
       this.messages.push(message);
       this.scrollToBottom();
+      this.markAsRead();
     },
     scrollToBottom() {
       try {
@@ -130,6 +128,12 @@ export default {
       } catch (error) {
         console.log(error);
       }
+    },
+    async markAsRead() {
+      await Chat.markAsRead(
+        this.conversation.sender.id,
+        this.$store.getters["users/getToken"]
+      );
     },
   },
 };

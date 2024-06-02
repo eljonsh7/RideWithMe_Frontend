@@ -16,7 +16,7 @@
 
 <script>
 import CustomModal from "./CustomModal.vue";
-import CustomButton from "../components/CustomButton.vue";
+import CustomButton from "../../components/form/CustomButton.vue";
 
 export default {
   name: "ConfirmBox",

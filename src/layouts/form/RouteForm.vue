@@ -69,14 +69,14 @@
 </template>
 
 <script>
-import CustomModal from "./CustomModal.vue";
-import CustomButton from "../components/CustomButton.vue";
-import CustomInput from "@/components/CustomInput.vue";
+import CustomModal from "../ui/CustomModal.vue";
+import CustomButton from "../../components/form/CustomButton.vue";
+import CustomInput from "@/components/form/CustomInput.vue";
 
-import Location from "../services/location.js";
-import Route from "../services/route.js";
+import Location from "../../services/location.js";
+import Route from "../../services/route.js";
 
-import Date from "../utils/date.js";
+import Date from "../../utils/date.js";
 
 export default {
   name: "RouteForm",
