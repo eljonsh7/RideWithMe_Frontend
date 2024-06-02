@@ -51,9 +51,9 @@
             !user.isFriend.sending
           "
           class="bg-gray-300 w-full py-1 cursor-pointer rounded-lg text-black"
-          @click="rejectFriendRequest()"
+          @click="declineFriendRequest()"
         >
-          Reject
+          Decline
         </div>
         <div
           v-if="user.isFriend && user.isFriend.status === 'accepted'"
@@ -285,9 +285,9 @@ export default {
         throw error;
       }
     },
-    async rejectFriendRequest() {
+    async declineFriendRequest() {
       try {
-        await Friend.rejectFriendRequest(this.user_id, this.token);
+        await Friend.declineFriendRequest(this.user_id, this.token);
         this.user.isFriend = null;
       } catch (error) {
         console.error("Failed to fetch user:", error);

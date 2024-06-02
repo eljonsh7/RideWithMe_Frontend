@@ -64,7 +64,7 @@ export default {
     let config = {
       method: "get",
       maxBodyLength: Infinity,
-      url: `${apiPath}/reservations/get`,
+      url: `${apiPath}/reservations/sent`,
       headers: {
         Accept: "application/json, text/plain, */*",
         Authorization: `Bearer ${token}`,

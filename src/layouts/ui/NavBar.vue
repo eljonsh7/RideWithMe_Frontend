@@ -181,6 +181,11 @@ export default {
         : require("../../assets/images/default-user-pic.png");
     },
   },
+  watch: {
+    $route() {
+      this.show = false;
+    },
+  },
   beforeMount() {
     this.routes = sessionStorage.getItem("token")
       ? ["reservations", "chat", "about us"]
