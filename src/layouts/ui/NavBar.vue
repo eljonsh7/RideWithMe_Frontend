@@ -52,7 +52,7 @@
     @click="this.showProfileOptions = false"
   >
     <div
-      class="w-24 h-auto bg-black absolute right-10 text-white rounded-lg flex flex-col justify-evenly items-center uppercase"
+      class="w-24 h-auto bg-black absolute right-10 text-white rounded-lg flex flex-col justify-evenly items-center uppercase z-30"
     >
       <p
         class="hover:bg-white/30 py-2 w-full rounded-t-lg text-center items-center flex justify-center text-xs cursor-pointer"
