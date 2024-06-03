@@ -82,8 +82,8 @@ export default {
     try {
       const response = await axios.request(config);
       context.commit("setToken", sessionStorage.getItem("token"));
-      context.commit("setUser", response.data);
-      return response.data;
+      context.commit("setUser", response.data.user);
+      return response.data.user;
     } catch (error) {
       Toast.showError(error.response.data.message);
       return false;
