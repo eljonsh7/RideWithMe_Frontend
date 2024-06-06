@@ -151,7 +151,7 @@ export default {
           "users/updateUser",
           userObject
         );
-        if (response) this.$emit("user-updated", userObject);
+        if (response) this.$emit("user-updated");
       }
 
       this.$emit("close-form");

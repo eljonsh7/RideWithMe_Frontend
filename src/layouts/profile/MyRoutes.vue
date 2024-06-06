@@ -2,21 +2,21 @@
   <div class="w-full flex flex-col gap-3">
     <div>
       {{
-        user.id == this.$store.getters["users/getUser"].id
+        user.id === this.$store.getters["users/getUser"].id
           ? "My"
           : user.first_name + "'s"
       }}
       Routes
     </div>
     <div class="flex justify-start w-full">
-      <custom-button
+      <CustomButton
         v-if="
-          user.role == 'driver' &&
-          user.id == this.$store.getters['users/getUser'].id
+          user.role === 'driver' &&
+          user.id === this.$store.getters['users/getUser'].id
         "
         @click="checkDriver"
         >Add route
-      </custom-button>
+      </CustomButton>
     </div>
     <div class="flex flex-col gap-4 w-full">
       <RouteBanner
@@ -54,6 +54,7 @@ export default {
   created() {
     this.getMyRoutes();
     this.getCities();
+    console.log(this.$store.getters["users/getUser"]);
   },
   data() {
     return {

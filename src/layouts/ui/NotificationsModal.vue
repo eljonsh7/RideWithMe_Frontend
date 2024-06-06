@@ -10,6 +10,13 @@
           {{ formatString(notification.sender, notification.type) }}
         </div>
       </div>
+
+      <div
+        v-if="notifications.length === 0"
+        class="text-xs font-semibold text-black/50"
+      >
+        No notifications for you.
+      </div>
     </div>
   </CustomModal>
 </template>

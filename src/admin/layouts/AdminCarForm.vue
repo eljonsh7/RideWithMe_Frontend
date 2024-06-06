@@ -53,10 +53,10 @@
               <input
                 id="fileInput"
                 ref="fileInput"
+                :required="!this.car"
                 accept="image/png, image/jpeg"
                 class="sr-only"
                 name="fileInput"
-                required
                 type="file"
                 @change="showImage"
               />
@@ -151,7 +151,7 @@ export default {
         carObject,
         this.$store.getters["users/getToken"]
       );
-      if (response) this.$emit("close-form", true);
+      if (response) this.$emit("close-form", response.car);
     },
     async getMediaLink(file) {
       const media = await Media.storeMedia(

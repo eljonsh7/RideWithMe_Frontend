@@ -54,8 +54,8 @@ export default {
         pageSize: this.pageSize,
       });
       if (response) {
-        this.routes = response.data;
-        this.totalRoutes = response.total;
+        this.routes = response.routes.data;
+        this.totalRoutes = response.routes.total;
       }
     },
     async getFilteredRoutes(filters, pageNumber = this.currentPage) {

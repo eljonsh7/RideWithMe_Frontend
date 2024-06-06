@@ -52,7 +52,7 @@
     @click="this.showProfileOptions = false"
   >
     <div
-      class="w-24 h-auto bg-black absolute right-10 text-white rounded-lg flex flex-col justify-evenly items-center uppercase"
+      class="z-50 w-24 h-auto bg-black absolute right-10 text-white rounded-lg flex flex-col justify-evenly items-center uppercase"
     >
       <p
         class="hover:bg-white/30 py-2 w-full rounded-t-lg text-center items-center flex justify-center text-xs cursor-pointer"
@@ -61,7 +61,7 @@
         Profile
       </p>
       <p
-        v-if="isAdmin"
+        v-if="this.user.is_admin"
         class="hover:bg-white/30 py-2 w-full text-center items-center flex justify-center text-xs cursor-pointer"
         @click="this.$router.push('/admin/home')"
       >
@@ -116,7 +116,7 @@
           Profile
         </p>
         <p
-          v-if="isAdmin"
+          v-if="this.user.is_admin"
           class="hover:bg-black/30 py-2 w-full text-center items-center flex justify-center text-xs cursor-pointer"
           @click="this.$router.push('/admin/home')"
         >
@@ -205,9 +205,6 @@ export default {
       this.logOutModal = false;
       this.$emit("unbind-channel");
       this.$router.push("/login");
-    },
-    isAdmin() {
-      return this.user.is_admin === 1;
     },
   },
 };
