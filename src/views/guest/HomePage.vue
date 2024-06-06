@@ -66,7 +66,7 @@ export default {
         filters,
         this.$store.getters["users/getToken"]
       );
-      if (response && response.routes) {
+      if (response) {
         this.routes = response.routes.data;
         this.totalRoutes = response.routes.total;
       }

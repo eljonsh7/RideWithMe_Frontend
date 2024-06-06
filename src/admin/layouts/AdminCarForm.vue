@@ -53,10 +53,10 @@
               <input
                 id="fileInput"
                 ref="fileInput"
+                :required="!this.car"
                 accept="image/png, image/jpeg"
                 class="sr-only"
                 name="fileInput"
-                required
                 type="file"
                 @change="showImage"
               />
@@ -102,7 +102,7 @@ export default {
       serie: this.car ? this.car.serie : "",
       type: this.car ? this.car.type : "",
       thumbnailPath: this.car
-        ? `http://127.0.0.1:8000/storage/${this.car.thumbnail}`
+        ? `${process.env.VUE_APP_STORAGE_URL}/${this.car.thumbnail}`
         : null,
       thumbnailFile: null,
       shouldCrop: false,
@@ -151,7 +151,7 @@ export default {
         carObject,
         this.$store.getters["users/getToken"]
       );
-      if (response) this.$emit("close-form", true);
+      if (response) this.$emit("close-form", response.car);
     },
     async getMediaLink(file) {
       const media = await Media.storeMedia(

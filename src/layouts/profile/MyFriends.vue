@@ -43,13 +43,13 @@ export default {
   },
   methods: {
     async getMyFriends() {
+      const userId = this.$route.name === 'profile' ? this.loggedUser.id : this.$route.params.user_id;
       const response = await Friend.getUserFriends(
-        this.$route.params.user_id
-          ? this.$route.params.user_id
-          : this.loggedUser.id,
-        this.$store.getters["users/getToken"]
+          userId,
+      this.$store.getters['users/getToken']
       );
       this.friends = response.friends;
+      console.log(response);
     },
     friendImage(profile_picture) {
       return profile_picture

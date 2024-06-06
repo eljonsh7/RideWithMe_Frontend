@@ -99,7 +99,7 @@ export default {
         cluster: "eu",
         useTLS: true,
         channelAuthorization: {
-          endpoint: `http://127.0.0.1:8000/broadcasting/auth`,
+          endpoint: `http://172.20.10.2:8000/broadcasting/auth`,
           headers: {
             Authorization: `Bearer ${token}`,
           },

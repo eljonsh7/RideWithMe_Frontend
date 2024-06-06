@@ -10,6 +10,13 @@
           {{ formatString(notification.sender, notification.type) }}
         </div>
       </div>
+
+      <div
+        v-if="notifications.length === 0"
+        class="text-xs font-semibold text-black/50"
+      >
+        No notifications for you.
+      </div>
     </div>
   </CustomModal>
 </template>
@@ -44,8 +51,12 @@ export default {
       switch (string) {
         case "routeReservationRequested":
           return `${senderName} requested reservation.`;
+        case "routeReservationRejected":
+          return `${senderName} rejected reservation.`;
         case "routeReservationCancelled":
           return `${senderName} cancelled route reservation.`;
+        case "routeReservationAccepted":
+          return `${senderName} accepted route reservation.`;
         case "friendRequestDeclined":
           return `${senderName} declined friend request.`;
         case "friendRequestSent":

@@ -68,7 +68,7 @@
         />
         <SelectCarForm
           v-if="this.currentPage === 'editCarForm'"
-          :car="this.user.user_car"
+          :car="this.user.userCar"
           @close-form="closeForm"
         />
       </div>
@@ -105,6 +105,8 @@ export default {
     if (sessionStorage.getItem("token"))
       this.user = this.$store.getters["users/getUser"];
     else this.$router.push("/login");
+
+    console.log(this.user);
   },
   computed: {
     fullName() {
@@ -126,14 +128,8 @@ export default {
     };
   },
   methods: {
-    updateUser(userObject) {
-      if (userObject.profile_picture)
-        this.user.profile_picture = userObject.profile_picture;
-      if (userObject.first_name) this.user.first_name = userObject.first_name;
-      if (userObject.last_name) this.user.last_name = userObject.last_name;
-      if (userObject.role) this.user.role = userObject.role;
-
-      this.currentPage = "myRoutes";
+    updateUser() {
+      this.user = this.$store.getters["users/getUser"];
     },
     async closeForm(value = false) {
       this.currentPage = "myRoutes";
