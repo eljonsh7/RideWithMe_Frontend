@@ -102,7 +102,7 @@ export default {
       serie: this.car ? this.car.serie : "",
       type: this.car ? this.car.type : "",
       thumbnailPath: this.car
-        ? `http://127.0.0.1:8000/storage/${this.car.thumbnail}`
+        ? `${process.env.VUE_APP_STORAGE_URL}/${this.car.thumbnail}`
         : null,
       thumbnailFile: null,
       shouldCrop: false,
