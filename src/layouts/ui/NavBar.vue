@@ -172,9 +172,6 @@ export default {
     isLoggedIn() {
       return sessionStorage.getItem("token");
     },
-    isAdmin() {
-      return this.$store.getters["users/getUser"].is_admin === 1;
-    },
     userImage() {
       return this.user.profile_picture
         ? `${process.env.VUE_APP_STORAGE_URL}/${this.user.profile_picture}`
@@ -208,6 +205,9 @@ export default {
       this.logOutModal = false;
       this.$emit("unbind-channel");
       this.$router.push("/login");
+    },
+    isAdmin() {
+      return this.user.is_admin === 1;
     },
   },
 };
