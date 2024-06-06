@@ -171,6 +171,7 @@ export default {
           this.routeId,
           this.$store.getters["users/getToken"]
         );
+        this.route = this.route.route;
         this.showChat =
           (this.route.takenSeatByUser &&
             this.route.takenSeatByUser.status === "accepted") ||

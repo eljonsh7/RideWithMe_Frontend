@@ -20,7 +20,7 @@
       <img
         alt=""
         class="w-10 h-10 rounded-full border border-white/50"
-        src="../../assets/images/default-user-pic.png"
+        :src="driverImage()"
       />
       <div class="ml-2">
         <p class="text-white bold mb-0 uppercase">
@@ -71,6 +71,7 @@ export default {
   data() {
     return {
       DateUtil,
+      storageLink: process.env.VUE_APP_STORAGE_URL,
     };
   },
   methods: {
@@ -115,6 +116,12 @@ export default {
         }
         return "none";
       }
+    },
+    driverImage() {
+      console.log(this.route);
+      return this.route.driver.profile_picture
+        ? `${this.storageLink}/${this.route.driver.profile_picture}`
+        : require("../../assets/images/default-user-pic.png");
     },
   },
 };

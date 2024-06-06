@@ -69,7 +69,7 @@ export default {
         this.user.id,
         sessionStorage.getItem("token")
       );
-      this.routes = response.data;
+      this.routes = response.routes.data;
     },
     async getCities() {
       const response = await City.getCities();
