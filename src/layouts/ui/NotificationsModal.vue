@@ -41,9 +41,9 @@ export default {
     async getNotifications() {
       if (sessionStorage.getItem("token")) {
         const response = await Notification.getNotifications(
-          this.$store.getters["users/getToken"]
+          sessionStorage.getItem("token")
         );
-        this.notifications = response.notifications;
+        if (response) this.notifications = response.notifications;
       }
     },
     formatString(sender, string) {
